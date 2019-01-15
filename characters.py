@@ -3,6 +3,7 @@ import json
 import re
 
 from pathlib import Path
+from tqdm import tqdm
 
 
 def query():
@@ -24,20 +25,28 @@ def query():
     }
     last_continue = {}
 
-    while True:
-        req = payload.copy()
-        req.update(last_continue)
-        r = requests.get(wiki_api, params=req)
-        response = r.json()
-        if 'error' in response:
-            raise RuntimeError(response['error'])
-        if 'warnings' in response:
-            print(response['warnings'])
-        if 'query' in response:
-            yield response['query']['pages']
-        if 'continue' not in response:
-            break
-        last_continue = response['continue']
+    # get total number of pages to fetch
+    r = requests.get(wiki_api, params={'action': 'query', 'format': 'json',
+                                       'prop': 'categoryinfo', 'titles': 'Category:Characters'})
+    num_pages = r.json()['query']['pages']['40']['categoryinfo']['pages']
+
+    # query server until finished
+    with tqdm(total=num_pages, unit=' pages') as pbar:
+        while True:
+            req = payload.copy()
+            req.update(last_continue)
+            r = requests.get(wiki_api, params=req)
+            response = r.json()
+            if 'error' in response:
+                raise RuntimeError(response['error'])
+            if 'warnings' in response:
+                print(response['warnings'])
+            if 'query' in response:
+                yield response['query']['pages']
+            if 'continue' not in response:
+                break
+            last_continue = response['continue']
+            pbar.update(len(response['query']['pages']))
 
 
 def load_query_results():
@@ -47,6 +56,7 @@ def load_query_results():
         with path.open() as f:
             return json.load(f)
     else:
+        print('downloading from coppermind.net...')
         results = [el for batch in query() for el in batch]
         with path.open('w') as f:
             json.dump(results, f)
