@@ -91,7 +91,7 @@ def sanitize_attrs(s: str):
     return "".join(sanitized)
 
 
-def get_characters():
+def process_data():
     """get characters in the cosmere from coppermind.net"""
     characters = []
     query_results = load_query_results()
@@ -151,9 +151,16 @@ def get_characters():
     return characters
 
 
+characters = process_data()
+names = set(c.get('name') for c in characters)
+
+
 if __name__ == '__main__':
 
-    people = get_characters()
+    people = characters
+
+    # todo: names need more sanitizing
+    print("people:", names)
 
     print("nations:", set(c['properties'].get('nation') for c in people))
     print("worlds:", set(c['properties'].get('world') for c in people))
