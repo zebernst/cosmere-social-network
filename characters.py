@@ -1,21 +1,31 @@
-import pickle
-
 import requests
 import json
-from enum import Enum
 import re
 
 from pathlib import Path
-from itertools import groupby
-
-wiki_api = "https://coppermind.net/w/api.php"
 
 
-def continuable_query(params: dict):
+def query():
+    """query coppermind.net api for all characters"""
+    # base code taken from https://www.mediawiki.org/wiki/API:Query#Continuing_queries
+    wiki_api = "https://coppermind.net/w/api.php"
+    payload = {
+        "action": "query",
+        "format": "json",
+        "prop": "revisions",
+        "generator": "categorymembers",
+        "rvprop": "content",
+        "rvsection": "0",
+        "gcmtitle": "Category:Characters",
+        "gcmprop": "ids|title",
+        "gcmtype": "page",
+        "gcmlimit": "50",
+        "formatversion": 2
+    }
     last_continue = {}
 
     while True:
-        req = params.copy()
+        req = payload.copy()
         req.update(last_continue)
         r = requests.get(wiki_api, params=req)
         response = r.json()
@@ -31,31 +41,20 @@ def continuable_query(params: dict):
 
 
 def load_query_results():
+    """load and cache data from coppermind.net"""
     path = Path('data/characters.json')
     if path.exists():
         with path.open() as f:
             return json.load(f)
     else:
-        payload = {
-            "action": "query",
-            "format": "json",
-            "prop": "revisions",
-            "generator": "categorymembers",
-            "rvprop": "content",
-            "rvsection": "0",
-            "gcmtitle": "Category:Characters",
-            "gcmprop": "ids|title",
-            "gcmtype": "page",
-            "gcmlimit": "50",
-            "formatversion": 2
-        }
-        results = [e for l in continuable_query(payload) for e in l]
+        results = [el for batch in query() for el in batch]
         with path.open('w') as f:
             json.dump(results, f)
         return results
 
 
 def isolate_table(s: str):
+    """isolate infobox from extraneous summary text in query results"""
     count = 0
     pos = 0
     for i, char in enumerate(s):
@@ -70,7 +69,8 @@ def isolate_table(s: str):
     return s[:pos+1] if pos else ""
 
 
-def replace_delimiter(s: str):
+def sanitize_attrs(s: str):
+    """sanitize infobox key/value pairs"""
     brace, bracket = 0, 0
     sanitized = []
     for char in s:
@@ -91,7 +91,8 @@ def replace_delimiter(s: str):
     return "".join(sanitized)
 
 
-if __name__ == '__main__':
+def get_characters():
+    """get characters in the cosmere from coppermind.net"""
     characters = []
     query_results = load_query_results()
     for i, result in enumerate(query_results):
@@ -112,7 +113,7 @@ if __name__ == '__main__':
                 match = re.match(r'^{{((?:.\s?)*)}}$', isolate_table(content))
                 if match:
                     # split string on field delimiter
-                    table_str = replace_delimiter(match[1])
+                    table_str = sanitize_attrs(match[1])
                     table = [e.strip() for e in table_str.split('|')]
 
                     # ignore non-character pages
@@ -129,7 +130,8 @@ if __name__ == '__main__':
                                 # sanitize and process specific fields
                                 if k.lower() == 'books':
                                     v = [e.strip() for e in v.split(',')]
-                                    v = [b.split(':')[-1] if any(s in b for s in ('(book)', '(series)')) else b for b in v]
+                                    v = [b.split(':')[-1] if any(s in b for s in ('(book)', '(series)')) else b for b in
+                                         v]
 
                                 char_info[k] = v
 
@@ -146,11 +148,13 @@ if __name__ == '__main__':
             'debug_str': table_str
         })
 
-    print("nations:", set(c['properties'].get('nation') for c in characters))
-    print("worlds:", set(c['properties'].get('world') for c in characters))
-    print("books:", set(b for c in characters for b in c['properties'].get('books')))
+    return characters
 
-    buckets = []
-    for k, grp in groupby(sorted(characters, key=lambda e: e['properties'].get('world')), key=lambda e: e['properties'].get('world')):
-        buckets.append((k, list(grp)))
-    print('buckets')
+
+if __name__ == '__main__':
+
+    people = get_characters()
+
+    print("nations:", set(c['properties'].get('nation') for c in people))
+    print("worlds:", set(c['properties'].get('world') for c in people))
+    print("books:", set(b for c in people for b in c['properties'].get('books')))
