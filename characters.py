@@ -10,6 +10,13 @@ def query():
     """query coppermind.net api for all characters"""
     # base code taken from https://www.mediawiki.org/wiki/API:Query#Continuing_queries
     wiki_api = "https://coppermind.net/w/api.php"
+
+    # get total number of pages to fetch
+    r = requests.get(wiki_api, params=dict(action='query', format='json',
+                                           prop='categoryinfo', titles='Category:Characters'))
+    num_pages = r.json()['query']['pages']['40']['categoryinfo']['pages']
+
+    # query server until finished
     payload = {
         "action": "query",
         "format": "json",
@@ -23,18 +30,11 @@ def query():
         "gcmlimit": "50",
         "formatversion": 2
     }
-    last_continue = {}
-
-    # get total number of pages to fetch
-    r = requests.get(wiki_api, params={'action': 'query', 'format': 'json',
-                                       'prop': 'categoryinfo', 'titles': 'Category:Characters'})
-    num_pages = r.json()['query']['pages']['40']['categoryinfo']['pages']
-
-    # query server until finished
-    with tqdm(total=num_pages, unit=' pages') as pbar:
+    continue_data = {}
+    with tqdm(total=num_pages, unit=' pages') as progressbar:
         while True:
             req = payload.copy()
-            req.update(last_continue)
+            req.update(continue_data)
             r = requests.get(wiki_api, params=req)
             response = r.json()
             if 'error' in response:
@@ -44,9 +44,11 @@ def query():
             if 'query' in response:
                 yield response['query']['pages']
             if 'continue' not in response:
+                progressbar.update(len(response['query']['pages']))
                 break
-            last_continue = response['continue']
-            pbar.update(len(response['query']['pages']))
+
+            continue_data = response['continue']
+            progressbar.update(len(response['query']['pages']))
 
 
 def load_query_results():
@@ -93,6 +95,7 @@ def sanitize_attrs(s: str):
         elif char == ']':
             bracket -= 1
 
+        # replace special chars with ':' if inside template entity
         if char in ('|', '=') and (brace > 0 or bracket > 0):
             sanitized.append(':')
         else:
@@ -103,9 +106,8 @@ def sanitize_attrs(s: str):
 
 def process_data():
     """get characters in the cosmere from coppermind.net"""
-    characters = []
-    query_results = load_query_results()
-    for i, result in enumerate(query_results):
+    chars = []
+    for result in load_query_results():
 
         # set defaults
         char_info = {}
@@ -151,14 +153,14 @@ def process_data():
             continue
 
         # add to character list
-        characters.append({
+        chars.append({
             'name': result['title'],
             'wiki_id': result['pageid'],
             'properties': char_info,
             'debug_str': table_str
         })
 
-    return characters
+    return chars
 
 
 characters = process_data()
