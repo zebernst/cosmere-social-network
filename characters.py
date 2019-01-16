@@ -50,6 +50,11 @@ class Character:
         """return a set of monikers that the character is known by."""
         return set(n for n in [self.name] + self.aliases + self.titles)
 
+    @property
+    def coppermind_url(self):
+        """return the url of the character's page on coppermind.net"""
+        return f"https://coppermind.net/wiki?curid={self._pageid}"
+
     def _parse_infobox(self, query_result):
         """..."""
 
@@ -117,7 +122,7 @@ class Character:
                             m = re.match(r'^(\w+\b)(?:[\s=]+(.*))?$', entry)
                             if m:
                                 # remove templating delimiters
-                                k, v = m[1], re.sub(r'[\[{}\]]', '', m[2])
+                                k, v = m[1], m[2]  # re.sub(r'[\[{}\]]', '', m[2])
 
                                 # ignore certain keywords
                                 if k.lower() in ('image',):
@@ -161,7 +166,7 @@ def coppermind_query():
         # get total number of pages to fetch
         r = requests.get(wiki_api, params=dict(action='query', format='json',
                                                prop='categoryinfo', titles='Category:Characters'))
-        num_pages = r.json()['query']['pages']['40']['categoryinfo']['pages']
+        num_pages = r.json().get('query', {}).get('pages', {}).get('40', {}).get('categoryinfo', {}).get('pages')
 
         # query server until finished
         payload = {
@@ -179,7 +184,7 @@ def coppermind_query():
         }
         continue_data = {}
         with tqdm(total=num_pages, unit=' pages') as progressbar:
-            while True:
+            while continue_data is not None:
                 req = payload.copy()
                 req.update(continue_data)
                 r = requests.get(wiki_api, params=req)
@@ -189,21 +194,18 @@ def coppermind_query():
                 if 'warnings' in response:
                     print(response['warnings'])
                 if 'query' in response:
-                    yield response['query']['pages']
-                if 'continue' not in response:
-                    progressbar.update(len(response['query']['pages']))
-                    break
+                    yield response['query'].get('pages', [])
 
-                continue_data = response['continue']
+                continue_data = response.get('continue', None)
                 progressbar.update(len(response['query']['pages']))
 
     path = Path('data/characters.json')
-    if path.exists():
+    if path.is_file():
         with path.open() as f:
             return json.load(f)
     else:
         print('downloading from coppermind.net...')
-        results = [el for batch in _query() for el in batch]
+        results = [page for batch in _query() for page in batch]
         with path.open('w') as f:
             json.dump(results, f)
         return results
