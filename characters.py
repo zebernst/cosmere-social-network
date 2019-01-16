@@ -3,7 +3,10 @@ import requests
 import json
 import re
 
+import mwparserfromhell as mwp
+
 from pathlib import Path
+from pprint import pprint
 from tqdm import tqdm
 
 
@@ -13,7 +16,7 @@ class Character:
         """construct character from coppermind.net api query results."""
         self._discard = False
         self._pageid = int(query_result['pageid'])
-        self._infobox_str = ""
+        self._infobox_template = ""
 
         self.name = query_result['title']
         self.info = self._parse_infobox(query_result)
@@ -60,98 +63,73 @@ class Character:
 
         # set defaults
         char_info = {}
-        table_str = ""
 
         # define local utility functions
-        def isolate_table(s: str):
-            """isolate infobox from extraneous summary text in query results"""
-            count = 0
-            pos = 0
-            for i, char in enumerate(s):
-                if char == '{':
-                    count += 1
-                elif char == '}':
-                    count -= 1
-                if count == 0:
-                    pos = i
-                    break
-
-            return s[:pos + 1] if pos else ""
-
-        def sanitize_templates(s: str):
-            """sanitize infobox key/value pairs"""
-            brace, bracket = 0, 0
-            sanitized = []
-            for char in s:
-                if char == '{':
-                    brace += 1
-                elif char == '[':
-                    bracket += 1
-                elif char == '}':
-                    brace -= 1
-                elif char == ']':
-                    bracket -= 1
-
-                # replace special chars with ':' if inside template entity
-                if char in ('|', '=') and (brace > 0 or bracket > 0):
-                    sanitized.append(':')
-                else:
-                    sanitized.append(char)
-
-            return "".join(sanitized)
+        def parse_markup(template):
+            # todo
+            pass
 
         # parse infobox
         if 'revisions' in query_result:
             if query_result['revisions']:
                 content = query_result['revisions'][0]['content']
 
-                # trim outermost template tags
-                match = re.match(r'^{{((?:.\s?)*)}}$', isolate_table(content))
-                if match:
-                    # split string on field delimiter
-                    table_str = sanitize_templates(match[1])
-                    table = [e.strip() for e in table_str.split('|')]
+                # select outermost wiki template
+                self._infobox_template = mwp.parse(content).filter_templates()
+                if self._infobox_template:
+                    infobox = self._infobox_template[0]
 
                     # ignore non-character pages
-                    if table.pop(0).lower() != 'character':
+                    if infobox.name.strip().lower() != 'character':
                         self._discard = True
 
                     # split into key/value pairs
-                    for entry in table:
-                        if entry:
-                            m = re.match(r'^(\w+\b)(?:[\s=]+(.*))?$', entry)
-                            if m:
-                                # remove templating delimiters
-                                k, v = m[1], m[2]  # re.sub(r'[\[{}\]]', '', m[2])
+                    for entry in infobox.params:
 
-                                # ignore certain keywords
-                                if k.lower() in ('image',):
-                                    continue
+                        k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
 
-                                # sanitize and process specific fields
-                                # books
-                                if k.lower() == 'books':
-                                    v = [e.strip() for e in v.split(',')]
-                                    v = [b.split(':')[-1] if any(s in b for s in ('(book)', '(series)')) else b
-                                         for b in v]
+                        # ignore certain keywords
+                        # todo: normalize fields with a dictionary
+                        fields = ('name', 'aliases', 'books', 'titles', 'title', 'world', 'abilities', 'powers'
+                                  'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors'
+                                  'residence', 'residence-raw', 'residnece', 'groups', 'group', 'nation', 'nantion', 'profession', 'ethnicity',
+                                  'species', 'occupation', 'born', 'died', 'unnamed')
 
-                                # aliases
-                                elif k.lower() == 'aliases':
-                                    v = [e.strip() for e in v.split(',')]
+                        if not k or k in ('image', ):
+                            continue
 
-                                # titles
-                                elif k.lower() == 'titles':
-                                    v = [e.strip() for e in v.split(',')]
+                        # sanitize and process specific fields
+                        # books
+                        if k == 'books':
+                            v = [b.text.strip_code() if b.text else b.title.strip_code() for b in v.nodes
+                                 if isinstance(b, mwp.wikicode.Wikilink)]
 
-                                # add to dict
-                                char_info[k.lower()] = v
+                        # aliases
+                        elif k == 'aliases':
+                            # v = [e.strip() for e in v.split(',')]
+                            pass
 
-        # ignore non-cosmere characters
-        cosmere_worlds = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
-        if char_info.get('world', 'n/a').lower() not in cosmere_worlds:
-            self._discard = True
+                        # titles
+                        elif k == 'titles':
+                            # v = [e.strip() for e in v.split(',')]
+                            pass
 
-        self._infobox_str = table_str
+                        # world
+                        elif k == 'world':
+                            v = v.strip_code()
+
+                            # ignore non-cosmere characters
+                            if v.lower() not in ('roshar', 'nalthis', 'scadrial', 'first of the sun',
+                                                 'taldain', 'threnody', 'yolen', 'sel'):
+                                self._discard = True
+
+                        # add to dict
+                        char_info[k] = v
+
+                # no valid template to parse
+                else:
+                    self._discard = True
+
         return char_info
 
 
@@ -221,8 +199,11 @@ if __name__ == '__main__':
 
     # todo: names need more sanitizing
     print("people:", characters)
+    pprint(set(k.strip() for c in characters for k in c.info.keys()))
     print("all character names unique:", len(names) == len(list(c.name for c in characters)))
     print("all page ids unique:", len(set(e._pageid for e in characters)) == len(list(e._pageid for e in characters)))
     print("nations:", set(c.info.get('nation') for c in characters))
     print("worlds:", set(c.world for c in characters))
     print("books:", set(book for c in characters for book in c.books))
+
+    # pprint(set((k, v) for c in characters for k, v in c.info.items() if any(x in v for x in '[{<>}]')))

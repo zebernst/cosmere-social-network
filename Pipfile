@@ -11,6 +11,7 @@ requests = "*"
 networkx = "*"
 ggplot = "*"
 tqdm = "*"
+mwparserfromhell = "*"
 
 [requires]
 python_version = "3.7"
