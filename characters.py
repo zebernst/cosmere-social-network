@@ -137,15 +137,29 @@ def process_data():
                         if entry:
                             m = re.match(r'^(\w+\b)(?:[\s=]+(.*))?$', entry)
                             if m:
+                                # remove templating delimiters
                                 k, v = m[1], re.sub(r'[\[{}\]]', '', m[2])
 
+                                # ignore certain keywords
+                                if k.lower() in ('image', ):
+                                    continue
+
                                 # sanitize and process specific fields
+                                # books
                                 if k.lower() == 'books':
                                     v = [e.strip() for e in v.split(',')]
-                                    v = [b.split(':')[-1] if any(s in b for s in ('(book)', '(series)')) else b for b in
-                                         v]
+                                    v = [b.split(':')[-1] if any(s in b for s in ('(book)', '(series)')) else b
+                                         for b in v]
+                                # aliases (elevate to main character dict)
+                                elif k.lower() == 'aliases':
+                                    v = [e.strip() for e in v.split(',')]
 
-                                char_info[k] = v
+                                # titles (elevate to main character dict)
+                                elif k.lower() == 'titles':
+                                    v = [e.strip() for e in v.split(',')]
+
+                                # add to dict
+                                char_info[k.lower()] = v
 
         # ignore non-cosmere characters
         cosmere_worlds = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
@@ -155,6 +169,8 @@ def process_data():
         # add to character list
         chars.append({
             'name': result['title'],
+            'aliases': char_info.pop('aliases', None),
+            'titles': char_info.pop('titles', None),
             'wiki_id': result['pageid'],
             'properties': char_info,
             'debug_str': table_str
@@ -169,11 +185,10 @@ names = set(c.get('name') for c in characters)
 
 if __name__ == '__main__':
 
-    people = characters
-
     # todo: names need more sanitizing
     print("people:", names)
-
-    print("nations:", set(c['properties'].get('nation') for c in people))
-    print("worlds:", set(c['properties'].get('world') for c in people))
-    print("books:", set(b for c in people for b in c['properties'].get('books')))
+    print("duplicate names present:", len(names) != len(list(c.get('name') for c in characters)))
+    kaladin = list(c for c in characters if 'Kaladin' in c['name'])
+    print("nations:", set(c['properties'].get('nation') for c in characters))
+    print("worlds:", set(c['properties'].get('world') for c in characters))
+    print("books:", set(book for c in characters for book in c['properties'].get('books')))
