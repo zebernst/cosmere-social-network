@@ -9,6 +9,8 @@ from pathlib import Path
 from pprint import pprint
 from tqdm import tqdm
 
+from constants import cosmere_planets, nationalities
+
 
 class Character:
     """representation of a character in the Cosmere."""
@@ -65,9 +67,26 @@ class Character:
         char_info = {}
 
         # define local utility functions
-        def parse_markup(template):
+        def parse_markup(wikicode: mwp.wikicode.Wikicode):
+            templates = wikicode.filter_templates()
+            links = wikicode.filter_wikilinks()
+            for t in templates:
+                # remove references
+                if 'ref' in t.name:
+                    wikicode.remove(t)
+                elif 'tag' in t.name:
+                    if len(t.params) == 1:
+                        wikicode.replace(t, t.params[0])
+                    elif len(t.params) > 1:
+                        if 'highprince' in t.params[0].lower():
+                            wikicode.replace(t, "{0} of {1}".format(*t.params))
+                        elif 'army' in t.params[0].lower():
+                            wikicode.replace(t, "{1} {0}".format(*t.params))
+            for l in links:
+                text = l.text if l.text else l.title
+                wikicode.replace(l, text)
             # todo
-            pass
+            return wikicode.strip_code()
 
         # parse infobox
         if 'revisions' in query_result:
@@ -89,13 +108,24 @@ class Character:
                         k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
 
                         # ignore certain keywords
-                        # todo: normalize fields with a dictionary
-                        fields = ('name', 'aliases', 'books', 'titles', 'title', 'world', 'abilities', 'powers'
-                                  'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors'
-                                  'residence', 'residence-raw', 'residnece', 'groups', 'group', 'nation', 'nantion', 'profession', 'ethnicity',
-                                  'species', 'occupation', 'born', 'died', 'unnamed')
+                        cleanse_field = {
+                            'residnece': 'residence',
+                            'residence-raw': 'residence',
+                            'residency': 'residence',
+                            'nantion': 'nation',
+                            'group': 'groups',
+                            'nickname': 'aliases',
+                            'powers': 'abilities',
+                            'title': 'titles',
+                            'occupation': 'profession'
+                        }
+                        k = cleanse_field.get(k, k)
 
-                        if not k or k in ('image', ):
+                        if k not in ('name', 'aliases', 'titles',
+                                     'books',  'world', 'abilities',
+                                     'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors',
+                                     'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
+                                     'species', 'occupation', 'unnamed'):
                             continue
 
                         # sanitize and process specific fields
@@ -104,27 +134,42 @@ class Character:
                             v = [b.text.strip_code() if b.text else b.title.strip_code() for b in v.nodes
                                  if isinstance(b, mwp.wikicode.Wikilink)]
 
-                        # aliases
-                        elif k == 'aliases':
-                            # v = [e.strip() for e in v.split(',')]
-                            pass
+                        # normalize nation/nationality
+                        elif k == 'nationality' or k == 'nation':
+                            v = nationalities.get(v.strip_code().lower(), None)
+                            k = 'nationality'
 
-                        # titles
-                        elif k == 'titles':
-                            # v = [e.strip() for e in v.split(',')]
+                        # titles and aliases and names
+                        elif k == 'titles' or k == 'aliases' or k == 'name':
+                            v = [e.strip() for e in parse_markup(v).split(',') if e.strip()]
                             pass
 
                         # world
                         elif k == 'world':
                             v = v.strip_code()
 
-                            # ignore non-cosmere characters
-                            if v.lower() not in ('roshar', 'nalthis', 'scadrial', 'first of the sun',
-                                                 'taldain', 'threnody', 'yolen', 'sel'):
-                                self._discard = True
+                        # ignore unnamed minor characters
+                        elif k == 'unnamed':
+                            self._discard = True
 
-                        # add to dict
+                        # parse wiki tags into human-readable text
+                        else:
+                            # v = parse_markup(v)
+                            pass
+
+                        # add to dict (null-guarded)
                         char_info[k] = v
+
+                    # combine name and aliases
+                    if char_info.get('name'):
+                        if char_info.get('aliases'):
+                            char_info['aliases'].extend(char_info.pop('name'))
+                        else:
+                            char_info['aliases'] = char_info.pop('name')
+
+                    # ignore non-cosmere characters
+                    if char_info.get('world', '').lower() not in cosmere_planets:
+                        self._discard = True
 
                 # no valid template to parse
                 else:
@@ -199,10 +244,12 @@ if __name__ == '__main__':
 
     # todo: names need more sanitizing
     print("people:", characters)
-    pprint(set(k.strip() for c in characters for k in c.info.keys()))
     print("all character names unique:", len(names) == len(list(c.name for c in characters)))
+    aliases = [(e, e.aliases) for e in characters if e.aliases]
+    titles = [(e, e.titles) for e in characters if e.titles]
+    names = [e.name for e in characters if e.info.get('name')]
     print("all page ids unique:", len(set(e._pageid for e in characters)) == len(list(e._pageid for e in characters)))
-    print("nations:", set(c.info.get('nation') for c in characters))
+    print("nationalities:", set(c.info.get('nationality') for c in characters))
     print("worlds:", set(c.world for c in characters))
     print("books:", set(book for c in characters for book in c.books))
 
