@@ -1,8 +1,12 @@
+import logging
 import networkx as nx
 import mwparserfromhell as mwp
 
 from characters import characters
 from constants import root_dir
+from utils.logging import get_logger
+
+logger = get_logger('csn.networks.nuclear_family')
 
 if __name__ == '__main__':
     # define relevant fields for analysis
@@ -19,6 +23,7 @@ if __name__ == '__main__':
     # filter characters who have family info and add nodes to graph
     nodes = {c.name: dict(world=c.world) for c in characters if any(x in c.info for x in fields)}
     graph.add_nodes_from(nodes.items())
+    logger.debug("Added nodes to NetworkX Graph.")
 
     # add edges between relevant nodes
     for c in characters:
@@ -44,14 +49,19 @@ if __name__ == '__main__':
                 # if direct match found, add edge to graph
                 if relation in nodes:
                     graph.add_edge(c.name, relation)
+                    logger.debug(f'Identified exact target of edge ({c.name}, {relation}).')
 
                 # check if characters share a surname
                 elif f"{forename} {surname}" in nodes:
                     graph.add_edge(c.name, f"{forename} {surname}")
+                    logger.debug(f'Identified likely target of edge ({c.name}, {relation}) '
+                                 f'to be {forename} {surname} via surname.')
 
                 # check if connection matches any character aliases
                 elif relation in monikers:
                     graph.add_edge(c.name, monikers[relation].name)
+                    logger.debug(f'Identified likely target of edge ({c.name}, {relation}) '
+                                 f'to be {monikers[relation].name} via alias.')
 
                 # last resort: loop through all characters and match substrings
                 else:
@@ -60,14 +70,17 @@ if __name__ == '__main__':
                         if relation in name:
                             graph.add_edge(c.name, name)
                             found = True
-                            print(c.name, '//', relation, '=', name)
+                            logger.debug(f'Could not confirm target of edge ({c.name}, {relation}), assuming {name}.')
                             break
                     if not found:
-                        print(c.name, '//', relation)
+                        logger.info(f'Could not identify target of edge ({c.name}, {relation}).')
 
     # remove discrete components with less than 3 nodes.
     small_components = [c for c in sorted(nx.connected_components(graph), key=len, reverse=True) if len(c) < 3]
     for component in small_components:
         graph.remove_nodes_from(component)
+    logger.debug("Identified and trimmed discrete components deemed too small for analysis.")
 
-    nx.write_gml(graph, str(root_dir / 'networks' / 'gml' / 'nuclear_family.gml'))
+    filename = root_dir / 'networks' / 'gml' / 'family.gml'
+    nx.write_gml(graph, str(filename))
+    logger.info(f"GML graph written to {filename}")

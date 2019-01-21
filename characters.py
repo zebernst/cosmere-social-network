@@ -6,7 +6,7 @@ import mwparserfromhell as mwp
 
 from pprint import pprint
 from tqdm import tqdm
-from constants import cosmere_planets, nationalities
+from constants import cosmere_planets, nationalities, root_dir
 from utils.decorators import cache
 
 
@@ -180,7 +180,7 @@ class Character:
         return char_info
 
 
-@cache('data/characters.json', protocol='json')
+@cache(root_dir / 'data' / 'characters.json', protocol='json')
 def coppermind_query():
     """load data from coppermind.net"""
 
