@@ -1,15 +1,13 @@
 import operator
 import requests
-import json
 import re
 
 import mwparserfromhell as mwp
 
-from pathlib import Path
 from pprint import pprint
 from tqdm import tqdm
-
 from constants import cosmere_planets, nationalities
+from utils.decorators import cache
 
 
 class Character:
@@ -178,8 +176,9 @@ class Character:
         return char_info
 
 
+@cache('data/characters.json', protocol='json')
 def coppermind_query():
-    """load and cache data from coppermind.net"""
+    """load data from coppermind.net"""
 
     def _query():
         """query coppermind.net api for all characters"""
@@ -222,16 +221,7 @@ def coppermind_query():
                 continue_data = response.get('continue', None)
                 progressbar.update(len(response['query']['pages']))
 
-    path = Path('data/characters.json')
-    if path.is_file():
-        with path.open() as f:
-            return json.load(f)
-    else:
-        print('downloading from coppermind.net...')
-        results = [page for batch in _query() for page in batch]
-        with path.open('w') as f:
-            json.dump(results, f)
-        return results
+    return [page for batch in _query() for page in batch]
 
 
 # get characters in the cosmere from coppermind.net
