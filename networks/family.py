@@ -5,7 +5,7 @@ from characters import characters
 from constants import root_dir
 from utils.logging import create_logger
 
-logger = create_logger('csn.networks.nuclear_family')
+logger = create_logger('csn.networks.family')
 
 
 def create_graph(min_component_size=0):

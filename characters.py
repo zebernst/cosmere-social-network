@@ -4,10 +4,13 @@ import re
 
 import mwparserfromhell as mwp
 
-from pprint import pprint
 from tqdm import tqdm
 from constants import cosmere_planets, nationalities, root_dir
 from utils.decorators import cache
+from utils.logging import create_logger
+
+
+logger = create_logger('csn.characters')
 
 
 class Character:
@@ -28,6 +31,10 @@ class Character:
         # discard duplicate character pages
         if 'User:' in self.name:
             self._discard = True
+
+        logger.debug(f"Character {self.name} from {self.world} created.")
+        if self._discard:
+            logger.debug(f"{self.name} marked for discarding.")
 
     def __eq__(self, other):
         """return self == value."""
@@ -183,6 +190,7 @@ class Character:
 @cache(root_dir / 'data' / 'characters.json', protocol='json')
 def coppermind_query():
     """load data from coppermind.net"""
+    logger.debug("Beginning query of coppermind.net.")
 
     def _query():
         """query coppermind.net api for all characters"""
@@ -215,6 +223,7 @@ def coppermind_query():
                 req.update(continue_data)
                 r = requests.get(wiki_api, params=req)
                 response = r.json()
+                logger.debug("Batch of 50 results received from coppermind.net.")
                 if 'error' in response:
                     raise RuntimeError(response['error'])
                 if 'warnings' in response:
@@ -224,6 +233,8 @@ def coppermind_query():
 
                 continue_data = response.get('continue', None)
                 progressbar.update(len(response['query']['pages']))
+
+        logger.debug("Finished query of coppermind.net.")
 
     return [page for batch in _query() for page in batch]
 
@@ -236,15 +247,4 @@ names = set(c.name for c in characters)
 
 if __name__ == '__main__':
 
-    # todo: names need more sanitizing
-    print("people:", characters)
-    print("all character names unique:", len(names) == len(list(c.name for c in characters)))
-    aliases = [(e, e.aliases) for e in characters if e.aliases]
-    titles = [(e, e.titles) for e in characters if e.titles]
-    names = [e.name for e in characters if e.info.get('name')]
-    print("all page ids unique:", len(set(e._pageid for e in characters)) == len(list(e._pageid for e in characters)))
-    print("nationalities:", set(c.info.get('nationality') for c in characters))
-    print("worlds:", set(c.world for c in characters))
-    print("books:", set(book for c in characters for book in c.books))
-
-    # pprint(set((k, v) for c in characters for k, v in c.info.items() if any(x in v for x in '[{<>}]')))
+    print("names to sanitize:", [c for c in characters if '(' in c.name])

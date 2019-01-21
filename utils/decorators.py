@@ -24,7 +24,7 @@ def cache(filename, protocol='pkl'):
 
             cache_path = Path(filename)
             if cache_path.is_file():
-                logger.debug(f'Cached data for {func.__name__}() found at {filename}.')
+                logger.debug(f'Loading cached data for {func.__name__}() found at {filename}.')
                 with cache_path.open(mode=read) as f:
                     if protocol == 'json':
                         data = json.load(f)
