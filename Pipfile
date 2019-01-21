@@ -9,10 +9,8 @@ verify_ssl = true
 ebooklib = "*"
 requests = "*"
 networkx = "*"
-ggplot = "*"
 tqdm = "*"
 mwparserfromhell = "*"
-pyyaml = "*"
 
 [requires]
 python_version = "3.7"

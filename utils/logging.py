@@ -16,9 +16,9 @@ def create_logger(name):
     composite_file_hdlr.setLevel(logging.DEBUG)
 
     # create set handler formats
-    stdout_hdlr.setFormatter(logging.Formatter('%(name)s :: %(levelname)s :: %(message)s'))
-    named_file_hdlr.setFormatter(logging.Formatter('[%(asctime)s] %(levelname)s :: %(message)s'))
-    composite_file_hdlr.setFormatter(logging.Formatter('[%(asctime)s] %(name)s :: %(levelname)s :: %(message)s'))
+    stdout_hdlr.setFormatter(logging.Formatter('%(name)s [%(levelname)s] :: %(message)s'))
+    named_file_hdlr.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] :: %(message)s'))
+    composite_file_hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)s [%(levelname)s] :: %(message)s'))
 
     # add handlers to logger
     logger.addHandler(stdout_hdlr)
