@@ -1,3 +1,8 @@
+from pathlib import Path
+
+# root path of directory
+root_dir = Path(__file__).parent
+
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
