@@ -8,6 +8,7 @@ from utils.logging import create_logger
 logger = create_logger('csn.utils.decorators')
 
 
+# todo: implement default 'auto' protocol that detects file extension
 def cache(filename, protocol='pkl'):
     """cache the return value of the decorated function at the given filename."""
     if protocol == 'pkl':

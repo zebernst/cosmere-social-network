@@ -242,8 +242,6 @@ def coppermind_query():
 # get characters in the cosmere from coppermind.net
 characters = sorted([c for c in (Character(result) for result in coppermind_query()) if not c._discard],
                     key=operator.attrgetter('name'))
-names = set(c.name for c in characters)
-
 
 if __name__ == '__main__':
 
