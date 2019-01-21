@@ -2,7 +2,7 @@ import logging
 from constants import root_dir
 
 
-def get_logger(name):
+def create_logger(name):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
