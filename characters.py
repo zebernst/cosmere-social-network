@@ -25,6 +25,10 @@ class Character:
         self.world = self.info.pop('world', None)
         self.books = self.info.pop('books', None)
 
+        # discard duplicate character pages
+        if 'User:' in self.name:
+            self._discard = True
+
     def __eq__(self, other):
         """return self == value."""
         if isinstance(other, self.__class__):
