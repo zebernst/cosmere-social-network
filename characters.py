@@ -187,7 +187,7 @@ class Character:
         return char_info
 
 
-@cache(root_dir / 'data' / 'characters.json', protocol='json')
+@cache(root_dir / 'data' / 'coppermind.json')
 def coppermind_query():
     """load data from coppermind.net"""
     logger.debug("Beginning query of coppermind.net.")

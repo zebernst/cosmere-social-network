@@ -3,15 +3,39 @@ import pickle
 import json
 from pathlib import Path
 from utils.logging import create_logger
+from enum import Enum
 
 
 logger = create_logger('csn.utils.decorators')
 
 
-# todo: implement default 'auto' protocol that detects file extension
-def cache(filename, protocol='pkl'):
+class CacheProtocol(Enum):
+    AUTO = 0
+    PICKLE = 1
+    JSON = 2
+    PLAINTEXT = 3
+
+
+def cache(filename, protocol='auto'):
     """cache the return value of the decorated function at the given filename."""
-    if protocol == 'pkl':
+
+    cache_path = Path(filename)
+
+    protocols = {
+        'pkl': CacheProtocol.PICKLE,
+        'pickle': CacheProtocol.PICKLE,
+        'p': CacheProtocol.PICKLE,
+        'json': CacheProtocol.JSON,
+        'txt': CacheProtocol.PLAINTEXT,
+        'text': CacheProtocol.PLAINTEXT,
+    }
+    if protocol == 'auto':
+        protocol = protocols.get(cache_path.suffix[1:], CacheProtocol.PLAINTEXT)
+    else:
+        protocol = protocols.get(protocol, CacheProtocol.PLAINTEXT)
+
+    # specify binary or string
+    if protocol in ('pkl', ):
         read = 'rb'
         write = 'wb'
     else:
@@ -23,24 +47,26 @@ def cache(filename, protocol='pkl'):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
 
-            cache_path = Path(filename)
             if cache_path.is_file():
                 logger.debug(f'Loading cached data for {func.__name__}() found at {filename}.')
                 with cache_path.open(mode=read) as f:
-                    if protocol == 'json':
+                    if protocol == CacheProtocol.PICKLE:
+                        data = pickle.load(f)
+                    elif protocol == CacheProtocol.JSON:
                         data = json.load(f)
                     else:
-                        data = pickle.load(f)
-
+                        data = f.read()
             else:
                 logger.debug(f'No cached data found for {func.__name__}(), so function will be called.')
                 data = func(*args, **kwargs)
                 with cache_path.open(mode=write) as f:
                     logger.debug(f'Caching data from {func.__name__}() at {filename}.')
-                    if protocol == 'json':
+                    if protocol == CacheProtocol.PICKLE:
+                        pickle.dump(data, f)
+                    elif protocol == CacheProtocol.JSON:
                         json.dump(data, f)
                     else:
-                        pickle.dump(data, f)
+                        f.write(data)
 
             return data
 
