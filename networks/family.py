@@ -1,3 +1,5 @@
+import json
+
 import networkx as nx
 import mwparserfromhell as mwp
 
@@ -86,6 +88,19 @@ if __name__ == '__main__':
 
     graph = create_graph(min_component_size=3)
 
-    filename = root_dir / 'networks' / 'gml' / 'family.gml'
-    nx.write_gml(graph, str(filename))
-    logger.info(f"GML graph written to {filename}")
+    # ensure that data paths exist
+    gml_path = root_dir / 'data' / 'networks' / 'gml'
+    json_path = root_dir / 'data' / 'networks' / 'json'
+    for path in (gml_path, json_path):
+        path.mkdir(parents=True, exist_ok=True)
+
+    # write gml data
+    gml_filename = gml_path / 'family.gml'
+    nx.write_gml(graph, str(gml_filename))
+    logger.info(f"GML graph written to {gml_filename}")
+
+    # write json data
+    json_filename = json_path / 'family.json'
+    with json_filename.open(mode='w') as f:
+        json.dump(nx.node_link_data(graph), f)
+        logger.info(f"JSON graph written to {json_filename}")
