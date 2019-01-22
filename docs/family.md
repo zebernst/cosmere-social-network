@@ -1,3 +1,4 @@
+
 <svg id="force-graph"></svg>
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script lang="text/javascript">
@@ -16,7 +17,7 @@
         const width = 600, height = 600;
 
         // get master <svg> element
-        const svg = d3.select("svg")
+        const svg = d3.select("svg#force-graph")
             .attr("width", width)
             .attr("height", height)
             .attr("viewBox", [-width/2, -height/2, width, height].join(" "));
