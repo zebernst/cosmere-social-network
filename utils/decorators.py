@@ -19,7 +19,9 @@ class CacheProtocol(Enum):
 def cache(filename, protocol='auto'):
     """cache the return value of the decorated function at the given filename."""
 
+    # ensure that enclosing folder of desired cache file exists
     cache_path = Path(filename)
+    cache_path.resolve().parent.mkdir(parents=True, exist_ok=True)
 
     protocols = {
         'pkl': CacheProtocol.PICKLE,
