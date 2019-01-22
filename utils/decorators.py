@@ -3,17 +3,17 @@ import pickle
 import json
 from pathlib import Path
 from utils.logging import create_logger
-from enum import Enum
+from enum import Enum, auto
 
 
 logger = create_logger('csn.utils.decorators')
 
 
 class CacheProtocol(Enum):
-    AUTO = 0
-    PICKLE = 1
-    JSON = 2
-    PLAINTEXT = 3
+    AUTO = auto()
+    JSON = auto()
+    PICKLE = auto()
+    PLAINTEXT = auto()
 
 
 def cache(filename, protocol='auto'):
@@ -29,12 +29,12 @@ def cache(filename, protocol='auto'):
         'txt': CacheProtocol.PLAINTEXT,
         'text': CacheProtocol.PLAINTEXT,
     }
-    if protocol == 'auto':
+    if protocol == 'auto' or protocol == CacheProtocol.AUTO:
         protocol = protocols.get(cache_path.suffix[1:], CacheProtocol.PLAINTEXT)
     else:
         protocol = protocols.get(protocol, CacheProtocol.PLAINTEXT)
 
-    # specify binary or string
+    # specify file pointer mode
     if protocol in ('pkl', ):
         read = 'rb'
         write = 'wb'

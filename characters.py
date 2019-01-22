@@ -5,7 +5,7 @@ import re
 import mwparserfromhell as mwp
 
 from tqdm import tqdm
-from constants import cosmere_planets, nationalities, root_dir
+from constants import cosmere_planets, nationalities, root_dir, info_fields
 from utils.decorators import cache
 from utils.logging import create_logger
 
@@ -34,7 +34,7 @@ class Character:
 
         logger.debug(f"Character {self.name} from {self.world} created.")
         if self._discard:
-            logger.debug(f"{self.name} marked for discarding.")
+            logger.debug(f"{self.name} marked as discard.")
 
     def __eq__(self, other):
         """return self == value."""
@@ -130,11 +130,7 @@ class Character:
                         }
                         k = cleanse_field.get(k, k)
 
-                        if k not in ('name', 'aliases', 'titles',
-                                     'books',  'world', 'abilities',
-                                     'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors',
-                                     'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
-                                     'species', 'occupation', 'unnamed'):
+                        if k not in info_fields:
                             continue
 
                         # sanitize and process specific fields

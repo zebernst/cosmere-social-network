@@ -1,5 +1,12 @@
 from pathlib import Path
 
+info_fields = ('name', 'aliases', 'titles',
+               'books',  'world', 'abilities',
+               'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors',
+               'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
+               'species', 'occupation', 'unnamed')
+
+
 # root path of directory
 root_dir = Path(__file__).parent
 

@@ -5,6 +5,7 @@ from characters import characters
 from constants import root_dir
 from utils.logging import create_logger
 
+
 logger = create_logger('csn.networks.family')
 
 
@@ -63,9 +64,9 @@ def create_graph(min_component_size=0):
                 # last resort: loop through all characters and match substrings
                 else:
                     found = False
-                    for name in monikers:
+                    for name, char in monikers.items():
                         if relation in name:
-                            G.add_edge(c.name, name)
+                            G.add_edge(c.name, char.name)
                             found = True
                             logger.debug(f'Could not confirm target of edge ({c.name}, {relation}), assuming {name}.')
                             break
