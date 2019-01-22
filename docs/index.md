@@ -4,8 +4,10 @@ permalink: /
 layout: default
 ---
 
-# Cosmere Social Network
-
-## A social network analysis of Brandon Sanderson's Cosmere
+### A social network analysis of Brandon Sanderson's Cosmere
 
 _work in progress_
+
+current pages:
+- [about](about)
+- [family](family)
