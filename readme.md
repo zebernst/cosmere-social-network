@@ -27,7 +27,7 @@ _work in progress_
 
 **misc**:
 - [`docs/`](docs) contains the code for the [project site](https://zebernst.github.io/cosmere-social-network).
-- [`data/`](data) is the directory in which all data relevant to the analysis is stored. Due to copyright reasons,
+- [`data/`](data) is the directory in which all data relevant to the analysis is stored. Due to copyright,
   only publicly available data (i.e. the character data from the wiki) will be stored publicly on GitHub.
 - [`Pipfile`](Pipfile) and [`Pipfile.lock`](Pipfile.lock) contain the Python dependencies used in the analysis.
   These can be easily installed using `pipenv`.
