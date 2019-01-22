@@ -1,4 +1,15 @@
+# IDE files
 .idea/
+
+# non-public data
 books/
-logs/
+
+# working files
 gephi/
+
+# dev files
+logs/
+
+# project site
+docs/_site/
+docs/.sass-cache/

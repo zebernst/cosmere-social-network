@@ -1,5 +1,7 @@
 ---
+title: Home
 permalink: /
+layout: default
 ---
 
 # Cosmere Social Network
