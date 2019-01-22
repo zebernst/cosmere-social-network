@@ -5,7 +5,7 @@
 
 _work in progress_
 
-<br />
+## Project Structure
 
 **code**:
 - [`characters.py`](characters.py) gets character data from the [wiki](https://coppermind.net).
