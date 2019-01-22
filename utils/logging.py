@@ -1,5 +1,10 @@
 import logging
+from pathlib import Path
 from constants import root_dir
+
+
+log_dir = Path(root_dir / 'logs')
+log_dir.mkdir(exist_ok=True)
 
 
 def create_logger(name):
@@ -10,9 +15,9 @@ def create_logger(name):
     # create handlers
     stdout_hdlr = logging.StreamHandler()
     stdout_hdlr.setLevel(logging.INFO)
-    named_file_hdlr = logging.FileHandler(root_dir / 'logs' / f"{name}.log", mode='w')
+    named_file_hdlr = logging.FileHandler(log_dir / f"{name}.log", mode='w')
     named_file_hdlr.setLevel(logging.DEBUG)
-    composite_file_hdlr = logging.FileHandler(root_dir / 'logs' / "csn.all.log", mode='a')
+    composite_file_hdlr = logging.FileHandler(log_dir / "csn.all.log", mode='a')
     composite_file_hdlr.setLevel(logging.DEBUG)
 
     # create set handler formats
