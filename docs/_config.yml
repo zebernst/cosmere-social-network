@@ -98,7 +98,7 @@ analytics: # todo : setup
 # Site Author
 author:
   name             : "Zach Bernstein"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg" # todo : setup
+  avatar           : "/assets/images/profile-photo.jpg"
   bio              : "This will be my bio." # todo : setup
   location         : "Chicago, IL"
   email            : # todo : setup
