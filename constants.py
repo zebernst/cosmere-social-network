@@ -9,6 +9,7 @@ info_fields = ('name', 'aliases', 'titles',
 
 # root path of directory
 root_dir = Path(__file__).parent
+site_dir = root_dir / 'docs'
 
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')

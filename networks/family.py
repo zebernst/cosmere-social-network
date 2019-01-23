@@ -4,7 +4,7 @@ import networkx as nx
 import mwparserfromhell as mwp
 
 from characters import characters
-from constants import root_dir
+from constants import root_dir, site_dir
 from utils.logging import create_logger
 
 
@@ -43,23 +43,26 @@ def create_graph(min_component_size=0):
                 if "'s " in relation:
                     continue
 
+                # get potential full name
                 forename = relation.split(' ')[0]
                 surname = c.name.split(' ')[-1]
 
+                target = None
+
                 # if direct match found, add edge to graph
                 if relation in nodes:
-                    G.add_edge(c.name, relation)
+                    target = relation
                     logger.debug(f'Identified exact target of edge ({c.name}, {relation}).')
 
                 # check if characters share a surname
                 elif f"{forename} {surname}" in nodes:
-                    G.add_edge(c.name, f"{forename} {surname}")
+                    target = f"{forename} {surname}"
                     logger.debug(f'Identified likely target of edge ({c.name}, {relation}) '
                                  f'to be {forename} {surname} via surname.')
 
                 # check if connection matches any character aliases
                 elif relation in monikers:
-                    G.add_edge(c.name, monikers[relation].name)
+                    target = monikers[relation].name
                     logger.debug(f'Identified likely target of edge ({c.name}, {relation}) '
                                  f'to be {monikers[relation].name} via alias.')
 
@@ -68,12 +71,16 @@ def create_graph(min_component_size=0):
                     found = False
                     for name, char in monikers.items():
                         if relation in name:
-                            G.add_edge(c.name, char.name)
+                            target = char.name
                             found = True
                             logger.debug(f'Could not confirm target of edge ({c.name}, {relation}), assuming {name}.')
                             break
                     if not found:
                         logger.info(f'Could not identify target of edge ({c.name}, {relation}).')
+
+                # add edge if target is valid
+                if target and target in nodes:
+                    G.add_edge(c.name, target)
 
     # remove discrete components with less than 3 nodes.
     small_components = [c for c in nx.connected_components(G) if len(c) < min_component_size]
@@ -89,18 +96,18 @@ if __name__ == '__main__':
     graph = create_graph(min_component_size=3)
 
     # ensure that data paths exist
-    gml_path = root_dir / 'data' / 'networks' / 'gml'
-    json_path = root_dir / 'data' / 'networks' / 'json'
+    gml_path = root_dir / 'data' / 'networks' / 'family'
+    json_path = site_dir / '_data' / 'networks' / 'family'
     for path in (gml_path, json_path):
         path.mkdir(parents=True, exist_ok=True)
 
     # write gml data
-    gml_filename = gml_path / 'family.gml'
+    gml_filename = gml_path / 'all.gml'
     nx.write_gml(graph, str(gml_filename))
     logger.info(f"GML graph data written to {gml_filename}")
 
     # write json data
-    json_filename = json_path / 'family.json'
+    json_filename = json_path / 'all.json'
     with json_filename.open(mode='w') as f:
         json.dump(nx.node_link_data(graph), f)
         logger.info(f"JSON graph data written to {json_filename}")
