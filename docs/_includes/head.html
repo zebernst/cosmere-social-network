@@ -12,6 +12,12 @@
 <!-- For all browsers -->
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
+{% if page.custom_css %}
+  {% for stylesheet in page.custom_css %}
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/{{ stylesheet }}">
+  {% endfor %}
+{% endif %}
+
 <!--[if IE ]>
   <style>
     /* old IE unsupported flexbox fixes */
