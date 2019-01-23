@@ -111,6 +111,10 @@ class Character:
                     if infobox.name.strip().lower() != 'character':
                         self._discard = True
 
+                    # ignore deleted characters (i.e. from early drafts)
+                    if any('deleted' in t.name.lower() for t in self._infobox_template):
+                        self._discard = True
+
                     # split into key/value pairs
                     for entry in infobox.params:
 
