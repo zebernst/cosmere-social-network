@@ -8,7 +8,7 @@
 // todo: split simulation off into generalized function that can be included via <script> tag
 // todo: add dynamic filters to sort by world, family, profession, etc.
 
-const width = window.innerWidth, height = 760, radius = 5;
+const width = window.innerWidth, height = 1000, radius = 5;
 
 // get master <svg> element
 const svg = d3.select("svg#force-graph")
