@@ -10,6 +10,7 @@ logger = create_logger('csn.utils.decorators')
 
 
 class CacheProtocol(Enum):
+    """define explicit formats that the @cache decorator can deal with"""
     AUTO = auto()
     JSON = auto()
     PICKLE = auto()

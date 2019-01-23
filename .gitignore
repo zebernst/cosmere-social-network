@@ -1,8 +1,9 @@
 # IDE files
 .idea/
 
-# non-public data
-books/
+# data files
+data/books/
+data/cache/
 
 # working files
 gephi/
