@@ -12,23 +12,23 @@ const data_url = "https://raw.githubusercontent.com/zebernst/cosmere-social-netw
 
 d3.json(data_url).then(function (data) {
 
-    console.log(data.nodes);
-
-    const width = 960, height = 960;
+    const width = window.innerWidth, height = 760, radius = 5;
 
     // get master <svg> element
     const svg = d3.select("svg#force-graph")
-        .attr("width", width)
-        .attr("height", height)
+        // .attr("width", width)
+        // .attr("height", height)
         .attr("viewBox", [-width/2, -height/2, width, height].join(" "));
+
 
     // initialize d3 force simulation
     const simulation = d3.forceSimulation(data.nodes)
         .force("charge", d3.forceManyBody()
-            .strength(() => -80))
+            .strength(-80))
         .force("links", d3.forceLink(data.links)
             .id(d => d.id)
-            .distance(() => 50))
+            .distance(50))
+        .force("collide", d3.forceCollide())
         .force("x", d3.forceX())
         .force("y", d3.forceY());
 
@@ -66,8 +66,19 @@ d3.json(data_url).then(function (data) {
             .on("end", dragEnd);
     }
 
+    // create enclosing element for graph data
+    const graph = svg.append("g")
+        .attr("class", "graph");
+
+    // enable zoom/pan on graph element
+    const zoom = d3.zoom()
+        .scaleExtent([0.25, 5])
+        .on("zoom", () => graph.attr("transform", d3.event.transform));
+    svg.call(zoom);
+
+
     // add links between nodes first
-    const link = svg.append("g")
+    const link = graph.append("g")
         .attr("class", "links")
         .selectAll("line")
         .data(data.links)
@@ -78,20 +89,20 @@ d3.json(data_url).then(function (data) {
         .attr("stroke", "#777");
 
     // add nodes on top
-    const node = svg.append("g")
+    const node = graph.append("g")
         .attr("class", "nodes")
         .selectAll("circle")
         .data(data.nodes)
         .enter()
         .append("circle")
-        .attr("r", 5)
+        .attr("r", radius)
         .attr("fill", d => color(d.world))
         .attr("stroke", "#ccc")
         .attr("stroke-width", 1)
         .call(drag(simulation));
 
     // add labels
-    const label = svg.append("g")
+    const label = graph.append("g")
         .attr("class", "labels")
         .selectAll("text")
         .data(data.nodes)
@@ -105,27 +116,39 @@ d3.json(data_url).then(function (data) {
         .text(d => d.id);
 
     // add legend
-    const legend = svg.selectAll(".legend")
+    const legend = svg.append("g")
+        .attr("class", "legend")
+        .selectAll(".series")
         .data(color.domain())
         .enter()
         .append("g")
-        .attr("class", "legend")
+        .attr("class", "series")
         .attr("transform", (d, i) => `translate(0, ${20 * i})`);
 
     legend.append("circle")
         .attr("r", ".3em")
-        .attr("cx", width/2 - 18)
+        .attr("cx", width/2 - (0.025 * width))
         .attr("cy", -height/2 + 50)
         .style("fill", color);
 
     legend.append("text")
-        .attr("x", width/2 - 40)
+        .attr("x", width/2 - (0.025 * width) - 25)
         .attr("y", -height/2 + 50 + 1)
         .attr("dx", 12)
         .style("font-size", ".6em")
         .style("text-anchor", "end")
         .style("alignment-baseline", "middle")
         .text(d => d);
+
+    const legendTitle = svg.select(".legend")
+        .insert("text", ":first-child")
+        .attr("x", width/2 - (0.025 * width) + radius)
+        .attr("y", -height/2 + 50 + 1)
+        .attr("transform", "translate(0, -20)")
+        .style("font-size", ".8em")
+        .style("text-anchor", "end")
+        .text("World");
+
 
     simulation.on("tick", function () {
         label

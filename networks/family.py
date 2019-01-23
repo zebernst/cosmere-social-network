@@ -97,10 +97,10 @@ if __name__ == '__main__':
     # write gml data
     gml_filename = gml_path / 'family.gml'
     nx.write_gml(graph, str(gml_filename))
-    logger.info(f"GML graph written to {gml_filename}")
+    logger.info(f"GML graph data written to {gml_filename}")
 
     # write json data
     json_filename = json_path / 'family.json'
     with json_filename.open(mode='w') as f:
         json.dump(nx.node_link_data(graph), f)
-        logger.info(f"JSON graph written to {json_filename}")
+        logger.info(f"JSON graph data written to {json_filename}")
