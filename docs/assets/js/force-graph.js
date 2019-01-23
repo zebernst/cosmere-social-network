@@ -104,6 +104,29 @@ d3.json(data_url).then(function (data) {
         .attr("user-select", "none")
         .text(d => d.id);
 
+    // add legend
+    const legend = svg.selectAll(".legend")
+        .data(color.domain())
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", (d, i) => `translate(0, ${20 * i})`);
+
+    legend.append("circle")
+        .attr("r", ".3em")
+        .attr("cx", width/2 - 18)
+        .attr("cy", -height/2 + 50)
+        .style("fill", color);
+
+    legend.append("text")
+        .attr("x", width/2 - 40)
+        .attr("y", -height/2 + 50 + 1)
+        .attr("dx", 12)
+        .style("font-size", ".6em")
+        .style("text-anchor", "end")
+        .style("alignment-baseline", "middle")
+        .text(d => d);
+
     simulation.on("tick", function () {
         label
             .attr("transform", d => `translate(${d.x}, ${d.y})`)
