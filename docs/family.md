@@ -5,7 +5,6 @@ layout: default
 ---
 
 
-<!-- todo: add dynamic filters to sort by world, family, profession, etc. -->
+{% include d3.html %}
 <svg id="force-graph"></svg>
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="force-graph.js"></script>
+<script src="{{ base.url | prepend: site.url }}/assets/js/force-graph.js"></script>

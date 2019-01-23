@@ -1,4 +1,3 @@
-
 // RESOURCES:
 // https://beta.observablehq.com/@mbostock/disjoint-force-directed-graph
 // http://www.puzzlr.org/force-graphs-with-d3/
@@ -7,11 +6,11 @@
 // https://github.com/d3/d3-force
 
 // todo: split simulation off into generalized function that can be included via <script> tag
+// todo: add dynamic filters to sort by world, family, profession, etc.
 
 const data_url = "https://raw.githubusercontent.com/zebernst/cosmere-social-network/master/data/networks/json/family.json";
 
 d3.json(data_url).then(function (data) {
-
     const width = 600, height = 600;
 
     // get master <svg> element
