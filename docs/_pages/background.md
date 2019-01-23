@@ -1,10 +1,7 @@
 ---
-title: About
-permalink: /about
-layout: default
+title: About the Project
+permalink: /background
 ---
-
-# About the project
 
 ## Inspiration
 

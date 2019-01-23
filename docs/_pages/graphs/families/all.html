@@ -1,11 +1,14 @@
 ---
-title: Family
-permalink: /family
-layout: default
+title: All Families
+permalink: /graphs/families/all
+classes: wide
+d3: true
+
+# remove soon
+redirect_from: /family
 ---
 
 
-{% include d3.html %}
 <svg id="force-graph"></svg>
 <script>
     var data = {{ site.data.networks.family.all | jsonify }}
