@@ -11,7 +11,10 @@
 const data_url = "https://raw.githubusercontent.com/zebernst/cosmere-social-network/master/data/networks/json/family.json";
 
 d3.json(data_url).then(function (data) {
-    const width = 600, height = 600;
+
+    console.log(data.nodes);
+
+    const width = 960, height = 960;
 
     // get master <svg> element
     const svg = d3.select("svg#force-graph")
@@ -21,10 +24,16 @@ d3.json(data_url).then(function (data) {
 
     // initialize d3 force simulation
     const simulation = d3.forceSimulation(data.nodes)
-        .force("charge", d3.forceManyBody())
-        .force("links", d3.forceLink(data.links).id(d => d.id))
+        .force("charge", d3.forceManyBody()
+            .strength(() => -80))
+        .force("links", d3.forceLink(data.links)
+            .id(d => d.id)
+            .distance(() => 50))
         .force("x", d3.forceX())
         .force("y", d3.forceY());
+
+    // define colors
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
     // define drag functions
     function drag(simulation) {
@@ -64,7 +73,7 @@ d3.json(data_url).then(function (data) {
         .data(data.links)
         .enter()
         .append("line")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 1)
         .attr("stroke-opacity", 0.6)
         .attr("stroke", "#777");
 
@@ -76,12 +85,31 @@ d3.json(data_url).then(function (data) {
         .enter()
         .append("circle")
         .attr("r", 5)
-        .attr("fill", "blue")
+        .attr("fill", d => color(d.world))
         .attr("stroke", "#ccc")
         .attr("stroke-width", 1)
         .call(drag(simulation));
 
+    // add labels
+    const label = svg.append("g")
+        .attr("class", "labels")
+        .selectAll("text")
+        .data(data.nodes)
+        .enter()
+        .append("text")
+        .attr("font-size", ".4em")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .attr("pointer-events", "none")
+        .attr("user-select", "none")
+        .text(d => d.id);
+
     simulation.on("tick", function () {
+        label
+            .attr("transform", d => `translate(${d.x}, ${d.y})`)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
+
         node
             .attr("cx", d => d.x)
             .attr("cy", d => d.y);
