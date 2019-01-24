@@ -37,16 +37,14 @@ a new terminal window, but the virtual environment will persist in the same work
 ## Project Structure
 
 **code**:
-- [`characters.py`](characters.py) gets character data from the [wiki](https://coppermind.net).
 - [`networks/family.py`](networks/family.py) generates a network graph with links representing 
   direct nuclear family relationships.
+- [`networks/interactions.py`](networks/interactions.py) **(WIP)** is the file that will eventually be used to scan 
+  the books or characters and create associations between them. Currently does nothing.
+- [`characters.py`](characters.py) gets character data from the [wiki](https://coppermind.net).
 - [`constants.py`](constants.py) contains certain constants relating to the Cosmere and to metadata about 
   the analysis (e.g. the list of planets in the Cosmere).
 - [`utils/`](utils) contains utility functions used in other files.
-- [`parse_book.py`](parse_book.py) **(WIP)** is the file that will eventually be used to scan the books
-  for characters and create associations between them. Currently does nothing.
-
-<br />
 
 **analysis**:
 - interactive graphs can be found on the [project site][gh-pages]. this is where most of the analysis efforts 
@@ -54,16 +52,16 @@ a new terminal window, but the virtual environment will persist in the same work
 - [`graphs/family/`](graphs/family) contains network graphs showing family relationships in the Cosmere.
   Includes sub-graphs showing certain key families and relationships on a per-shardworld basis.
   
-<br />
-
 **misc**:
 - [`docs/`](docs) contains the code for the [project site][gh-pages].
 - [`data/`](data) is the directory in which all data relevant to the analysis is stored. Due to copyright,
-  only data generated with this analysis (e.g. [`GML network data`](data/networks/family/all.gml) will be stored 
+  only data generated with this analysis (e.g. [`GML network data`](data/networks/family/all.gml)) will be stored 
   publicly on GitHub.
+- [`Gemfile`](Gemfile) and [`Gemfile.lock`](Gemfile.lock) contain the Jekyll dependencies that support
+  the project site. These aren't important unless locally hosting your own version of the project site.
 - [`Pipfile`](Pipfile) and [`Pipfile.lock`](Pipfile.lock) contain the Python dependencies used in the analysis.
   These can be easily installed using `pipenv`.
-- [`readme.md`](readme.md) is this file.
+- [`readme.md`](readme.md) is the document you're reading right now!
 
 
 [gh-pages]: https://zebernst.github.io/cosmere-social-network
