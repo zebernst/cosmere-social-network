@@ -5,7 +5,7 @@ import re
 import mwparserfromhell as mwp
 
 from tqdm import tqdm
-from constants import cosmere_planets, nationalities, root_dir, info_fields
+from core.constants import cosmere_planets, nationalities, root_dir, info_fields
 from utils.decorators import cache
 from utils.logging import create_logger
 

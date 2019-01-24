@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from constants import root_dir
+from core.constants import root_dir
 
 
 log_dir = Path(root_dir / 'logs')

@@ -4,8 +4,8 @@ from itertools import groupby
 import networkx as nx
 import mwparserfromhell as mwp
 
-from characters import characters
-from constants import root_dir, site_dir
+from core.characters import characters
+from core.constants import root_dir, site_dir
 from utils.logging import create_logger
 
 
