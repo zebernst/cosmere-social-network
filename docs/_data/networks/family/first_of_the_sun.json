@@ -1,0 +1,1 @@
+{"directed": false, "multigraph": false, "graph": {}, "nodes": [{"world": "First of the Sun", "id": "Sak"}, {"world": "First of the Sun", "id": "Kokerlii"}, {"world": "First of the Sun", "id": "Sixth of the Dusk (character)"}], "links": [{"source": "Sak", "target": "Sixth of the Dusk (character)"}, {"source": "Kokerlii", "target": "Sixth of the Dusk (character)"}]}

@@ -1,18 +1,15 @@
 ---
-title: Family Relationships
-permalink: /graphs/families
+title: Family Relationships on Taldain
+permalink: /graphs/families/taldain
 classes: wide
 d3: true
 custom_css:
   - d3-force.css
-
-# remove soon
-redirect_from: /family
 ---
 
 
 <svg id="force-graph"></svg>
 <script>
-    const data = {{ site.data.networks.family.all | jsonify }};
+    const data = {{ site.data.networks.family.taldain | jsonify }};
 </script>
 <script src="{{ site.baseurl }}/assets/js/d3-force-graph.js"></script>

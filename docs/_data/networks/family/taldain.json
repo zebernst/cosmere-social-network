@@ -1,0 +1,1 @@
+{"directed": false, "multigraph": false, "graph": {}, "nodes": [{"world": "Taldain", "id": "Ais"}, {"world": "Taldain", "id": "Melloni"}, {"world": "Taldain", "id": "Mellis"}], "links": [{"source": "Ais", "target": "Mellis"}, {"source": "Ais", "target": "Melloni"}, {"source": "Melloni", "target": "Mellis"}]}

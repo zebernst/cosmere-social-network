@@ -1,18 +1,15 @@
 ---
-title: Family Relationships
-permalink: /graphs/families
+title: Family Relationships on Scadrial
+permalink: /graphs/families/scadrial
 classes: wide
 d3: true
 custom_css:
   - d3-force.css
-
-# remove soon
-redirect_from: /family
 ---
 
 
 <svg id="force-graph"></svg>
 <script>
-    const data = {{ site.data.networks.family.all | jsonify }};
+    const data = {{ site.data.networks.family.scadrial | jsonify }};
 </script>
 <script src="{{ site.baseurl }}/assets/js/d3-force-graph.js"></script>

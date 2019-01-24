@@ -1,4 +1,5 @@
 import json
+from itertools import groupby
 
 import networkx as nx
 import mwparserfromhell as mwp
@@ -11,7 +12,7 @@ from utils.logging import create_logger
 logger = create_logger('csn.networks.family')
 
 
-def create_graph(min_component_size=0):
+def create_graph():
     # define relevant fields for analysis
     fields = ('parents', 'siblings', 'spouse', 'children', 'bonded')  # currently: nuclear family only
     unused_fields = ('descendants', 'ancestors', 'family', 'relatives')
@@ -82,18 +83,32 @@ def create_graph(min_component_size=0):
                 if target and target in nodes:
                     G.add_edge(c.name, target)
 
+    return G
+
+
+def filter_graph(G: nx.Graph, min_component_size):
+    # create copy of input graph
+    G = G.copy()
+
     # remove discrete components with less than 3 nodes.
     small_components = [c for c in nx.connected_components(G) if len(c) < min_component_size]
     for component in small_components:
         G.remove_nodes_from(component)
-    logger.debug("Identified and trimmed discrete components deemed too small for analysis.")
+    logger.debug(f"Removed discrete components with less than {min_component_size} nodes from graph.")
 
     return G
 
 
 if __name__ == '__main__':
 
-    graph = create_graph(min_component_size=3)
+    G = create_graph()
+    families = {
+        'all': filter_graph(G, min_component_size=3)
+    }
+
+    # split graph by world
+    for world, grp in groupby(sorted((tup for tup in G.nodes(data='world')), key=lambda t: t[1]), key=lambda t: t[1]):
+        families[world] = filter_graph(G.subgraph([n for n, w in grp]), min_component_size=3)
 
     # ensure that data paths exist
     gml_path = root_dir / 'data' / 'networks' / 'family'
@@ -101,13 +116,14 @@ if __name__ == '__main__':
     for path in (gml_path, json_path):
         path.mkdir(parents=True, exist_ok=True)
 
-    # write gml data
-    gml_filename = gml_path / 'all.gml'
-    nx.write_gml(graph, str(gml_filename))
-    logger.info(f"GML graph data written to {gml_filename}")
+    for world, graph in families.items():
+        # write gml data
+        gml_filename = gml_path / f'{str(world).replace(" ", "_").lower()}.gml'
+        nx.write_gml(graph, str(gml_filename))
+        logger.info(f" GML graph data for {world} characters written to {gml_filename}")
 
-    # write json data
-    json_filename = json_path / 'all.json'
-    with json_filename.open(mode='w') as f:
-        json.dump(nx.node_link_data(graph), f)
-        logger.info(f"JSON graph data written to {json_filename}")
+        # write json data
+        json_filename = json_path / f'{str(world).replace(" ", "_").lower()}.json'
+        with json_filename.open(mode='w') as f:
+            json.dump(nx.node_link_data(graph), f)
+        logger.info(f"JSON graph data for {world} characters written to {json_filename}")
