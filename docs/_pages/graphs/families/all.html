@@ -1,6 +1,6 @@
 ---
-title: All Families
-permalink: /graphs/families/all
+title: Family Relationships
+permalink: /graphs/families
 classes: wide
 d3: true
 custom_css:
@@ -15,6 +15,8 @@ redirect_from:
 
 <svg id="force-graph"></svg>
 <script>
-    var data = {{ site.data.networks.family.all | jsonify }}
+    const data = {{ site.data.networks.family.all | jsonify }}
+
+    let filter = null;
 </script>
 <script src="{{ site.baseurl | prepend: site.url }}/assets/js/d3-force-graph.js"></script>
