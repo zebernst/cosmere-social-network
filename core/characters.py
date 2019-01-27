@@ -10,7 +10,7 @@ from utils.decorators import cache
 from utils.logging import create_logger
 
 
-logger = create_logger('csn.characters')
+logger = create_logger('csn.core.characters')
 
 
 class Character:
@@ -245,6 +245,5 @@ characters = sorted([c for c in (Character(result) for result in coppermind_quer
 
 if __name__ == '__main__':
 
-    all = [Character(x) for x in coppermind_query()]
     print("names to sanitize:", [c for c in characters if '(' in c.name])
 

@@ -7,8 +7,8 @@ info_fields = ('name', 'aliases', 'titles',
                'species', 'occupation', 'unnamed')
 
 
-# root path of directory
-root_dir = Path(__file__).parent
+# key paths in project
+root_dir = Path(__file__).parent.parent
 site_dir = root_dir / 'docs'
 
 # list of world on which cosmere novels take place

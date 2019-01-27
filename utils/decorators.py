@@ -63,13 +63,13 @@ def cache(filename, protocol='auto'):
                 logger.debug(f'No cached data found for {func.__name__}(), so function will be called.')
                 data = func(*args, **kwargs)
                 with cache_path.open(mode=write) as f:
-                    logger.debug(f'Caching data from {func.__name__}() at {filename}.')
                     if protocol == CacheProtocol.PICKLE:
                         pickle.dump(data, f)
                     elif protocol == CacheProtocol.JSON:
                         json.dump(data, f)
                     else:
                         f.write(data)
+                    logger.debug(f'Data returned from {func.__name__}() cached at {filename}.')
 
             return data
 
