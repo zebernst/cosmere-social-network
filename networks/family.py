@@ -137,6 +137,8 @@ def save_network_json(scope: str, G: nx.Graph):
     logger.info(f"JSON graph data for {scope} characters written to {filename}")
 
 
+# todo : link core.constants.network_scopes and the world attribute together so that saving by scope is truly possible
+
 if __name__ == '__main__':
 
     graph = create_graph()
