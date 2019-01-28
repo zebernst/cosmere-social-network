@@ -28,6 +28,10 @@ if __name__ == '__main__':
                                   help='specify network scope')
     network_parser._action_groups.append(network_optional)
 
+    # utility
+    parser.add_argument("--cleanup", action='store', default='all',
+                        help='remove generated files, logs, and cached data')
+
     args = parser.parse_args()
 
     # print parser help if no arguments provided
