@@ -1,10 +1,5 @@
 import logging
-from pathlib import Path
-from core.constants import root_dir
-
-
-log_dir = Path(root_dir / 'logs')
-log_dir.mkdir(exist_ok=True)
+from utils.paths import log_dir
 
 
 def create_logger(name):

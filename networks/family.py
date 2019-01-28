@@ -5,7 +5,7 @@ import networkx as nx
 import mwparserfromhell as mwp
 
 from core.characters import characters
-from core.constants import root_dir, site_dir
+from utils.paths import root_dir, site_dir
 from utils.logging import create_logger
 
 

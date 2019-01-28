@@ -5,9 +5,10 @@ import re
 import mwparserfromhell as mwp
 
 from tqdm import tqdm
-from core.constants import cosmere_planets, nationalities, root_dir, info_fields
+from core.constants import cosmere_planets, nationalities, info_fields
 from utils.decorators import cache
 from utils.logging import create_logger
+from utils.paths import coppermind_cache_path
 
 
 logger = create_logger('csn.core.characters')
@@ -187,7 +188,7 @@ class Character:
         return char_info
 
 
-@cache(root_dir / 'data' / 'cache' / 'coppermind.json')
+@cache(coppermind_cache_path)
 def coppermind_query():
     """load data from coppermind.net"""
     logger.debug("Beginning query of coppermind.net.")
@@ -239,11 +240,15 @@ def coppermind_query():
     return [page for batch in _query() for page in batch]
 
 
-# get characters in the cosmere from coppermind.net
-characters = sorted([c for c in (Character(result) for result in coppermind_query()) if not c._discard],
-                    key=operator.attrgetter('name'))
+def load_characters():
+    """construct, filter, and return character objects from coppermind.net data"""
+    return sorted((c for c in (Character(result) for result in coppermind_query()) if not c._discard),
+                  key=operator.attrgetter('name'))
+
+
+# alias function call for code clarity when importing
+characters = load_characters()
 
 if __name__ == '__main__':
-
     print("names to sanitize:", [c for c in characters if '(' in c.name])
 
