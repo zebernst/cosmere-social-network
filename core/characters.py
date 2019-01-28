@@ -237,7 +237,7 @@ def coppermind_query():
 
         logger.debug("Finished query of coppermind.net.")
 
-    return sorted((page for batch in _query() for page in batch), key=operator.itemgetter('title'))
+    return sorted((page for batch in _query() for page in batch), key=operator.itemgetter('pageid'))
 
 
 # construct, filter, and return character objects from coppermind.net data

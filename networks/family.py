@@ -19,7 +19,7 @@ def create_graph():
     unused_fields = ('descendants', 'ancestors', 'family', 'relatives')
 
     # create graph
-    G = nx.Graph()
+    G = nx.OrderedGraph()
 
     # resolve generator
     characters = tuple(characters_)
@@ -109,8 +109,13 @@ def extract_network_scopes(G: nx.Graph):
     }
 
     # get world scopes
-    for wrld, grp in groupby(sorted((tup for tup in G.nodes(data='world')), key=lambda t: t[1]), key=lambda t: t[1]):
-        scopes[wrld] = filter_graph(G.subgraph([n for n, w in grp]), min_component_size=3)
+    node_attr_world = lambda t: t[1].get('world')
+    sorted_nodes = sorted((tup for tup in G.nodes(data=True)), key=node_attr_world)
+    for wrld, grp in groupby(sorted_nodes, key=node_attr_world):
+        sg = nx.OrderedGraph()
+        sg.add_nodes_from(grp)
+        sg.add_edges_from((src, dest) for src, dest in G.edges() if src in G and dest in G)
+        scopes[wrld] = filter_graph(sg, min_component_size=3)
 
     return scopes
 
