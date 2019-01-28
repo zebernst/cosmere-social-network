@@ -237,17 +237,11 @@ def coppermind_query():
 
         logger.debug("Finished query of coppermind.net.")
 
-    return [page for batch in _query() for page in batch]
+    return sorted((page for batch in _query() for page in batch), key=operator.itemgetter('title'))
 
 
-def load_characters():
-    """construct, filter, and return character objects from coppermind.net data"""
-    return sorted((c for c in (Character(result) for result in coppermind_query()) if not c._discard),
-                  key=operator.attrgetter('name'))
-
-
-# alias function call for code clarity when importing
-characters = load_characters()
+# construct, filter, and return character objects from coppermind.net data
+characters = (c for c in (Character(result) for result in coppermind_query()) if not c._discard)
 
 if __name__ == '__main__':
     print("names to sanitize:", [c for c in characters if '(' in c.name])
