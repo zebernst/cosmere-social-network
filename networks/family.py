@@ -4,12 +4,13 @@ from itertools import groupby
 import networkx as nx
 import mwparserfromhell as mwp
 
-from core.characters import characters
+from core.characters import characters_
 from utils.paths import root_dir, site_dir
 from utils.logging import create_logger
 
 
 logger = create_logger('csn.networks.family')
+characters = tuple(characters_)
 
 
 def create_graph():

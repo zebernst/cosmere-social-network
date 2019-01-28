@@ -1,17 +1,17 @@
 graph [
   node [
     id 0
-    label "Sebruki"
-    world "Threnody"
-  ]
-  node [
-    id 1
     label "Silence Montane"
     world "Threnody"
   ]
   node [
-    id 2
+    id 1
     label "William Montane"
+    world "Threnody"
+  ]
+  node [
+    id 2
+    label "Sebruki"
     world "Threnody"
   ]
   node [
@@ -21,15 +21,15 @@ graph [
   ]
   edge [
     source 0
+    target 2
+  ]
+  edge [
+    source 0
     target 1
   ]
   edge [
     source 0
     target 3
-  ]
-  edge [
-    source 1
-    target 2
   ]
   edge [
     source 1

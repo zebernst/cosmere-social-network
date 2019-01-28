@@ -3,8 +3,8 @@ import requests
 import re
 
 import mwparserfromhell as mwp
-
 from tqdm import tqdm
+
 from core.constants import cosmere_planets, nationalities, info_fields
 from utils.caching import cache
 from utils.logging import create_logger
@@ -194,8 +194,8 @@ def coppermind_query():
     logger.debug("Beginning query of coppermind.net.")
 
     def _query():
-        """query coppermind.net api for all characters"""
-        # base code taken from https://www.mediawiki.org/wiki/API:Query#Continuing_queries
+        """generator to query coppermind.net api for all characters"""
+        # query generator code based on https://www.mediawiki.org/wiki/API:Query#Continuing_queries
         wiki_api = "https://coppermind.net/w/api.php"
 
         # get total number of pages to fetch
@@ -241,8 +241,8 @@ def coppermind_query():
 
 
 # construct, filter, and return character objects from coppermind.net data
-characters = (c for c in (Character(result) for result in coppermind_query()) if not c._discard)
+characters_ = (c for c in (Character(result) for result in coppermind_query()) if not c._discard)
 
 if __name__ == '__main__':
-    print("names to sanitize:", [c for c in characters if '(' in c.name])
+    print("names to sanitize:", [c for c in characters_ if '(' in c.name])
 
