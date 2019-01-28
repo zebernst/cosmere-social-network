@@ -5,7 +5,8 @@ import networkx as nx
 import mwparserfromhell as mwp
 
 from core.characters import characters_
-from utils.paths import root_dir, site_dir
+from core.constants import network_scopes
+from utils.paths import gml_dir, json_dir
 from utils.logging import create_logger
 
 
@@ -87,7 +88,7 @@ def create_graph():
     return G
 
 
-def filter_graph(G: nx.Graph, min_component_size):
+def filter_graph(G: nx.Graph, min_component_size=1):
     # create copy of input graph
     G = G.copy()
 
@@ -100,31 +101,41 @@ def filter_graph(G: nx.Graph, min_component_size):
     return G
 
 
-if __name__ == '__main__':
-
-    G = create_graph()
-    families = {
-        'all': filter_graph(G, min_component_size=3)
+def extract_network_scopes(G: nx.Graph):
+    scopes = {
+        'all': filter_graph(G, min_component_size=3),
     }
 
-    # split graph by world
-    for world, grp in groupby(sorted((tup for tup in G.nodes(data='world')), key=lambda t: t[1]), key=lambda t: t[1]):
-        families[world] = filter_graph(G.subgraph([n for n, w in grp]), min_component_size=3)
+    # get world scopes
+    for wrld, grp in groupby(sorted((tup for tup in G.nodes(data='world')), key=lambda t: t[1]), key=lambda t: t[1]):
+        scopes[wrld] = filter_graph(G.subgraph([n for n, w in grp]), min_component_size=3)
 
-    # ensure that data paths exist
-    gml_path = root_dir / 'data' / 'networks' / 'family'
-    json_path = site_dir / '_data' / 'networks' / 'family'
-    for path in (gml_path, json_path):
-        path.mkdir(parents=True, exist_ok=True)
+    return scopes
 
-    for world, graph in families.items():
-        # write gml data
-        gml_filename = gml_path / f'{str(world).replace(" ", "_").lower()}.gml'
-        nx.write_gml(graph, str(gml_filename))
-        logger.info(f" GML graph data for {world} characters written to {gml_filename}")
 
-        # write json data
-        json_filename = json_path / f'{str(world).replace(" ", "_").lower()}.json'
-        with json_filename.open(mode='w') as f:
-            json.dump(nx.node_link_data(graph), f)
-        logger.info(f"JSON graph data for {world} characters written to {json_filename}")
+def save_network_gml(scope: str, G: nx.Graph):
+    filename = gml_dir / 'family' / f'{scope.replace(" ", "_").lower()}.gml'
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    nx.write_gml(G, str(filename))
+    logger.info(f" GML graph data for {scope} characters written to {filename}")
+
+
+def save_network_json(scope: str, G: nx.Graph):
+    filename = json_dir / 'family' / f'{scope.replace(" ", "_").lower()}.json'
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    with filename.open(mode='w') as f:
+        json.dump(nx.node_link_data(G), f)
+    logger.info(f"JSON graph data for {scope} characters written to {filename}")
+
+
+if __name__ == '__main__':
+
+    graph = create_graph()
+
+    networks = extract_network_scopes(graph)
+
+    for s, ntwk in networks.items():
+        save_network_gml(s, ntwk)
+        save_network_json(s, ntwk)

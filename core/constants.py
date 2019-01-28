@@ -1,5 +1,5 @@
 # character groupings for networks
-network_scopes = ('all', 'a',                                                       # all
+network_scopes = ('all',                                                            # all
                   'w:roshar', 'w:nalthis', 'w:scadrial', 'w:first_of_the_sun',      # worlds
                   'w:taldain', 'w:threnody', 'w:yolen', 'w:sel',                    # worlds (continued)
                   'b:mistborn', 'b:mistborn_1', 'b:mistborn_2',                     # book series
