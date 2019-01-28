@@ -1,12 +1,12 @@
 graph [
   node [
     id 0
-    label "Kokerlii"
+    label "Sixth of the Dusk (character)"
     world "First of the Sun"
   ]
   node [
     id 1
-    label "Sixth of the Dusk (character)"
+    label "Kokerlii"
     world "First of the Sun"
   ]
   node [
@@ -19,7 +19,7 @@ graph [
     target 1
   ]
   edge [
-    source 1
+    source 0
     target 2
   ]
 ]

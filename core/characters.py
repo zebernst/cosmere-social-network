@@ -242,6 +242,7 @@ def coppermind_query():
 
 # construct, filter, and return character objects from coppermind.net data
 characters_ = (c for c in (Character(result) for result in coppermind_query()) if not c._discard)
+logger.debug('Character generator initialized.')
 
 if __name__ == '__main__':
     print("names to sanitize:", [c for c in characters_ if '(' in c.name])

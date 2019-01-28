@@ -1,7 +1,7 @@
 graph [
   node [
     id 0
-    label "Ais"
+    label "Mellis"
     world "Taldain"
   ]
   node [
@@ -11,7 +11,7 @@ graph [
   ]
   node [
     id 2
-    label "Mellis"
+    label "Ais"
     world "Taldain"
   ]
   edge [

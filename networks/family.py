@@ -11,7 +11,6 @@ from utils.logging import create_logger
 
 
 logger = create_logger('csn.networks.family')
-characters = tuple(characters_)
 
 
 def create_graph():
@@ -21,6 +20,9 @@ def create_graph():
 
     # create graph
     G = nx.Graph()
+
+    # resolve generator
+    characters = tuple(characters_)
 
     # restructure character list into efficient data structures to reduce complexity
     monikers = {name: c for c in characters for name in c.monikers}
