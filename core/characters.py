@@ -6,7 +6,7 @@ import mwparserfromhell as mwp
 
 from tqdm import tqdm
 from core.constants import cosmere_planets, nationalities, info_fields
-from utils.decorators import cache
+from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
 
