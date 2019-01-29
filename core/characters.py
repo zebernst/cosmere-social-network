@@ -71,7 +71,7 @@ class Character:
         return f"https://coppermind.net/wiki?curid={self._pageid}"
 
     def _parse_infobox(self, query_result):
-        """..."""
+        """parse the wikitext infobox for character attributes"""
 
         # set defaults
         char_info = {}
@@ -95,6 +95,7 @@ class Character:
             for l in links:
                 text = l.text if l.text else l.title
                 wikicode.replace(l, text)
+
             # todo
             return wikicode.strip_code()
 
@@ -121,7 +122,7 @@ class Character:
 
                         k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
 
-                        # ignore certain keywords
+                        # clean field names and correct typos
                         cleanse_field = {
                             'residnece': 'residence',
                             'residence-raw': 'residence',
@@ -240,8 +241,14 @@ def coppermind_query():
     return sorted((page for batch in _query() for page in batch), key=operator.itemgetter('pageid'))
 
 
+def _coppermind_generator():
+    """generator wrapper over coppermind_query() to delay execution of query"""
+    for result in coppermind_query():
+        yield result
+
+
 # construct, filter, and return character objects from coppermind.net data
-characters_ = (c for c in (Character(result) for result in coppermind_query()) if not c._discard)
+characters_ = (c for c in (Character(result) for result in _coppermind_generator()) if not c._discard)
 logger.debug('Character generator initialized.')
 
 if __name__ == '__main__':
