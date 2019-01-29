@@ -5,7 +5,7 @@ from utils.paths import log_dir
 # create shared handler
 _composite_file_hdlr = logging.FileHandler(log_dir / "csn.all.log", mode='w')
 _composite_file_hdlr.setLevel(logging.DEBUG)
-_composite_file_hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)s [%(levelname)s] :: %(message)s'))
+_composite_file_hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)-21s [%(levelname)s] :: %(message)s'))
 
 
 def create_logger(name):

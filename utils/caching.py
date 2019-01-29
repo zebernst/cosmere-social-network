@@ -2,7 +2,6 @@ import functools
 import pickle
 import json
 from pathlib import Path
-from os import PathLike
 from typing import Union
 from enum import Enum, auto
 
@@ -30,7 +29,7 @@ _protocols = {
 }
 
 
-def detect_protocol(filename: PathLike):
+def detect_protocol(filename: Union[Path, str]):
     """detect protocol type from file extension"""
     cache_path = Path(filename)
     logger.debug('Extracting protocol key from filename.')
@@ -87,7 +86,7 @@ def save_cache(path: Path, protocol: CacheProtocol, data):
         logger.debug(f'Cached data at {path}.')
 
 
-def cache(filename: PathLike, protocol='auto'):
+def cache(filename: Union[Path, str], protocol='auto'):
     """cache the return value of the decorated function at the given filename."""
 
     # ensure that enclosing folder of desired cache file exists

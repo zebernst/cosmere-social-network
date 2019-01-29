@@ -1,14 +1,20 @@
 import argparse
 
-from utils.paths import coppermind_cache_path
+from core.characters import coppermind_query
 from core.constants import network_scopes
+from utils.paths import coppermind_cache_path
+from utils.caching import load_cache, detect_protocol
+from utils.logging import create_logger
 
 if __name__ == '__main__':
 
+    logger = create_logger('csn.cli')
+
     parser = argparse.ArgumentParser()
+    subparser_attr = 'cmd'
     subparsers = parser.add_subparsers(title='subcommands',
                                        description=None,
-                                       dest='cmd')
+                                       dest=subparser_attr)
 
     # characters
     data_parser = subparsers.add_parser("data", help='manage data')
@@ -20,7 +26,7 @@ if __name__ == '__main__':
 
     # networks
     network_parser = subparsers.add_parser("network", help='run a network analysis')
-    network_optional = network_parser._action_groups.pop()
+    network_optional = network_parser._action_groups.pop()  # re-order argument groups
     network_required = network_parser.add_argument_group('required named arguments')
     network_required.add_argument("-t", "--type", action='store', required=True,
                                   help='network analysis type')
@@ -36,7 +42,7 @@ if __name__ == '__main__':
 
     # print parser help if no arguments provided
     parsers = {None: parser, 'data': data_parser, 'network': network_parser}
-    if all(v is None for a, v in args.__dict__.items() if a != 'cmd'):
+    if all(v is None for arg, v in args.__dict__.items() if arg != subparser_attr):
         p = parsers.get(args.cmd)
         p.print_help()
         p.exit()
@@ -45,7 +51,23 @@ if __name__ == '__main__':
     if args.cmd == 'data':
         if args.refresh:
             if any(ds in args.refresh.lower() for ds in ('coppermind', 'characters')):
-                pass
+                # remove cache and re-download data
+                logger.debug("Refreshing coppermind.net character data.")
+                old_data = load_cache(coppermind_cache_path, protocol=detect_protocol(coppermind_cache_path))
+                if coppermind_cache_path.is_file():
+                    coppermind_cache_path.unlink()
+                logger.debug("Cache removed.")
+                new_data = coppermind_query()
+                print("character data refreshed from coppermind.net.")
+
+                # display changed results
+                delta = [r for r in old_data + new_data if r not in old_data or r not in new_data]
+                if delta:
+                    print("changed items:")
+                    print(delta)
+                else:
+                    print("no changes detected in refreshed data.")
+
         elif args.path:
             if any(ds in args.path.lower() for ds in ('coppermind', 'characters')):
                 print(args.path, "located at", coppermind_cache_path)
