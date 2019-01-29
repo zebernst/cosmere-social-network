@@ -1,5 +1,6 @@
 import json
 from itertools import groupby
+from typing import Dict, Union
 
 import networkx as nx
 import mwparserfromhell as mwp
@@ -13,7 +14,7 @@ from utils.logging import create_logger
 logger = create_logger('csn.networks.family')
 
 
-def create_graph():
+def create_graph() -> nx.OrderedGraph:
     # define relevant fields for analysis
     fields = ('parents', 'siblings', 'spouse', 'children', 'bonded')  # currently: nuclear family only
     unused_fields = ('descendants', 'ancestors', 'family', 'relatives')
@@ -90,7 +91,7 @@ def create_graph():
     return G
 
 
-def filter_graph(G: nx.Graph, min_component_size=1):
+def filter_graph(G:nx.Graph, min_component_size: int = 1) -> nx.Graph:
     # create copy of input graph
     G = G.copy()
 
@@ -103,7 +104,7 @@ def filter_graph(G: nx.Graph, min_component_size=1):
     return G
 
 
-def extract_network_scopes(G: nx.Graph):
+def extract_network_scopes(G: Union[nx.Graph, nx.OrderedGraph]) -> Dict[str, Union[nx.Graph, nx.OrderedGraph]]:
     scopes = {
         'all': filter_graph(G, min_component_size=3),
     }
@@ -120,7 +121,7 @@ def extract_network_scopes(G: nx.Graph):
     return scopes
 
 
-def save_network_gml(scope: str, G: nx.Graph):
+def save_network_gml(scope: str, G: Union[nx.Graph, nx.OrderedGraph]):
     filename = gml_dir / 'family' / f'{scope.replace(" ", "_").lower()}.gml'
     filename.parent.mkdir(parents=True, exist_ok=True)
 
@@ -128,7 +129,7 @@ def save_network_gml(scope: str, G: nx.Graph):
     logger.info(f" GML graph data for {scope} characters written to {filename}")
 
 
-def save_network_json(scope: str, G: nx.Graph):
+def save_network_json(scope: str, G: Union[nx.Graph, nx.OrderedGraph]):
     filename = json_dir / 'family' / f'{scope.replace(" ", "_").lower()}.json'
     filename.parent.mkdir(parents=True, exist_ok=True)
 
