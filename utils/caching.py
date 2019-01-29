@@ -2,7 +2,7 @@ import functools
 import pickle
 import json
 from pathlib import Path
-from typing import Union
+from typing import Union, Any
 from enum import Enum, auto
 
 from utils.logging import create_logger
@@ -29,14 +29,14 @@ _protocols = {
 }
 
 
-def detect_protocol(filename: Union[Path, str]):
+def detect_protocol(filename: Union[Path, str]) -> CacheProtocol:
     """detect protocol type from file extension"""
     cache_path = Path(filename)
     logger.debug('Extracting protocol key from filename.')
     return resolve_protocol(cache_path.suffix[1:])
 
 
-def resolve_protocol(protocol: Union[CacheProtocol, str]):
+def resolve_protocol(protocol: Union[CacheProtocol, str]) -> CacheProtocol:
     """resolve protocol type from string"""
     if isinstance(protocol, CacheProtocol):
         logger.debug('Direct protocol given, no resolution needed.')
@@ -49,7 +49,7 @@ def resolve_protocol(protocol: Union[CacheProtocol, str]):
         return CacheProtocol.PLAINTEXT
 
 
-def load_cache(path: Path, protocol: CacheProtocol):
+def load_cache(path: Path, protocol: CacheProtocol) -> Any:
     # specify file pointer mode
     if protocol in (CacheProtocol.PICKLE,):
         read = 'rb'

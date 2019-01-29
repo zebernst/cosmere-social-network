@@ -8,7 +8,7 @@ _composite_file_hdlr.setLevel(logging.DEBUG)
 _composite_file_hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)-21s [%(levelname)s] :: %(message)s'))
 
 
-def create_logger(name):
+def create_logger(name: str) -> logging.Logger:
     # create logger
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
