@@ -53,20 +53,27 @@ if __name__ == '__main__':
             if any(ds in args.refresh.lower() for ds in ('coppermind', 'characters')):
                 # remove cache and re-download data
                 logger.debug("Refreshing coppermind.net character data.")
-                old_data = load_cache(coppermind_cache_path, protocol=detect_protocol(coppermind_cache_path))
-                if coppermind_cache_path.is_file():
-                    coppermind_cache_path.unlink()
-                logger.debug("Cache removed.")
-                new_data = coppermind_query()
-                print("character data refreshed from coppermind.net.")
 
-                # display changed results
-                delta = [r for r in old_data + new_data if r not in old_data or r not in new_data]
-                if delta:
-                    print("changed items:")
-                    print(delta)
+                # cache already exists
+                if coppermind_cache_path.is_file():
+                    old_data = load_cache(coppermind_cache_path, protocol=detect_protocol(coppermind_cache_path))
+                    coppermind_cache_path.unlink()
+                    logger.debug("Cache removed.")
+                    new_data = coppermind_query()
+                    print("character data refreshed from coppermind.net.")
+
+                    # display changed results
+                    delta = [r for r in old_data + new_data if r not in old_data or r not in new_data]
+                    if delta:
+                        print("changed items:")
+                        print(delta)
+                    else:
+                        print("no changes detected in refreshed data.")
+
+                # no data cached
                 else:
-                    print("no changes detected in refreshed data.")
+                    data = coppermind_query()
+                    print("character data refreshed from coppermind.net.")
 
         elif args.path:
             if any(ds in args.path.lower() for ds in ('coppermind', 'characters')):
