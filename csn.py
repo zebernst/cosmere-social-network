@@ -2,7 +2,7 @@ import argparse
 
 from core.characters import coppermind_query
 from core.constants import network_scopes
-from utils.paths import coppermind_cache_path
+from utils.paths import coppermind_cache_path, gml_dir, json_dir
 from utils.caching import load_cache, detect_protocol
 from utils.logging import create_logger
 
@@ -35,8 +35,8 @@ if __name__ == '__main__':
     network_parser._action_groups.append(network_optional)
 
     # utility
-    parser.add_argument("--cleanup", action='store', default='all',
-                        help='remove generated files, logs, and cached data')
+    parser.add_argument("--cleanup", action='store_true', default='all',
+                        help='remove generated files and cached data')
 
     args = parser.parse_args()
 
@@ -81,3 +81,23 @@ if __name__ == '__main__':
 
     elif args.cmd == 'network':
         pass
+
+    elif args.cmd is None:
+        if args.cleanup:
+            # remove cached data
+            if coppermind_cache_path.is_file():
+                coppermind_cache_path.unlink()
+                logger.debug(f'Removed {coppermind_cache_path}.')
+                print('Removed cached coppermind.net data')
+
+            # remove gml data
+            for file in gml_dir.glob('**/*.gml'):
+                file.unlink()
+                logger.debug(f'Removed {file}.')
+            print('Removed generated GML network data.')
+
+            # remove json data
+            for file in json_dir.glob('**/*.json'):
+                file.unlink()
+                logger.debug(f'Removed {file}.')
+            print('Removed generated JSON network data.')
