@@ -37,6 +37,8 @@ a new terminal window, but the virtual environment will persist in the same work
 ## Project Structure
 
 **code**:
+- [`csn.py`](csn.py) is the main script to manage data acquisition and network analysis, meant to be run
+  on the command line (`> python csn.py [...]`).
 - [`core/characters.py`](core/characters.py) gets character data from the [wiki](https://coppermind.net).
 - [`core/constants.py`](core/constants.py) contains certain constants relating to the Cosmere and to metadata about 
   the analysis (e.g. the list of planets in the Cosmere).
