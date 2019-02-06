@@ -5,6 +5,8 @@ classes: wide
 d3: true
 custom_css:
   - d3-force.css
+custom_js:
+  - d3-force-graph.js
 
 # remove soon
 redirect_from:
@@ -16,7 +18,4 @@ redirect_from:
 <svg id="force-graph"></svg>
 <script>
     const data = {{ site.data.networks.family.all | jsonify }}
-
-    let filter = null;
 </script>
-<script src="{{ site.baseurl | prepend: site.url }}/assets/js/d3-force-graph.js"></script>
