@@ -74,42 +74,89 @@ svg.call(zoom);
 
 
 // add links between nodes first
-const link = graph.append("g")
+let link = graph.append("g")
     .attr("class", "links")
-    .selectAll("line")
-    .data(data.links)
-    .enter()
-    .append("line")
-    .attr("stroke-width", 1)
-    .attr("stroke-opacity", 0.6)
-    .attr("stroke", "#777");
+    .selectAll("line");
 
 // add nodes on top
-const node = graph.append("g")
+let node = graph.append("g")
     .attr("class", "nodes")
-    .selectAll("circle")
-    .data(data.nodes)
-    .enter()
-    .append("circle")
-    .attr("r", radius)
-    .attr("fill", d => color(d.world))
-    .attr("stroke", "#ccc")
-    .attr("stroke-width", 1)
-    .call(drag(simulation));
+    .selectAll("circle");
 
 // add labels
-const label = graph.append("g")
+let label = graph.append("g")
     .attr("class", "labels")
-    .selectAll("text")
-    .data(data.nodes)
-    .enter()
-    .append("text")
-    .attr("font-size", ".4em")
-    .attr("dx", 12)
-    .attr("dy", ".35em")
-    .attr("pointer-events", "none")
-    .attr("user-select", "none")
-    .text(d => d.id);
+    .selectAll("text");
+
+
+update(filterSubset());
+
+
+function filterSubset(key = null, value = null) {
+    const graph = {};
+
+    if (key != null && value != null) {
+        graph.nodes = data.nodes.filter(n => n[key] === value);
+        graph.links = data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target));
+    }
+    else {
+        graph.nodes = data.nodes.filter(() => true);
+        graph.links = data.links.filter(() => true);
+    }
+
+    return graph;
+}
+
+
+
+function update(subset) {
+    // update
+    link = link.data(subset.links, d => d.index);
+    node = node.data(subset.nodes, d => d.id);
+    label = label.data(subset.nodes, d => d.id);
+
+    // exit
+    link.exit().remove();
+    node.exit().remove();
+    label.exit().remove();
+
+    // enter + merge
+    link = link
+        .enter()
+        .append("line")
+        .attr("stroke-width", 1)
+        .attr("stroke-opacity", 0.6)
+        .attr("stroke", "#777")
+        .merge(link);
+
+    node = node
+        .enter()
+        .append("circle")
+        .attr("r", radius)
+        .attr("fill", d => color(d.world))
+        .attr("stroke", "#ccc")
+        .attr("stroke-width", 1)
+        .call(drag(simulation))
+        .merge(node);
+
+    label = label
+        .enter()
+        .append("text")
+        .attr("font-size", ".4em")
+        .attr("dx", 12)
+        .attr("dy", ".35em")
+        .attr("pointer-events", "none")
+        .attr("user-select", "none")
+        .merge(label)
+        .text(d => d.id);
+
+    simulation.on("tick", tick)
+        .nodes(subset.nodes)
+        .force("links", d3.forceLink(subset.links).id(d => d.id).distance(50))
+        .alpha(1)
+        .alphaTarget(0)
+        .restart();
+}
 
 // add legend
 const legend = svg.append("g")
@@ -136,6 +183,11 @@ legend.append("text")
     .style("alignment-baseline", "middle")
     .text(d => d);
 
+$(".series").on("click", function () {
+    console.log($(this).children("text").text());
+    update(filterSubset("world", $(this).children("text").text()))
+});
+
 const legendTitle = svg.select(".legend")
     .insert("text", ":first-child")
     .attr("x", width/2 - (0.025 * width) + radius)
@@ -145,8 +197,7 @@ const legendTitle = svg.select(".legend")
     .style("text-anchor", "end")
     .text("World");
 
-
-simulation.on("tick", function () {
+function tick() {
     label
         .attr("transform", d => `translate(${d.x}, ${d.y})`)
         .attr("cx", d => d.x)
@@ -161,4 +212,6 @@ simulation.on("tick", function () {
         .attr("y1", d => d.source.y)
         .attr("x2", d => d.target.x)
         .attr("y2", d => d.target.y);
-});
+}
+// var worlds = [...new Set(data.nodes.map(n => n.world))];
+// d3.interval(() => update(filterSubset("world", worlds[Math.floor(Math.random() * worlds.length)])), 2000);
