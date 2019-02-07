@@ -1,0 +1,32 @@
+/* data */
+g.nodes  circle.node {
+    stroke-width: 1;
+    stroke-opacity: 100%;
+    stroke: #ccc
+}
+g.links  line.link {
+    stroke-width: 1;
+    stroke-opacity: 60%;
+    stroke: #777;
+}
+g.labels text.label {
+    font-size: 0.4em;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* legend */
+g.legend .legend-title {
+    font-size: 0.8em;
+    text-anchor: end;
+}
+g.legend .series {
+    cursor: pointer;
+}
+g.legend .series circle {
+}
+g.legend .series text {
+    font-size: 0.6em;
+    text-anchor: end;
+    alignment-baseline: middle;
+}
