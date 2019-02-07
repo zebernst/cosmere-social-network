@@ -37,7 +37,7 @@ data.then(function (data) {
 
     // enable zoom/pan on graph element
     const zoom = d3.zoom()
-        .scaleExtent([0.25, 5])
+        .scaleExtent([1/4, 5])
         .on("zoom", () => graph.attr("transform", d3.event.transform));
     svg.call(zoom);
 
@@ -135,13 +135,15 @@ data.then(function (data) {
             .on("end", dragEnd);
     }
     function subset(data, filters) {
-        const nodes = data.nodes
-            .filter(n => Object.keys(n)
+        // make sure at least one filter is applied
+        const nodes = Object.keys(filters).reduce((numFilters, key) => numFilters + filters[key].size, 0) >= 1
+            ? data.nodes.filter(n => Object.keys(n)
                 .some(k => {
-                    if (filters.hasOwnProperty(k))
+                    if (filters.hasOwnProperty(k) && filters[k] instanceof Set)
                         return filters[k].has(n[k]);
-                    else return false;
-                }));
+                    else return false; // return false if filters[k] is not a Set
+                }))
+            : data.nodes.filter(() => true);
         const links = data.links.filter(l => nodes.includes(l.source) && nodes.includes(l.target));
 
         return {
