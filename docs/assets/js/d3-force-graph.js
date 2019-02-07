@@ -141,30 +141,50 @@ function filterApplied(key, value) {
 
 // define draw function
 function update(data) {
+    const t = d3.transition()
+        .duration(250);
+
     // update
     link = link.data(data.links, d => d.index);
     node = node.data(data.nodes, d => d.id);
     label = label.data(data.nodes, d => d.id);
 
     // exit
-    link.exit().remove();
-    node.exit().remove();
-    label.exit().remove();
+    link.exit()
+        .transition(t)
+        .attr("stroke-opacity", 0)
+        .attrTween("x1", d => () => d.source.x)
+        .attrTween("x2", d => () => d.target.x)
+        .attrTween("y1", d => () => d.source.y)
+        .attrTween("y2", d => () => d.target.y)
+        .remove();
+
+    node.exit()
+        .transition(t)
+        .attr("r", 1e-4)
+        .remove();
+
+    label.exit()
+        .transition(t)
+        .style("opacity", 0)
+        .remove();
 
     // enter + merge
     link = link
         .enter()
         .append("line")
         .attr("class", "link")
+        .call(l => l.transition(t).attr("stroke-opacity", 1))
         .merge(link);
 
     node = node
         .enter()
         .append("circle")
         .attr("class", "node")
-        .attr("r", radius)
+        // .attr("r", radius)
         .style("fill", d => color(d.world))
         .call(drag(simulation))
+        .call(n => n.transition(t).attr("r", radius))
         .merge(node);
 
     label = label
@@ -174,6 +194,7 @@ function update(data) {
         .attr("dx", 12)
         .attr("dy", ".35em")
         .text(d => d.id)
+        .call(l => l.transition(t).style("opacity", 1))
         .merge(label);
 
     // update legend style for applied filters
@@ -186,13 +207,15 @@ function update(data) {
 
 
     // restart simulation
-    simulation.on("tick", tick)
+    simulation
         .nodes(data.nodes)
-        .force("links", d3.forceLink(data.links)
+        .force("links", d3.forceLink()
+            .links(data.links)
             .id(d => d.id)
             .distance(50))
         .alpha(1)
         .alphaTarget(0)
+        .on("tick", tick)
         .restart();
 }
 
