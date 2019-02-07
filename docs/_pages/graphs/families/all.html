@@ -2,9 +2,9 @@
 title: Family Relationships
 permalink: /graphs/families
 classes: wide
+d3: true
 custom_css:
   - d3-force.css
-d3: true
 custom_js:
   - d3-force-graph.js
 
@@ -20,5 +20,5 @@ redirect_from:
 
 
 <script>
-    const data = {{ site.data.networks.family.all | jsonify }}
+    const data = d3.json("{{ '/api/data/networks/family/all.json' | relative_url }}");
 </script>
