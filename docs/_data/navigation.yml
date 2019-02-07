@@ -1,12 +1,8 @@
 # main links
 main:
+  - title: "Background"
+    url: /background/
+  - title: "Graphs"
+    url: /graphs/
   - title: "Code"
     url: https://github.com/zebernst/cosmere-social-network
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
