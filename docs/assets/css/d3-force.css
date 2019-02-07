@@ -2,7 +2,7 @@
 g.nodes  circle.node {
     stroke-width: 1;
     stroke-opacity: 100%;
-    stroke: #ccc
+    stroke: #ccc;
 }
 g.links  line.link {
     stroke-width: 1;

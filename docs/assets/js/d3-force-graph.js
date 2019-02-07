@@ -19,7 +19,7 @@ const svg = d3.select("svg#force-graph")
     .attr("viewBox", [-width/2, -height/2, width, height].join(" "));
 
 // define colors
-const color = d3.scaleOrdinal(d3.schemeCategory10);
+const color = d3.scaleOrdinal(d3.schemeCategory10).unknown('#000');
 
 // create enclosing element for graph data
 const graph = svg.append("g")
@@ -135,6 +135,9 @@ function toggleFilter(key, value) {
     else
         filters[key].add(value);
 }
+function filterApplied(key, value) {
+    return filters[key] instanceof Set && filters[key].has(value)
+}
 
 // define draw function
 function update(data) {
@@ -173,6 +176,15 @@ function update(data) {
         .text(d => d.id)
         .merge(label);
 
+    // update legend style for applied filters
+    legend
+        .select("circle")
+        .attr("opacity", d => filterApplied('world', d) ? 1.0 : 0.4);
+    legend
+        .select("text")
+        .style("font-weight", d => filterApplied('world', d) ? "bold" : "normal");
+
+
     // restart simulation
     simulation.on("tick", tick)
         .nodes(data.nodes)
@@ -186,8 +198,8 @@ function update(data) {
 
 // apply data
 data.then(function (data) {
-    // initial drawing with all data
-    update(data);
+    // populate color space
+    color.domain([...new Set(data.nodes.map(n => n.world))]);
 
     // add legend
     legend = legend
@@ -223,5 +235,8 @@ data.then(function (data) {
         .attr("y", -height/2 + 50 + 1)
         .attr("transform", "translate(0, -20)")
         .text("World");
+
+    // initial drawing with all data
+    update(data);
 });
 
