@@ -88,27 +88,21 @@ let label = graph.append("g")
     .attr("class", "labels")
     .selectAll("text");
 
-
-update(filterSubset());
-
-
 function filterSubset(key = null, value = null) {
     const graph = {};
 
-    if (key != null && value != null) {
-        graph.nodes = data.nodes.filter(n => n[key] === value);
-        graph.links = data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target));
-    }
-    else {
+    if (key == null || value == null) {
+        // populate graph object with all data points
         graph.nodes = data.nodes.filter(() => true);
         graph.links = data.links.filter(() => true);
+    } else {
+        // populate graph object with nodes and links that satisfy filter
+        graph.nodes = data.nodes.filter(n => n[key] === value);
+        graph.links = data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target));
     }
 
     return graph;
 }
-
-
-
 function update(subset) {
     // update
     link = link.data(subset.links, d => d.index);
@@ -150,6 +144,8 @@ function update(subset) {
         .merge(label)
         .text(d => d.id);
 
+
+    // restart simulation
     simulation.on("tick", tick)
         .nodes(subset.nodes)
         .force("links", d3.forceLink(subset.links).id(d => d.id).distance(50))
@@ -157,6 +153,8 @@ function update(subset) {
         .alphaTarget(0)
         .restart();
 }
+
+update(filterSubset(null));
 
 // add legend
 const legend = svg.append("g")
@@ -166,7 +164,8 @@ const legend = svg.append("g")
     .enter()
     .append("g")
     .attr("class", "series")
-    .attr("transform", (d, i) => `translate(0, ${20 * i})`);
+    .attr("transform", (d, i) => `translate(0, ${20 * i})`)
+    .on("click", datum => update(filterSubset("world", datum))); // apply filter on click
 
 legend.append("circle")
     .attr("r", ".3em")
@@ -182,11 +181,6 @@ legend.append("text")
     .style("text-anchor", "end")
     .style("alignment-baseline", "middle")
     .text(d => d);
-
-$(".series").on("click", function () {
-    console.log($(this).children("text").text());
-    update(filterSubset("world", $(this).children("text").text()))
-});
 
 const legendTitle = svg.select(".legend")
     .insert("text", ":first-child")
@@ -213,5 +207,3 @@ function tick() {
         .attr("x2", d => d.target.x)
         .attr("y2", d => d.target.y);
 }
-// var worlds = [...new Set(data.nodes.map(n => n.world))];
-// d3.interval(() => update(filterSubset("world", worlds[Math.floor(Math.random() * worlds.length)])), 2000);
