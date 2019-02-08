@@ -138,7 +138,9 @@ function toggleFilter(key, value) {
 }
 /** returns a boolean representing whether the given filter is present in the global filter object */
 function filterApplied(key, value) {
-    return filters[key] instanceof Set && filters[key].has(value)
+    return filters.hasOwnProperty(key)
+        && filters[key] instanceof Set
+        && filters[key].has(value);
 }
 /** populates an array on each node in the data with references to its immediate neighbors */
 function populateNeighbors(data) {
@@ -157,15 +159,18 @@ function component(data, keyNode, nodes, root = true) {
     nodes = nodes || new Set();
 
     if (typeof keyNode === 'string' || keyNode instanceof String)
-        keyNode = data.nodes.find(n => n.id === keyNode);
+        keyNode = data.nodes.find(n => n.id.toLowerCase() === keyNode.toLowerCase());
 
-    nodes.add(keyNode);
+    // don't try to iterate over neighbors of invalid node
+    if (keyNode) {
+        nodes.add(keyNode);
 
-    keyNode.neighbors
-        .forEach(n => {
-            if (!nodes.has(n))
-                component(data, n, nodes, false);
-    });
+        keyNode.neighbors
+            .forEach(n => {
+                if (!nodes.has(n))
+                    component(data, n, nodes, false);
+        });
+    }
 
     if (root) return {
         nodes: [...nodes],
