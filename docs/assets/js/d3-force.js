@@ -1,18 +1,12 @@
-// RESOURCES:
-// https://beta.observablehq.com/@mbostock/disjoint-force-directed-graph
-// http://www.puzzlr.org/force-graphs-with-d3/
-// https://bl.ocks.org/sjengle/f6f522f3969752b384cfec5449eacd98
-// https://bl.ocks.org/heybignick/3faf257bbbbc7743bb72310d03b86ee8
-// https://github.com/d3/d3-force
-
-// todo: split simulation off into generalized function that can be included via <script> tag
-// todo: add dynamic filters to sort by world, family, profession, etc.
+/* ################### *
+ * ### d3.js setup ### *
+ * ################### */
 
 // setup svg canvas
-const   width = window.innerWidth,
-        height = window.innerHeight,
-        radius = 5,
-        filters = {};
+const width = window.innerWidth,
+      height = window.innerHeight,
+      radius = 5,
+      filters = {};
 
 // get master <svg> element
 const svg = d3.select("svg#force-graph")
@@ -50,6 +44,7 @@ let link = graph.append("g").attr("class", "links").selectAll("line");
 let node = graph.append("g").attr("class", "nodes").selectAll("circle");
 let label = graph.append("g").attr("class", "labels").selectAll("text");
 let legend = svg.append("g").attr("class", "legend").selectAll(".series");
+let legendTitle = svg.select(".legend").insert("text", ":first-child");
 
 // d3.js functions
 function tick() {
@@ -99,6 +94,7 @@ function drag(simulation) {
 }
 
 // data manipulation functions
+/** returns a subset of the given data based on the given filter object */
 function subset(data, filters) {
     // make sure at least one filter is applied
     const nodes = Object.keys(filters).reduce((numFilters, key) => numFilters + filters[key].size, 0) >= 1
@@ -116,6 +112,7 @@ function subset(data, filters) {
         links
     };
 }
+/** returns a subset of the data based on the explicit key/value given */
 function explicitSubset(data, key, value) {
     const graph = {
         nodes: data.nodes.filter(n => n[key] === value),
@@ -124,22 +121,60 @@ function explicitSubset(data, key, value) {
 
     return graph;
 }
+/** modifies the global filter object to enable/disable the given filter, returns new state */
 function toggleFilter(key, value) {
     // make sure that key is represented in filters
     if (!filters.hasOwnProperty(key))
         filters[key] = new Set();
 
     // toggle filter
-    if (filters[key].has(value))
+    if (filters[key].has(value)) {
         filters[key].delete(value);
-    else
+        return false;
+    } else {
         filters[key].add(value);
+        return true;
+    }
 }
+/** returns a boolean representing whether the given filter is present in the global filter object */
 function filterApplied(key, value) {
     return filters[key] instanceof Set && filters[key].has(value)
 }
+/** populates an array on each node in the data with references to its immediate neighbors */
+function populateNeighbors(data) {
+    data.links.forEach(function (link) {
+        const source = link.source,
+              target = link.target;
+
+        (source.neighbors = source.neighbors || new Set()).add(target);
+        (target.neighbors = target.neighbors || new Set()).add(source);
+    });
+
+    return data;
+}
+/** returns a subset of the data representing the complete component that contains the given node */
+function component(data, keyNode, nodes, root = true) {
+    nodes = nodes || new Set();
+
+    if (typeof keyNode === 'string' || keyNode instanceof String)
+        keyNode = data.nodes.find(n => n.id === keyNode);
+
+    nodes.add(keyNode);
+
+    keyNode.neighbors
+        .forEach(n => {
+            if (!nodes.has(n))
+                component(data, n, nodes, false);
+    });
+
+    if (root) return {
+        nodes: [...nodes],
+        links: data.links.filter(l => nodes.has(l.source) && nodes.has(l.target))
+    };
+}
 
 // define draw function
+/** update the graph based on the given data */
 function update(data) {
     const t = d3.transition()
         .duration(250);
@@ -181,7 +216,6 @@ function update(data) {
         .enter()
         .append("circle")
         .attr("class", "node")
-        // .attr("r", radius)
         .style("fill", d => color(d.world))
         .call(drag(simulation))
         .call(n => n.transition(t).attr("r", radius))
@@ -217,49 +251,8 @@ function update(data) {
         .alphaTarget(0)
         .on("tick", tick)
         .restart();
+
+    return data;
 }
 
-// apply data
-data.then(function (data) {
-    // populate color space
-    color.domain([...new Set(data.nodes.map(n => n.world))]);
-
-    // add legend
-    legend = legend
-        .data(color.domain())
-        .enter()
-        .append("g")
-        .attr("class", "series")
-        .attr("transform", (d, i) => `translate(0, ${20 * i})`)
-        .on("click", datum => { // apply filter on click
-            toggleFilter("world", datum);
-            update(subset(data, filters));
-        });
-
-    legend.append("circle")
-        .attr("r", ".3em")
-        .attr("cx", width/2 - (0.025 * width))
-        .attr("cy", -height/2 + 50)
-        .style("fill", color);
-        // todo: format circle as more transparent if series not displayed
-
-    legend.append("text")
-        .attr("x", width/2 - (0.025 * width) - 25)
-        .attr("y", -height/2 + 50 + 1)
-        .attr("dx", 12)
-        .text(d => d);
-        // todo: format text differently if series is displayed
-
-    // add legend title
-    const legendTitle = svg.select(".legend")
-        .insert("text", ":first-child")
-        .attr("class", "legend-title")
-        .attr("x", width/2 - (0.025 * width) + radius)
-        .attr("y", -height/2 + 50 + 1)
-        .attr("transform", "translate(0, -20)")
-        .text("World");
-
-    // initial drawing with all data
-    update(data);
-});
 
