@@ -40,6 +40,7 @@ data.then(function (data) {
         .attr("r", ".3em")
         .attr("cx", width/2 - (0.025 * width))
         .attr("cy", -height/2 + 50)
+        .attr("opacity", 0.4) // display filter as disabled initially
         .style("fill", color);
 
     legend
@@ -47,6 +48,7 @@ data.then(function (data) {
         .attr("x", width/2 - (0.025 * width) - 25)
         .attr("y", -height/2 + 50 + 1)
         .attr("dx", 12)
+        .style("font-weight", "normal") // display filter as disabled initially
         .text(d => d);
 
     // add legend title
