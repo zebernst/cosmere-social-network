@@ -160,6 +160,7 @@ exclude: # slimmed down because site is located in docs/ directory
   - tmp
   - /docs # ignore Minimal Mistakes /docs
   - /test # ignore Minimal Mistakes /test
+  - _pages/unpublished # ignore unfinished pages
 keep_files:
   - .git
   - .svn
