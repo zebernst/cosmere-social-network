@@ -1,8 +1,8 @@
 # main links
 main:
   - title: "Background"
-    url: /background/
+    url: /background
   - title: "Graphs"
-    url: /graphs/
+    url: /graphs
   - title: "Code"
     url: https://github.com/zebernst/cosmere-social-network
