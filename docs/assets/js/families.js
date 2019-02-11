@@ -7,7 +7,8 @@ let dataset;
 data.then(function (data) {
     dataset = data;
 
-    let svg = d3.select('svg#force-graph').datum(data);
+    let svg = d3.select('svg#force-graph')
+        .datum(data);
 
     // populate color space
     graph = graph

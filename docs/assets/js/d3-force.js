@@ -355,6 +355,8 @@ function forceDirectedGraph() {
 
     // expose api for console debugging
     graph.debug = {
+        filters,
+        subset,
         update,
         component
     };
