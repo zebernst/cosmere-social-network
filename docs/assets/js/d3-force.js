@@ -218,14 +218,14 @@ function forceDirectedGraph() {
         link = link
             .enter()
             .append("line")
-            .attr("class", "link")
+            .classed("link", true)
             .call(l => l.transition(t).attr("stroke-opacity", 1))
             .merge(link);
 
         node = node
             .enter()
             .append("circle")
-            .attr("class", "node")
+            .classed("node", true)
             .style("fill", d => color(d.world))
             .call(drag(simulation))
             .call(n => n.transition(t).attr("r", radius))
@@ -236,7 +236,7 @@ function forceDirectedGraph() {
         label = label
             .enter()
             .append("text")
-            .attr("class", "label")
+            .classed("label", true)
             .attr("dx", 12)
             .attr("dy", ".35em")
             .text(d => d.id)
@@ -277,13 +277,13 @@ function forceDirectedGraph() {
                     .on("zoom", () => graph.attr("transform", d3.event.transform)));
 
             const graph = svg.append("g")
-                .attr("class", "graph");
+                .classed("graph", true);
 
             // get elements for data binding
-            link = graph.append("g").attr("class", "links").selectAll("line");
-            node = graph.append("g").attr("class", "nodes").selectAll("circle");
-            label = graph.append("g").attr("class", "labels").selectAll("text");
-            legend = svg.append("g").attr("class", "legend").selectAll(".series");
+            link = graph.append("g").classed("links", true).selectAll("line");
+            node = graph.append("g").classed("nodes", true).selectAll("circle");
+            label = graph.append("g").classed("labels", true).selectAll("text");
+            legend = svg.append("g").classed("legend", true).selectAll(".series");
             legendTitle = svg.select(".legend").insert("text", ":first-child");
 
             // initial drawing with all data
@@ -298,7 +298,7 @@ function forceDirectedGraph() {
                 .data(color.domain())
                 .enter()
                 .append("g")
-                .attr("class", "series")
+                .classed("series", true)
                 .attr("transform", (d, i) => `translate(0, ${20 * i})`)
                 .on("click", datum => { // apply filter on click
                     toggleFilter("world", datum);
@@ -323,7 +323,7 @@ function forceDirectedGraph() {
 
             // add legend title
             legendTitle
-                .attr("class", "legend-title")
+                .classed("legend-title", true)
                 .attr("x", width/2 - (0.025 * width) + radius)
                 .attr("y", -height/2 + 50 + 1)
                 .attr("transform", "translate(0, -20)")
