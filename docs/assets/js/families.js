@@ -20,7 +20,7 @@ data.then(function (data) {
     displayedSubset = allData;
 
     // update nodes with neighbor array (needs to be called after initial update())
-    populateNeighbors(data);
+    populateConnections(data);
 
     // add legend
     legend = legend

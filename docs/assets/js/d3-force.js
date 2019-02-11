@@ -142,20 +142,25 @@ function filterApplied(key, value) {
         && filters[key] instanceof Set
         && filters[key].has(value);
 }
-/** populates an array on each node in the data with references to its immediate neighbors */
-function populateNeighbors(data) {
+/** populates an array of adjacent neighbors and an array of direct links on each node in the provided data */
+function populateConnections(data) {
     data.links.forEach(function (link) {
         const source = link.source,
               target = link.target;
 
+        // populate neighbors
         (source.neighbors = source.neighbors || new Set()).add(target);
         (target.neighbors = target.neighbors || new Set()).add(source);
+
+        // populate edges
+        (source.edges = source.edges || new Set()).add(link);
+        (target.edges = target.edges || new Set()).add(link);
     });
 
     return data;
 }
 /** returns a subset of the data representing the complete component that contains the given node */
-function component(data, keyNode, nodes, root = true) {
+function component(data, keyNode, nodes=undefined, base=true) {
     nodes = nodes || new Set();
 
     if (typeof keyNode === 'string' || keyNode instanceof String)
@@ -172,10 +177,28 @@ function component(data, keyNode, nodes, root = true) {
         });
     }
 
-    if (root) return {
+    if (base) return {
         nodes: [...nodes],
         links: data.links.filter(l => nodes.has(l.source) && nodes.has(l.target))
     };
+}
+/** returns true if `other` is a node or a link directly connected to `datum`, false otherwise */
+function isConnected(datum, other) {
+    return datum.neighbors.has(other)
+        || datum.edges.has(other)
+        || datum === other;
+}
+
+// styling functions
+/** fades or highlights nodes and links based on whether or not they're connected to the specified node */
+function fade(fadeOpacity) {
+    return function (datum) {
+        const opacity = elem => isConnected(datum, elem) ? 1 : fadeOpacity;
+
+        node.style('stroke-opacity', opacity);
+        node.style('fill-opacity',   opacity);
+        link.style('stroke-opacity', opacity);
+    }
 }
 
 // define draw function
@@ -224,6 +247,9 @@ function update(data) {
         .style("fill", d => color(d.world))
         .call(drag(simulation))
         .call(n => n.transition(t).attr("r", radius))
+        .on('click', n => console.log(n)) // for debugging
+        .on('mouseover.highlight', fade(0.2))
+        .on('mouseout.highlight', fade(1))
         .merge(node);
 
     label = label
