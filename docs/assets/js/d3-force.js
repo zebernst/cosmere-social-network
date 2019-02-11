@@ -104,7 +104,7 @@ function subset(data, filters) {
                     return filters[k].has(n[k]);
                 else return false; // return false if filters[k] is not a Set
             }))
-        : data.nodes.filter(() => true);
+        : data.nodes.filter(() => true); // return all nodes if no filters applied
     const links = data.links.filter(l => nodes.includes(l.source) && nodes.includes(l.target));
 
     return {
@@ -114,12 +114,13 @@ function subset(data, filters) {
 }
 /** returns a subset of the data based on the explicit key/value given */
 function explicitSubset(data, key, value) {
-    const graph = {
-        nodes: data.nodes.filter(n => n[key] === value),
-        links: data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target))
-    };
+    const nodes = data.nodes.filter(n => n[key] === value);
+    const links = data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target));
 
-    return graph;
+    return {
+        nodes,
+        links
+    };
 }
 /** modifies the global filter object to enable/disable the given filter, returns new state */
 function toggleFilter(key, value) {
@@ -205,7 +206,7 @@ function fade(fadeOpacity) {
 /** update the graph based on the given data */
 function update(data) {
     const t = d3.transition()
-        .duration(250);
+        .duration(300);
 
     // update
     link = link.data(data.links, d => d.index);
@@ -247,7 +248,6 @@ function update(data) {
         .style("fill", d => color(d.world))
         .call(drag(simulation))
         .call(n => n.transition(t).attr("r", radius))
-        .on('click', n => console.log(n)) // for debugging
         .on('mouseover.highlight', fade(0.2))
         .on('mouseout.highlight', fade(1))
         .merge(node);
