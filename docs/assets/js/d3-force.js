@@ -3,27 +3,29 @@
  * ################### */
 
 function forceDirectedGraph() {
+    // configurable options
     let width = window.innerWidth,
         height = window.innerHeight,
-        radius = 5;
+        radius = 5,
+        color = d3.scaleOrdinal(d3.schemeCategory10).unknown('#000');
 
-    let color = d3.scaleOrdinal(d3.schemeCategory10).unknown('#000');
-    const simulation = d3.forceSimulation()
-        .force("charge",
-            d3.forceManyBody()
-                .strength(-80))
-        .force("links",
-            d3.forceLink()
-                .id(d => d.id)
-                .distance(50))
-        .force("collide",
-            d3.forceCollide())
-        .force("x", d3.forceX())
-        .force("y", d3.forceY());
+    // graph state
+    const filters = {},
+        simulation = d3.forceSimulation()
+            .force("charge",
+                d3.forceManyBody()
+                    .strength(-80))
+            .force("links",
+                d3.forceLink()
+                    .id(d => d.id)
+                    .distance(50))
+            .force("collide",
+                d3.forceCollide())
+            .force("x", d3.forceX())
+            .force("y", d3.forceY());
 
+    // graph elements
     let link, node, label, legend, legendTitle;
-
-    const filters = {};
 
     // d3.js functions
     function tick() {
@@ -101,7 +103,7 @@ function forceDirectedGraph() {
             links
         };
     }
-    /** modifies the global filter object to enable/disable the given filter, returns new state */
+    /** modifies the graph's filter object to enable/disable the given filter, returns new state */
     function toggleFilter(key, value) {
         // make sure that key is represented in filters
         if (!filters.hasOwnProperty(key))
@@ -330,10 +332,31 @@ function forceDirectedGraph() {
     }
 
     // define getters/setters
+    graph.width = function (value) {
+        if (!arguments.length) return width;
+        width = value;
+        return graph;
+    };
+    graph.height = function (value) {
+        if (!arguments.length) return height;
+        height = value;
+        return graph;
+    };
+    graph.radius = function (value) {
+        if (!arguments.length) return radius;
+        radius = value;
+        return graph;
+    };
     graph.colorDomain = function (value) {
         if (!arguments.length) return color.domain();
         color.domain(value);
         return graph;
+    };
+
+    // expose api for console debugging
+    graph.debug = {
+        update,
+        component
     };
 
     return graph;
