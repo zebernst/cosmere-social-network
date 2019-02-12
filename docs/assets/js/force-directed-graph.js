@@ -132,6 +132,11 @@ function forceDirectedGraph() {
             const source = link.source,
                   target = link.target;
 
+            if (typeof source === 'string' || source instanceof String ||
+                typeof target === 'string' || target instanceof String)
+                throw 'populateConnections() called on unprocessed data. Please ensure that the ' +
+                'link force has been initialized before attempting to populate neighbor or edge arrays.';
+
             // populate neighbors
             (source.neighbors = source.neighbors || new Set()).add(target);
             (target.neighbors = target.neighbors || new Set()).add(source);
@@ -288,19 +293,17 @@ function forceDirectedGraph() {
             const graph = svg.append("g")
                 .classed("graph", true);
 
-
             // get elements for data binding
             link = graph.append("g").classed("links", true).selectAll("line");
             node = graph.append("g").classed("nodes", true).selectAll("circle");
             label = graph.append("g").classed("labels", true).selectAll("text");
             legend = svg.append("g").classed("legend", true).selectAll(".series");
-            legendTitle = svg.select(".legend").insert("text", ":first-child");
+            legendTitle = svg.select("g.legend").insert("text", ":first-child");
 
-            // initial drawing with all data
-            // (transforms links into node references)
+            // populate graph with data
             update(data);
 
-            // update nodes with neighbor array (needs to be called after initial update())
+            // update nodes with neighbor/edge arrays
             populateConnections(data);
 
             // add legend
@@ -338,7 +341,7 @@ function forceDirectedGraph() {
                 .attr("y", -height/2 + 50 + 1)
                 .attr("transform", "translate(0, -20)")
                 .text("World");
-                });
+        });
     }
 
     // define getters/setters
@@ -375,7 +378,7 @@ function forceDirectedGraph() {
 
     // expose interface for console debugging
     graph.debug = {
-        dataset,
+        data,
         filters,
         subset,
         update,
