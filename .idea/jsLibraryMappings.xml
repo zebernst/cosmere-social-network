@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$" libraries="{FontAwesome, d3, underscore}" />
-    <file url="PROJECT" libraries="{FontAwesome, d3, underscore}" />
+    <file url="file://$PROJECT_DIR$" libraries="{d3, fontawesome, jquery, lodash}" />
+    <file url="PROJECT" libraries="{d3, fontawesome, jquery, lodash}" />
   </component>
 </project>

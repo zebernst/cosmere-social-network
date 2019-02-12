@@ -10,11 +10,11 @@
 {% else %}
   <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.6.0/js/all.js" integrity="sha384-z9ZOvGHHo21RqN5De4rfJMoAxYpaVoiYhuJXPyVmSs8yn20IE3PmBM534CffwSJI" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4/lodash.min.js"></script>
 {% endif %}
 
 {% if page.d3 %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.1/d3.min.js" integrity="sha256-RtVUDWfx0vF5nrvHDYcQoWSPaOuQ0R8Rq9kUG2kSvH8=" crossorigin="anonymous"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
 {% endif %}
 
 {% if page.custom_js %}

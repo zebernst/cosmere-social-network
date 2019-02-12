@@ -4,9 +4,10 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="jdk" jdkName="Pipenv (Cosmere Social Network)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="FontAwesome" level="application" />
-    <orderEntry type="library" name="underscore" level="application" />
+    <orderEntry type="library" name="fontawesome" level="application" />
     <orderEntry type="library" name="d3" level="application" />
+    <orderEntry type="library" name="lodash" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

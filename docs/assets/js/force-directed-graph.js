@@ -80,14 +80,14 @@ function forceDirectedGraph() {
     /** returns a subset of the given data based on the given filter object */
     function subset(data, filters) {
         // make sure at least one filter is applied
-        const nodes = Object.keys(filters).reduce((numFilters, key) => numFilters + filters[key].size, 0) >= 1
-            ? data.nodes.filter(n => Object.keys(n)
+        const nodes = _(filters).valuesIn().some(p => _.isSet(p) && p.size)
+            ? data.nodes.filter(node => _(node).keys()
                 .some(k => {
-                    if (filters.hasOwnProperty(k) && filters[k] instanceof Set)
-                        return filters[k].has(n[k]);
+                    if (_(filters).has(k) && _.isSet(filters[k]))
+                        return filters[k].has(node[k]);
                     else return false; // return false if filters[k] is not a Set
                 }))
-            : data.nodes.filter(() => true); // return all nodes if no filters applied
+            : _.clone(data.nodes); // return all nodes if no filters applied
         const links = data.links.filter(l => nodes.includes(l.source) && nodes.includes(l.target));
 
         return {
@@ -98,7 +98,7 @@ function forceDirectedGraph() {
     /** returns a subset of the data based on the explicit key/value given */
     function explicitSubset(data, key, value) {
         const nodes = data.nodes.filter(n => n[key] === value);
-        const links = data.links.filter(l => graph.nodes.includes(l.source) && graph.nodes.includes(l.target));
+        const links = data.links.filter(l => data.nodes.includes(l.source) && data.nodes.includes(l.target));
 
         return {
             nodes,
@@ -108,7 +108,7 @@ function forceDirectedGraph() {
     /** modifies the graph's filter object to enable/disable the given filter, returns new state */
     function toggleFilter(key, value) {
         // make sure that key is represented in filters
-        if (!filters.hasOwnProperty(key))
+        if (!_(filters).has(key))
             filters[key] = new Set();
 
         // toggle filter
@@ -122,8 +122,8 @@ function forceDirectedGraph() {
     }
     /** returns a boolean representing whether the given filter is present in the global filter object */
     function filterApplied(key, value) {
-        return filters.hasOwnProperty(key)
-            && filters[key] instanceof Set
+        return _(filters).has(key)
+            && _.isSet(filters[key])
             && filters[key].has(value);
     }
     /** populates an array of adjacent neighbors and an array of direct links on each node in the provided data */
@@ -132,8 +132,7 @@ function forceDirectedGraph() {
             const source = link.source,
                   target = link.target;
 
-            if (typeof source === 'string' || source instanceof String ||
-                typeof target === 'string' || target instanceof String)
+            if (_.isString(source) || _.isString(target))
                 throw 'populateConnections() called on unprocessed data. Please ensure that the ' +
                 'link force has been initialized before attempting to populate neighbor or edge arrays.';
 
@@ -152,7 +151,7 @@ function forceDirectedGraph() {
     function component(data, keyNode, nodes=undefined, base=true) {
         nodes = nodes || new Set();
 
-        if (typeof keyNode === 'string' || keyNode instanceof String)
+        if (_.isString(keyNode))
             keyNode = data.nodes.find(n => n.id.toLowerCase() === keyNode.toLowerCase());
 
         // don't try to iterate over neighbors of invalid node
@@ -163,7 +162,7 @@ function forceDirectedGraph() {
                 .forEach(n => {
                     if (!nodes.has(n))
                         component(data, n, nodes, false);
-            });
+                });
         }
 
         if (base) return {
