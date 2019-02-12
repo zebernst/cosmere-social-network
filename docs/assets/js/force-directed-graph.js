@@ -3,7 +3,7 @@
  * ################### */
 
 function forceDirectedGraph() {
-    // configurable options
+    // configurable options + defaults
     let width = window.innerWidth,
         height = window.innerHeight,
         radius = 5,
@@ -12,19 +12,19 @@ function forceDirectedGraph() {
 
     // graph state
     const filters = {},
-        data = {},
-        simulation = d3.forceSimulation()
-            .force("charge",
-                d3.forceManyBody()
-                    .strength(-80))
-            .force("links",
-                d3.forceLink()
-                    .id(d => d.id)
-                    .distance(50))
-            .force("collide",
-                d3.forceCollide())
-            .force("x", d3.forceX())
-            .force("y", d3.forceY());
+          data = {},
+          simulation = d3.forceSimulation()
+              .force("charge",
+                  d3.forceManyBody()
+                      .strength(-80))
+              .force("links",
+                  d3.forceLink()
+                      .id(d => d.id)
+                      .distance(50))
+              .force("collide",
+                  d3.forceCollide())
+              .force("x", d3.forceX())
+              .force("y", d3.forceY());
 
     // graph elements
     let link, node, label, legend, legendTitle;

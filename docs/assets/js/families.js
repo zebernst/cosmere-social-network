@@ -1,5 +1,5 @@
 /* d3 force graph for family relationships *
- *    [setup located in d3-force.js]       */
+ *     [uses force-directed-graph.js]      */
 
 // persist graph
 let graph;
@@ -25,8 +25,8 @@ const data = d3.json(dataUrl)
             .height(window.innerHeight)
             .radius(5)
             .legendKey('world')
-            .colorDomain(legend.map(e => e.world))
-            .colorRange(legend.map(e => e.color));
+            .colorDomain(_.map(legend, 'world'))
+            .colorRange(_.map(legend, 'color'));
 
         // bind graph to svg
         svg.call(graph);
