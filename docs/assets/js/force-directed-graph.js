@@ -80,7 +80,7 @@ function forceDirectedGraph() {
     /** returns a subset of the given data based on the given filter object */
     function subset(data, filters) {
         // make sure at least one filter is applied
-        const nodes = _(filters).valuesIn().some(p => _.isSet(p) && p.size)
+        const nodes = _(filters).values().some(p => _.isSet(p) && p.size)
             ? data.nodes.filter(node => _(node).keys()
                 .some(k => {
                     if (_(filters).has(k) && _.isSet(filters[k]))
