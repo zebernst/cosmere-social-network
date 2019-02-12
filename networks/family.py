@@ -29,7 +29,9 @@ def create_graph() -> nx.OrderedGraph:
     monikers = {name: c for c in characters for name in c.monikers}
 
     # filter on characters who have family info and add nodes to graph
-    nodes = {c.name: dict(world=c.world) for c in characters if any(x in c.info for x in fields)}
+    nodes = {c.name: dict(world=c.world, names=list(c.monikers))
+             for c in characters
+             if any(x in c.info for x in fields)}
     G.add_nodes_from(nodes.items())
     logger.debug("Added character nodes to graph.")
 

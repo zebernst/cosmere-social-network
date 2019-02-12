@@ -3,141 +3,189 @@ graph [
     id 0
     label "Raoden"
     world "Sel"
+      names "King of Arelon"
+      names "King of Elantris"
+      names "Kaloo"
+      names "Spirit"
+      names "Raoden"
   ]
   node [
     id 1
     label "Sarene"
     world "Sel"
+      names "'Ene"
+      names "Leky Stick"
+      names "Princess of Teod"
+      names "Sarene"
+      names "Queen of Elantris"
+      names "Queen of Arelon"
   ]
   node [
     id 2
     label "Iadon"
     world "Sel"
+      names "King of Arelon"
+      names "Iadon"
   ]
   node [
     id 3
     label "Eshen"
     world "Sel"
+      names "Eshen"
+      names "Queen of Arelon"
   ]
   node [
     id 4
     label "Eventeo"
     world "Sel"
+      names "King of Teod"
+      names "Eventeo"
   ]
   node [
     id 5
     label "Kiin"
     world "Sel"
+      names "Dreok Crushthroat"
+      names "Kiin"
   ]
   node [
     id 6
     label "Daora"
     world "Sel"
+      names "Daora"
   ]
   node [
     id 7
     label "Daorn"
     world "Sel"
+      names "Daorn"
   ]
   node [
     id 8
     label "Kaise"
     world "Sel"
+      names "Kaise"
   ]
   node [
     id 9
     label "Lukel"
     world "Sel"
+      names "Lukel"
   ]
   node [
     id 10
     label "Jalla"
     world "Sel"
+      names "Jalla"
   ]
   node [
     id 11
     label "Adien"
     world "Sel"
+      names "Adien"
   ]
   node [
     id 12
     label "Telrii"
     world "Sel"
+      names "Duke"
+      names "Telrii"
+      names "King of Arelon"
   ]
   node [
     id 13
     label "Roial"
     world "Sel"
+      names "Duke of Ial Plantation"
+      names "Roial"
   ]
   node [
     id 14
     label "Ahan"
     world "Sel"
+      names "Count"
+      names "Ahan"
   ]
   node [
     id 15
     label "Ashe"
     world "Sel"
+      names "Ashe"
   ]
   node [
     id 16
     label "Atara"
     world "Sel"
+      names "Queen of Arelon"
+      names "Atara"
   ]
   node [
     id 17
     label "Opa"
     world "Sel"
+      names "Opa"
   ]
   node [
     id 18
     label "Ien"
     world "Sel"
+      names "Ien"
   ]
   node [
     id 19
     label "Dio"
     world "Sel"
+      names "Dio"
   ]
   node [
     id 20
     label "Shaor"
     world "Sel"
+      names "Soine"
+      names "Shaor"
   ]
   node [
     id 21
     label "Dashe"
     world "Sel"
+      names "Dashe"
   ]
   node [
     id 22
     label "Matisse"
     world "Sel"
+      names "Matisse"
   ]
   node [
     id 23
     label "Eoldess"
     world "Sel"
+      names "Eoldess"
   ]
   node [
     id 24
     label "Teorn"
     world "Sel"
+      names "Crown Prince of Teod"
+      names "Teorn"
   ]
   node [
     id 25
     label "Seaden"
     world "Sel"
+      names "Seaden"
   ]
   node [
     id 26
     label "Aeo"
     world "Sel"
+      names "Aeo"
   ]
   node [
     id 27
     label "Torena"
     world "Sel"
+      names "Torena"
   ]
   node [
     id 28
@@ -165,263 +213,263 @@ graph [
   ]
   node [
     id 34
-    label "Evi Kholin"
+    label "Malise Gevelmar"
   ]
   node [
     id 35
-    label "Toh"
+    label "Evi Kholin"
   ]
   node [
     id 36
-    label "Dalinar Kholin"
+    label "Toh"
   ]
   node [
     id 37
-    label "Adolin Kholin"
+    label "Dalinar Kholin"
   ]
   node [
     id 38
-    label "Renarin Kholin"
+    label "Adolin Kholin"
   ]
   node [
     id 39
-    label "Kelsier"
+    label "Renarin Kholin"
   ]
   node [
     id 40
-    label "Marsh"
+    label "Kelsier"
   ]
   node [
     id 41
-    label "Mare"
+    label "Marsh"
   ]
   node [
     id 42
-    label "Vin"
+    label "Mare"
   ]
   node [
     id 43
-    label "Tevidian Tekiel"
+    label "Vin"
   ]
   node [
     id 44
-    label "Reen"
+    label "Tevidian Tekiel"
   ]
   node [
     id 45
-    label "Elend Venture"
+    label "Reen"
   ]
   node [
     id 46
-    label "Edgard Ladrian"
+    label "Elend Venture"
   ]
   node [
     id 47
-    label "Allrianne Cett"
+    label "Edgard Ladrian"
   ]
   node [
     id 48
-    label "Spook"
+    label "Allrianne Cett"
   ]
   node [
     id 49
-    label "Jedal"
+    label "Spook"
   ]
   node [
     id 50
-    label "Margel"
+    label "Jedal"
   ]
   node [
     id 51
-    label "Clubs"
+    label "Margel"
   ]
   node [
     id 52
-    label "Straff Venture"
+    label "Clubs"
   ]
   node [
     id 53
-    label "Zane Venture"
+    label "Straff Venture"
   ]
   node [
     id 54
-    label "Ashweather Cett"
+    label "Zane Venture"
   ]
   node [
     id 55
-    label "Gneorndin Cett"
+    label "Ashweather Cett"
   ]
   node [
     id 56
-    label "Vasher"
+    label "Gneorndin Cett"
   ]
   node [
     id 57
-    label "Shashara"
+    label "Vasher"
   ]
   node [
     id 58
-    label "Sisirinah"
+    label "Shashara"
   ]
   node [
     id 59
-    label "Dedelin"
+    label "Sisirinah"
   ]
   node [
     id 60
-    label "Vivenna"
+    label "Dedelin"
   ]
   node [
     id 61
-    label "Ridger"
+    label "Vivenna"
   ]
   node [
     id 62
-    label "Fafen"
+    label "Ridger"
   ]
   node [
     id 63
-    label "Susebron"
+    label "Fafen"
   ]
   node [
     id 64
-    label "Lightsong"
+    label "Susebron"
   ]
   node [
     id 65
-    label "Llarimar"
+    label "Lightsong"
   ]
   node [
     id 66
-    label "Denth"
+    label "Llarimar"
   ]
   node [
     id 67
-    label "Tatara"
+    label "Denth"
   ]
   node [
     id 68
-    label "Szeth"
+    label "Tatara"
   ]
   node [
     id 69
-    label "Neturo"
+    label "Szeth"
   ]
   node [
     id 70
-    label "Kaladin"
+    label "Neturo"
   ]
   node [
     id 71
-    label "Lirin"
+    label "Kaladin"
   ]
   node [
     id 72
-    label "Hesina"
+    label "Lirin"
   ]
   node [
     id 73
-    label "Tien"
+    label "Hesina"
   ]
   node [
     id 74
-    label "Oroden"
+    label "Tien"
   ]
   node [
     id 75
-    label "Sylphrena"
+    label "Oroden"
   ]
   node [
     id 76
-    label "Pattern"
+    label "Sylphrena"
   ]
   node [
     id 77
-    label "Jasnah Kholin"
+    label "Pattern"
   ]
   node [
     id 78
-    label "Gavilar Kholin"
+    label "Jasnah Kholin"
   ]
   node [
     id 79
-    label "Navani Kholin"
+    label "Gavilar Kholin"
   ]
   node [
     id 80
-    label "Elhokar Kholin"
+    label "Navani Kholin"
   ]
   node [
     id 81
-    label "Ivory"
+    label "Elhokar Kholin"
   ]
   node [
     id 82
-    label "Glys"
+    label "Ivory"
   ]
   node [
     id 83
-    label "Roshone"
+    label "Glys"
   ]
   node [
     id 84
-    label "Laral Roshone"
+    label "Roshone"
   ]
   node [
     id 85
-    label "Rillir Roshone"
+    label "Laral Roshone"
   ]
   node [
     id 86
-    label "Aesudan Kholin"
+    label "Rillir Roshone"
   ]
   node [
     id 87
-    label "Gavinor Kholin"
+    label "Aesudan Kholin"
   ]
   node [
     id 88
-    label "Stormfather"
+    label "Gavinor Kholin"
   ]
   node [
     id 89
-    label "Waxillium Ladrian"
+    label "Stormfather"
   ]
   node [
     id 90
-    label "Telsin Ladrian"
+    label "Waxillium Ladrian"
   ]
   node [
     id 91
-    label "Paalm"
+    label "Telsin Ladrian"
   ]
   node [
     id 92
-    label "Steris Harms"
+    label "Paalm"
   ]
   node [
     id 93
-    label "Marasi Colms"
+    label "Steris Harms"
   ]
   node [
     id 94
-    label "Jackstom Harms"
+    label "Marasi Colms"
   ]
   node [
     id 95
-    label "Ruthar"
+    label "Jackstom Harms"
   ]
   node [
     id 96
-    label "Jayla Ruthar"
+    label "Ruthar"
   ]
   node [
     id 97
-    label "Relis Ruthar"
+    label "Jayla Ruthar"
   ]
   node [
     id 98
-    label "Malise Gevelmar"
+    label "Relis Ruthar"
   ]
   node [
     id 99
@@ -792,6 +840,10 @@ graph [
     target 33
   ]
   edge [
+    source 28
+    target 34
+  ]
+  edge [
     source 29
     target 32
   ]
@@ -809,7 +861,7 @@ graph [
   ]
   edge [
     source 29
-    target 98
+    target 34
   ]
   edge [
     source 30
@@ -824,6 +876,10 @@ graph [
     target 33
   ]
   edge [
+    source 30
+    target 34
+  ]
+  edge [
     source 31
     target 32
   ]
@@ -832,164 +888,168 @@ graph [
     target 33
   ]
   edge [
+    source 31
+    target 34
+  ]
+  edge [
     source 32
     target 33
   ]
   edge [
-    source 33
-    target 37
+    source 32
+    target 34
   ]
   edge [
     source 33
-    target 76
+    target 38
+  ]
+  edge [
+    source 33
+    target 77
+  ]
+  edge [
+    source 33
+    target 34
   ]
   edge [
     source 34
-    target 35
+    target 99
   ]
   edge [
-    source 34
+    source 35
     target 36
   ]
   edge [
-    source 34
+    source 35
     target 37
   ]
   edge [
-    source 34
+    source 35
     target 38
   ]
   edge [
-    source 36
-    target 37
-  ]
-  edge [
-    source 36
-    target 38
-  ]
-  edge [
-    source 36
-    target 78
-  ]
-  edge [
-    source 36
-    target 79
-  ]
-  edge [
-    source 36
-    target 88
+    source 35
+    target 39
   ]
   edge [
     source 37
     target 38
   ]
   edge [
+    source 37
+    target 39
+  ]
+  edge [
+    source 37
+    target 79
+  ]
+  edge [
+    source 37
+    target 80
+  ]
+  edge [
+    source 37
+    target 89
+  ]
+  edge [
     source 38
-    target 82
+    target 39
   ]
   edge [
     source 39
-    target 40
+    target 83
   ]
   edge [
-    source 39
+    source 40
     target 41
   ]
   edge [
-    source 42
-    target 43
+    source 40
+    target 42
   ]
   edge [
-    source 42
+    source 43
     target 44
   ]
   edge [
-    source 42
+    source 43
     target 45
   ]
   edge [
-    source 45
-    target 52
+    source 43
+    target 46
   ]
   edge [
-    source 45
+    source 46
     target 53
   ]
   edge [
     source 46
-    target 47
-  ]
-  edge [
-    source 47
     target 54
   ]
   edge [
     source 47
+    target 48
+  ]
+  edge [
+    source 48
     target 55
   ]
   edge [
     source 48
-    target 49
-  ]
-  edge [
-    source 48
-    target 50
+    target 56
   ]
   edge [
     source 49
     target 50
   ]
   edge [
+    source 49
+    target 51
+  ]
+  edge [
     source 50
     target 51
   ]
   edge [
-    source 52
-    target 53
+    source 51
+    target 52
   ]
   edge [
-    source 54
-    target 55
+    source 53
+    target 54
   ]
   edge [
-    source 56
-    target 57
+    source 55
+    target 56
   ]
   edge [
     source 57
-    target 66
+    target 58
   ]
   edge [
     source 58
-    target 59
+    target 67
   ]
   edge [
-    source 58
+    source 59
     target 60
   ]
   edge [
-    source 58
+    source 59
     target 61
   ]
   edge [
-    source 58
+    source 59
     target 62
   ]
   edge [
-    source 58
+    source 59
     target 63
   ]
   edge [
     source 59
-    target 60
-  ]
-  edge [
-    source 59
-    target 61
-  ]
-  edge [
-    source 59
-    target 62
+    target 64
   ]
   edge [
     source 60
@@ -998,57 +1058,61 @@ graph [
   edge [
     source 60
     target 62
+  ]
+  edge [
+    source 60
+    target 63
   ]
   edge [
     source 61
     target 62
   ]
   edge [
-    source 64
-    target 65
+    source 61
+    target 63
+  ]
+  edge [
+    source 62
+    target 63
   ]
   edge [
     source 65
-    target 67
+    target 66
   ]
   edge [
-    source 68
-    target 69
+    source 66
+    target 68
   ]
   edge [
     source 69
+    target 70
+  ]
+  edge [
+    source 70
     target 103
   ]
   edge [
-    source 70
-    target 71
-  ]
-  edge [
-    source 70
+    source 71
     target 72
   ]
   edge [
-    source 70
+    source 71
     target 73
   ]
   edge [
-    source 70
+    source 71
     target 74
   ]
   edge [
-    source 70
+    source 71
     target 75
   ]
   edge [
     source 71
-    target 73
+    target 76
   ]
   edge [
-    source 71
-    target 72
-  ]
-  edge [
-    source 71
+    source 72
     target 74
   ]
   edge [
@@ -1057,103 +1121,107 @@ graph [
   ]
   edge [
     source 72
-    target 74
+    target 75
   ]
   edge [
     source 73
     target 74
   ]
   edge [
-    source 77
-    target 78
+    source 73
+    target 75
   ]
   edge [
-    source 77
+    source 74
+    target 75
+  ]
+  edge [
+    source 78
     target 79
   ]
   edge [
-    source 77
+    source 78
     target 80
   ]
   edge [
-    source 77
+    source 78
     target 81
   ]
   edge [
     source 78
-    target 79
-  ]
-  edge [
-    source 78
-    target 80
+    target 82
   ]
   edge [
     source 79
     target 80
   ]
   edge [
-    source 80
-    target 86
+    source 79
+    target 81
   ]
   edge [
     source 80
+    target 81
+  ]
+  edge [
+    source 81
     target 87
   ]
   edge [
-    source 83
-    target 84
+    source 81
+    target 88
   ]
   edge [
-    source 83
+    source 84
     target 85
   ]
   edge [
     source 84
+    target 86
+  ]
+  edge [
+    source 85
     target 100
   ]
   edge [
-    source 86
-    target 87
+    source 87
+    target 88
   ]
   edge [
-    source 89
-    target 90
-  ]
-  edge [
-    source 89
+    source 90
     target 91
   ]
   edge [
-    source 89
+    source 90
     target 92
   ]
   edge [
-    source 92
+    source 90
     target 93
-  ]
-  edge [
-    source 92
-    target 94
   ]
   edge [
     source 93
     target 94
   ]
   edge [
-    source 95
-    target 96
+    source 93
+    target 95
   ]
   edge [
-    source 95
-    target 97
+    source 94
+    target 95
   ]
   edge [
     source 96
     target 97
   ]
   edge [
-    source 98
-    target 99
+    source 96
+    target 98
+  ]
+  edge [
+    source 97
+    target 98
   ]
   edge [
     source 101
