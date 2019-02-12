@@ -276,8 +276,12 @@ function forceDirectedGraph() {
                     .scaleExtent([1/4, 5])
                     .on("zoom", () => graph.attr("transform", d3.event.transform)));
 
+            // clear existing svg elements
+            svg.selectAll("*").remove();
+
             const graph = svg.append("g")
                 .classed("graph", true);
+
 
             // get elements for data binding
             link = graph.append("g").classed("links", true).selectAll("line");
@@ -350,6 +354,11 @@ function forceDirectedGraph() {
     graph.colorDomain = function (value) {
         if (!arguments.length) return color.domain();
         color.domain(value);
+        return graph;
+    };
+    graph.colorRange = function (value) {
+        if (!arguments.length) return color.range();
+        color.range(value);
         return graph;
     };
 
