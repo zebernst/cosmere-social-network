@@ -7,10 +7,12 @@ function forceDirectedGraph() {
     let width = window.innerWidth,
         height = window.innerHeight,
         radius = 5,
-        color = d3.scaleOrdinal(d3.schemeCategory10).unknown('#000');
+        color = d3.scaleOrdinal(d3.schemeCategory10).unknown('#000'),
+        legendKey = 'world';
 
     // graph state
     const filters = {},
+        data = {},
         simulation = d3.forceSimulation()
             .force("charge",
                 d3.forceManyBody()
@@ -269,7 +271,11 @@ function forceDirectedGraph() {
 
     // create graph closure
     function graph(selection) {
-        selection.each(function (data) {
+        selection.each(function (datum) {
+            // persist data
+            data.nodes = datum.nodes;
+            data.links = datum.links;
+
             const svg = d3.select(this)
                 .attr("viewBox", [-width/2, -height/2, width, height].join(" "))
                 .call(d3.zoom()
@@ -351,6 +357,11 @@ function forceDirectedGraph() {
         radius = value;
         return graph;
     };
+    graph.legendKey = function (value) {
+        if (!arguments.length) return legendKey;
+        legendKey = value;
+        return graph;
+    };
     graph.colorDomain = function (value) {
         if (!arguments.length) return color.domain();
         color.domain(value);
@@ -362,8 +373,9 @@ function forceDirectedGraph() {
         return graph;
     };
 
-    // expose api for console debugging
+    // expose interface for console debugging
     graph.debug = {
+        dataset,
         filters,
         subset,
         update,

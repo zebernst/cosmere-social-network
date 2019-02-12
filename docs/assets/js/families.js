@@ -1,11 +1,12 @@
 /* d3 force graph for family relationships *
  *    [setup located in d3-force.js]       */
 
-let graph = forceDirectedGraph();
-let dataset;
+// persist graph
+let graph;
 
 data.then(function (data) {
-    dataset = data;
+    let svg = d3.select('svg#force-graph')
+        .datum(data);
 
     let legend = [
         {color: "#1f77b4", world: "Sel"},
@@ -17,18 +18,15 @@ data.then(function (data) {
         {color: "#e377c2", world: "Taldain"}
         ];
 
-    let svg = d3.select('svg#force-graph')
-        .datum(data);
-
-    // configure graph
-    graph = graph
+    // create graph
+    graph = forceDirectedGraph()
         .width(window.innerWidth)
         .height(window.innerHeight)
         .radius(5)
+        .legendKey('world')
         .colorDomain(legend.map(e => e.world))
         .colorRange(legend.map(e => e.color));
 
-    console.log(graph.colorDomain());
-
+    // bind graph to svg
     svg.call(graph);
 });
