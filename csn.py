@@ -1,4 +1,8 @@
 import argparse
+import operator
+from itertools import groupby
+
+from deepdiff import DeepDiff
 
 from core.characters import coppermind_query
 from core.constants import network_scopes
@@ -65,8 +69,31 @@ if __name__ == '__main__':
                     # display changed results
                     delta = [r for r in old_data + new_data if r not in old_data or r not in new_data]
                     if delta:
-                        print("changed items:")
-                        print(delta)
+                        print("wiki changes:")
+                        page_id = operator.itemgetter('pageid')
+                        for pid, grp in groupby(sorted(delta, key=page_id), key=page_id):
+                            grp = list(grp)
+                            if len(grp) == 1:
+                                char = grp[0]
+                                if char in old_data:
+                                    print(f"removed {char['title']}.")
+                                elif char in new_data:
+                                    print(f"added {char['title']}.")
+                            elif len(grp) == 2:
+                                if grp[0] in old_data:
+                                    old_char, new_char = tuple(grp)
+                                else:
+                                    new_char, old_char = tuple(grp)
+
+                                if old_char['title'] != new_char['title']:
+                                    print(f"{old_char['title']} renamed to {new_char['title']}.")
+
+                                # diff page content
+                                dd = DeepDiff(grp[0]['revisions'][0]['content'], grp[1]['revisions'][0]['content'])
+                                if 'values_changed' in dd:
+                                    print(f"content changes for {new_char['title']}:")
+                                    print(dd['values_changed']['root']['diff'])
+                                    print()
                     else:
                         print("no changes detected in refreshed data.")
 
