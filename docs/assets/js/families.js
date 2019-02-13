@@ -5,11 +5,12 @@
 let graph;
 
 const data = d3.json(dataUrl)
+    // create graph
     .then(function (data) {
-        let svg = d3.select('svg#force-graph')
+        const svg = d3.select('svg#force-graph')
             .datum(data);
 
-        let legend = [
+        const legend = [
             {color: "#1f77b4", world: "Sel"},
             {color: "#ff7f0e", world: "Roshar"},
             {color: "#2ca02c", world: "Scadrial"},
@@ -30,4 +31,52 @@ const data = d3.json(dataUrl)
 
         // bind graph to svg
         svg.call(graph);
+
+        // pass data through
+        return data;
+    })
+
+    // handle autocomplete
+    .then(function (data) {
+        const searchbar = $( "#node-search" );
+
+        searchbar
+            .autocomplete({
+                source: function (request, response) {
+                   if (request.term === "") {
+                       response([]);
+                       return;
+                   }
+
+                   let matches = _(data.nodes)
+                       .filter(node => _(node.names)
+                               .some(s => _.includes(s.toLowerCase(), request.term.toLowerCase())))
+                       .map(n => {
+                           return ({name: n.id, aliases: _.difference(n.names, [n.id]), value: n.id});
+                       })
+                       .value();
+
+                   response(matches)
+                },
+                select: function (event, ui) {
+                    graph.api.update(graph.api.component(graph.api.data, ui.item.value));
+                }
+            })
+            .focusout(function () {
+                // if empty field is unfocused, update graph to show all nodes
+                if (!$(this).val()) {
+                    graph.api.update(graph.api.data);
+                }
+            });
+
+        searchbar
+            .data("ui-autocomplete")
+                ._renderItem = function (ul, item) {
+                    console.log(item);
+                    return $( "<li>" )
+                        .append("<a>" + item.name
+                            + `<span style='font-size: 60%; padding-left: 1em'>${item.aliases.join(", ")}</span>`
+                            + "</a>")
+                        .appendTo(ul)
+                }
     });

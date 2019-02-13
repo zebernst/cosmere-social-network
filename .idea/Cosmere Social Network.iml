@@ -8,6 +8,7 @@
     <orderEntry type="library" name="d3" level="application" />
     <orderEntry type="library" name="lodash" level="application" />
     <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

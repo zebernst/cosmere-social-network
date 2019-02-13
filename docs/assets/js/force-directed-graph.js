@@ -17,7 +17,7 @@ function forceDirectedGraph() {
               .force("charge",
                   d3.forceManyBody()
                       .strength(-80))
-              .force("links",
+              .force("link",
                   d3.forceLink()
                       .id(d => d.id)
                       .distance(50))
@@ -261,7 +261,7 @@ function forceDirectedGraph() {
         // restart simulation
         simulation
             .nodes(data.nodes)
-            .force("links", d3.forceLink()
+            .force("link", d3.forceLink()
                 .links(data.links)
                 .id(d => d.id)
                 .distance(50))
@@ -376,7 +376,7 @@ function forceDirectedGraph() {
     };
 
     // expose interface for console debugging
-    graph.debug = {
+    graph.api = {
         data,
         filters,
         subset,
