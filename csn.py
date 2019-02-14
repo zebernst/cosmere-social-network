@@ -1,9 +1,12 @@
 import argparse
-import logging
+import difflib
+import json  # temp
 import operator
+import time
 from itertools import groupby
+from datetime import datetime
 
-from deepdiff import DeepDiff
+import colorama
 
 from core.characters import coppermind_query
 from core.constants import network_scopes
@@ -13,6 +16,7 @@ from utils.logging import create_logger, get_active_project_loggers, close_file_
 
 
 logger = create_logger('csn.cli')
+colorama.init()
 
 
 if __name__ == '__main__':
@@ -70,18 +74,24 @@ if __name__ == '__main__':
                     print("character data refreshed from coppermind.net.")
 
                     # display changed results
-                    delta = [r for r in old_data + new_data if r not in old_data or r not in new_data]
+                    delta = [rev for rev in old_data + new_data if rev not in old_data or rev not in new_data]
+
                     if delta:
-                        print("wiki changes:")
+                        # TEMPORARY - cache wiki changes
+                        with (coppermind_cache_path.parent / f'delta_{int(time.time())}.json').open('w') as fp:
+                            json.dump(delta, fp, indent=4, sort_keys=True)
+
+                        print()
+                        print("wiki changes:", end="\n\n")
                         page_id = operator.itemgetter('pageid')
-                        for pid, grp in groupby(sorted(delta, key=page_id), key=page_id):
+                        for _, grp in groupby(sorted(delta, key=page_id), key=page_id):
                             grp = list(grp)
                             if len(grp) == 1:
                                 char = grp[0]
                                 if char in old_data:
-                                    print(f"removed {char['title']}.")
-                                elif char in new_data:
-                                    print(f"added {char['title']}.")
+                                    print(f"[[{char['title']}]] removed.", end="\n\n")
+                                else:
+                                    print(f"[[{char['title']}]] added.", end="\n\n")
                             elif len(grp) == 2:
                                 if grp[0] in old_data:
                                     old_char, new_char = tuple(grp)
@@ -89,14 +99,37 @@ if __name__ == '__main__':
                                     new_char, old_char = tuple(grp)
 
                                 if old_char['title'] != new_char['title']:
-                                    print(f"{old_char['title']} renamed to {new_char['title']}.")
+                                    print(f"[[{old_char['title']}]] renamed to [[{new_char['title']}]].")
 
                                 # diff page content
-                                dd = DeepDiff(grp[0]['revisions'][0]['content'], grp[1]['revisions'][0]['content'])
-                                if 'values_changed' in dd:
-                                    print(f"content changes for {new_char['title']}:")
-                                    print(dd['values_changed']['root']['diff'])
-                                    print()
+                                def timestamp_fmt(s: str):
+                                    iso_str = s.replace('Z', '+00:00')
+                                    return datetime.fromisoformat(iso_str).strftime('%d %b %Y %H:%I:%S')
+
+                                diff = list(difflib.unified_diff(
+                                    old_char['revisions'][0]['content'].splitlines(),
+                                    new_char['revisions'][0]['content'].splitlines(),
+                                    fromfile=old_char['title'],
+                                    fromfiledate=timestamp_fmt(old_char['revisions'][0]['timestamp']),
+                                    tofile=new_char['title'],
+                                    tofiledate=timestamp_fmt(new_char['revisions'][0]['timestamp']),
+                                    lineterm=''))
+
+                                if diff:
+                                    print(f"[[{new_char['title']}]] modified.")
+                                    print("content diff:")
+                                    for line in diff:
+                                        if line.startswith('-') and not line.startswith('---'):
+                                            print(f"{colorama.Fore.RED}{line}{colorama.Fore.RESET}")
+                                        elif line.startswith('+') and not line.startswith('+++'):
+                                            print(f"{colorama.Fore.GREEN}{line}{colorama.Fore.RESET}")
+                                        elif line.startswith('@@'):
+                                            print(f"{colorama.Fore.CYAN}{line}{colorama.Fore.RESET}")
+                                        elif line.startswith(' '):
+                                            print(f"{colorama.Style.DIM}{line}{colorama.Style.NORMAL}")
+                                        else:
+                                            print(line)
+                                    print(end="\n\n")
                     else:
                         print("no changes detected in refreshed data.")
 

@@ -210,7 +210,7 @@ def coppermind_query():
             "format": "json",
             "prop": "revisions",
             "generator": "categorymembers",
-            "rvprop": "content",
+            "rvprop": "content|timestamp",
             "rvsection": "0",
             "gcmtitle": "Category:Characters",
             "gcmprop": "ids|title",

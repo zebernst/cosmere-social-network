@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3cab2d88fa8b49ff681e80e4ce19ccdf15b331e21bfbfbdd969f9d75ed457a68"
+            "sha256": "9394f9b40489e26507e38de0e32a079bf378b7c7282e81b7c93df659403ef911"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -30,21 +30,20 @@
             ],
             "version": "==3.0.4"
         },
+        "colorama": {
+            "hashes": [
+                "sha256:05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d",
+                "sha256:f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"
+            ],
+            "index": "pypi",
+            "version": "==0.4.1"
+        },
         "decorator": {
             "hashes": [
                 "sha256:33cd704aea07b4c28b3eb2c97d288a06918275dac0ecebdaf1bc8a48d98adb9e",
                 "sha256:cabb249f4710888a2fc0e13e9a16c343d932033718ff62e1e9bc93a9d3a9122b"
             ],
             "version": "==4.3.2"
-        },
-        "deepdiff": {
-            "hashes": [
-                "sha256:152b29dd9cd97cc78403121fb394925ec47377d4a410751e56547c3930ba2b39",
-                "sha256:b4150052e610b231885c4c0be3eea86e4c029df91550ec51b9fc14dd209a5055",
-                "sha256:ecad8e16a96ffd27e8f40c9801a6ab16ec6a7e7e6e6859a7710ba4695f22702c"
-            ],
-            "index": "pypi",
-            "version": "==3.3.0"
         },
         "ebooklib": {
             "hashes": [
@@ -59,13 +58,6 @@
                 "sha256:ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"
             ],
             "version": "==2.8"
-        },
-        "jsonpickle": {
-            "hashes": [
-                "sha256:0231d6f7ebc4723169310141352d9c9b7bbbd6f3be110cf634575d2bf2af91f0",
-                "sha256:625098cc8e5854b8c23b587aec33bc8e33e0e597636bfaca76152249c78fe5c1"
-            ],
-            "version": "==1.1"
         },
         "lxml": {
             "hashes": [
