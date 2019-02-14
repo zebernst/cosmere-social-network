@@ -72,7 +72,7 @@ if __name__ == '__main__':
                     print("character data refreshed from coppermind.net.")
 
                     # display changed results
-                    delta = [simplify_result(r) for r in old_data + new_data if r not in old_data or r not in new_data]
+                    delta = [rev for rev in old_data + new_data if rev not in old_data or rev not in new_data]
 
                     if delta:
                         # TEMPORARY - cache wiki changes
@@ -85,16 +85,16 @@ if __name__ == '__main__':
                         for _, grp in groupby(sorted(delta, key=page_id), key=page_id):
                             grp = list(grp)
                             if len(grp) == 1:
-                                char = grp[0]
+                                char = simplify_result(grp[0])
                                 if char in old_data:
                                     print(f"[[{char['title']}]] removed.", end="\n\n")
                                 else:
                                     print(f"[[{char['title']}]] added.", end="\n\n")
                             elif len(grp) == 2:
                                 if grp[0] in old_data:
-                                    old, new = tuple(grp)
+                                    old, new = tuple(simplify_result(r) for r in grp)
                                 else:
-                                    new, old = tuple(grp)
+                                    new, old = tuple(simplify_result(r) for r in grp)
 
                                 if old['title'] != new['title']:
                                     print(f"[[{old['title']}]] renamed to [[{new['title']}]].")

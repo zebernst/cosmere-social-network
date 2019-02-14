@@ -217,7 +217,7 @@ def coppermind_query():
             "gcmtitle": "Category:Characters",
             "gcmprop": "ids|title",
             "gcmtype": "page",
-            "gcmlimit": "25",
+            "gcmlimit": "50",
             "formatversion": 2
         }
         continue_data = {}
@@ -227,7 +227,7 @@ def coppermind_query():
                 req.update(continue_data)
                 r = requests.get(wiki_api, params=req)
                 response = r.json()
-                logger.debug("Batch of 25 results received from coppermind.net.")
+                logger.debug(f"Batch of {payload.get('gcmlimit')} results received from coppermind.net.")
                 if 'error' in response:
                     raise RuntimeError(response['error'])
                 if 'warnings' in response:
