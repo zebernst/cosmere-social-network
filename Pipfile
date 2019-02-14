@@ -8,9 +8,9 @@ verify_ssl = true
 [packages]
 ebooklib = "*"
 requests = "*"
-networkx = "*"
+networkx = "==2.2"
 tqdm = "*"
-mwparserfromhell = "*"
+mwparserfromhell = ">=0.5.2"
 colorama = "*"
 
 [requires]
