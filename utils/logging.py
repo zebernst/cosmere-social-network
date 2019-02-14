@@ -3,7 +3,7 @@ from utils.paths import log_dir
 
 
 # create shared handler
-_composite_file_hdlr = logging.FileHandler(log_dir / "csn.all.log", mode='w')
+_composite_file_hdlr = logging.FileHandler(log_dir / "csn.log", mode='w')
 _composite_file_hdlr.setLevel(logging.DEBUG)
 _composite_file_hdlr.setFormatter(logging.Formatter('%(asctime)s - %(name)-21s [%(levelname)s] :: %(message)s'))
 
@@ -30,3 +30,16 @@ def create_logger(name: str) -> logging.Logger:
 
     # return configured logger
     return logger
+
+
+def get_active_project_loggers():
+    loggers = logging.root.manager.loggerDict
+    return [logger for name, logger in loggers.items() if isinstance(logger, logging.Logger) and name.startswith('csn')]
+
+
+def close_file_handlers(logger: logging.Logger):
+    for hdlr in logger.handlers[:]:
+        if isinstance(hdlr, logging.FileHandler):
+            hdlr.flush()
+            hdlr.close()
+            logger.removeHandler(hdlr)

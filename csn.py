@@ -1,4 +1,5 @@
 import argparse
+import logging
 import operator
 from itertools import groupby
 
@@ -6,13 +7,15 @@ from deepdiff import DeepDiff
 
 from core.characters import coppermind_query
 from core.constants import network_scopes
-from utils.paths import coppermind_cache_path, gml_dir, json_dir
+from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.caching import load_cache, detect_protocol
-from utils.logging import create_logger
+from utils.logging import create_logger, get_active_project_loggers, close_file_handlers
+
+
+logger = create_logger('csn.cli')
+
 
 if __name__ == '__main__':
-
-    logger = create_logger('csn.cli')
 
     parser = argparse.ArgumentParser()
     subparser_attr = 'cmd'
@@ -114,17 +117,22 @@ if __name__ == '__main__':
             # remove cached data
             if coppermind_cache_path.is_file():
                 coppermind_cache_path.unlink()
-                logger.debug(f'Removed {coppermind_cache_path}.')
-                print('Removed cached coppermind.net data')
+            print('Removed cached coppermind.net data')
 
             # remove gml data
             for file in gml_dir.glob('**/*.gml'):
                 file.unlink()
-                logger.debug(f'Removed {file}.')
             print('Removed generated GML network data.')
 
             # remove json data
             for file in json_dir.glob('**/*.json'):
                 file.unlink()
-                logger.debug(f'Removed {file}.')
             print('Removed generated JSON network data.')
+
+            # remove log files
+            for l in get_active_project_loggers():
+                close_file_handlers(l)
+
+            for file in log_dir.glob('**/*.log'):
+                file.unlink()
+            print('Removed log files.')
