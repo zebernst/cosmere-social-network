@@ -217,7 +217,7 @@ def coppermind_query():
             "gcmtitle": "Category:Characters",
             "gcmprop": "ids|title",
             "gcmtype": "page",
-            "gcmlimit": "25",
+            "gcmlimit": "50",
             "formatversion": 2
         }
         continue_data = {}
