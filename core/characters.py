@@ -1,7 +1,8 @@
 import operator
-import requests
+import typing
 import re
 
+import requests
 import mwparserfromhell as mwp
 from tqdm import tqdm
 
@@ -9,6 +10,7 @@ from core.constants import cosmere_planets, nationalities, info_fields
 from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
+from utils.wiki import simplify_result
 
 
 logger = create_logger('csn.core.characters')
@@ -18,24 +20,26 @@ class Character:
     """representation of a character in the Cosmere."""
     def __init__(self, query_result: dict):
         """construct character from coppermind.net api query results."""
+        info = simplify_result(query_result)
+
         self._discard = False
-        self._pageid = int(query_result['pageid'])
+        self._pageid = info['pageid']
         self._infobox_template = ""
 
-        self.name = query_result['title']
-        self.info = self._parse_infobox(query_result)
+        self.name = info['title']
+        self.info = self._parse_infobox(info['content'])
         self.aliases = self.info.pop('aliases', [])
         self.titles = self.info.pop('titles', [])
         self.world = self.info.pop('world', None)
         self.books = self.info.pop('books', None)
 
-        # discard duplicate character pages
+        # discard unofficial character pages
         if 'User:' in self.name:
             self._discard = True
 
         logger.debug(f"Character {self.name} from {self.world} created.")
         if self._discard:
-            logger.debug(f"{self.name} marked as discard.")
+            logger.debug(f"{self.name} marked for discard.")
 
     def __eq__(self, other):
         """return self == value."""
@@ -61,16 +65,16 @@ class Character:
         return f"{self.name}"
 
     @property
-    def monikers(self):
+    def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
         return set(n for n in [self.name] + self.aliases + self.titles)
 
     @property
-    def coppermind_url(self):
+    def coppermind_url(self) -> str:
         """return the url of the character's page on coppermind.net"""
         return f"https://coppermind.net/wiki?curid={self._pageid}"
 
-    def _parse_infobox(self, query_result):
+    def _parse_infobox(self, content: str) -> dict:
         """parse the wikitext infobox for character attributes"""
 
         # set defaults
@@ -100,91 +104,88 @@ class Character:
             return wikicode.strip_code()
 
         # parse infobox
-        if 'revisions' in query_result:
-            if query_result['revisions']:
-                content = query_result['revisions'][0]['content']
+        if content:
+            # select outermost wiki template
+            self._infobox_template = mwp.parse(content).filter_templates()
+            if self._infobox_template:
+                infobox = self._infobox_template[0]
 
-                # select outermost wiki template
-                self._infobox_template = mwp.parse(content).filter_templates()
-                if self._infobox_template:
-                    infobox = self._infobox_template[0]
-
-                    # ignore non-character pages
-                    if infobox.name.strip().lower() != 'character':
-                        self._discard = True
-
-                    # ignore deleted characters (i.e. from early drafts)
-                    if any('deleted' in t.name.lower() for t in self._infobox_template):
-                        self._discard = True
-
-                    # split into key/value pairs
-                    for entry in infobox.params:
-
-                        k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
-
-                        # clean field names and correct typos
-                        cleanse_field = {
-                            'residnece': 'residence',
-                            'residence-raw': 'residence',
-                            'residency': 'residence',
-                            'nantion': 'nation',
-                            'group': 'groups',
-                            'nickname': 'aliases',
-                            'powers': 'abilities',
-                            'title': 'titles',
-                            'occupation': 'profession'
-                        }
-                        k = cleanse_field.get(k, k)
-
-                        if k not in info_fields:
-                            continue
-
-                        # sanitize and process specific fields
-                        # books
-                        if k == 'books':
-                            v = [b.text.strip_code() if b.text else b.title.strip_code() for b in v.nodes
-                                 if isinstance(b, mwp.wikicode.Wikilink)]
-
-                        # normalize nation/nationality
-                        elif k == 'nationality' or k == 'nation':
-                            v = nationalities.get(v.strip_code().lower(), None)
-                            k = 'nationality'
-
-                        # titles and aliases and names
-                        elif k == 'titles' or k == 'aliases' or k == 'name':
-                            v = [e.strip() for e in parse_markup(v).split(',') if e.strip()]
-                            pass
-
-                        # world
-                        elif k == 'world':
-                            v = v.strip_code()
-
-                        # ignore unnamed minor characters
-                        elif k == 'unnamed':
-                            self._discard = True
-
-                        # parse wiki tags into human-readable text
-                        else:
-                            # v = parse_markup(v)
-                            pass
-
-                        # add to dict (null-guarded)
-                        char_info[k] = v
-
-                    # combine name and aliases
-                    if char_info.get('name'):
-                        if char_info.get('aliases'):
-                            char_info['aliases'].extend(char_info.pop('name'))
-                        else:
-                            char_info['aliases'] = char_info.pop('name')
-
-                    # ignore non-cosmere characters
-                    if char_info.get('world', '').lower() not in cosmere_planets:
-                        self._discard = True
-
-                # no valid template to parse
-                else:
+                # ignore non-character pages
+                if infobox.name.strip().lower() != 'character':
                     self._discard = True
+
+                # ignore deleted characters (i.e. from early drafts)
+                if any('deleted' in t.name.lower() for t in self._infobox_template):
+                    self._discard = True
+
+                # split into key/value pairs
+                for entry in infobox.params:
+
+                    k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
+
+                    # clean field names and correct typos
+                    cleanse_field = {
+                        'residnece': 'residence',
+                        'residence-raw': 'residence',
+                        'residency': 'residence',
+                        'nantion': 'nation',
+                        'group': 'groups',
+                        'nickname': 'aliases',
+                        'powers': 'abilities',
+                        'title': 'titles',
+                        'occupation': 'profession'
+                    }
+                    k = cleanse_field.get(k, k)
+
+                    if k not in info_fields:
+                        continue
+
+                    # sanitize and process specific fields
+                    # books
+                    if k == 'books':
+                        v = [b.text.strip_code() if b.text else b.title.strip_code() for b in v.nodes
+                             if isinstance(b, mwp.wikicode.Wikilink)]
+
+                    # normalize nation/nationality
+                    elif k == 'nationality' or k == 'nation':
+                        v = nationalities.get(v.strip_code().lower(), None)
+                        k = 'nationality'
+
+                    # titles and aliases and names
+                    elif k == 'titles' or k == 'aliases' or k == 'name':
+                        v = [e.strip() for e in parse_markup(v).split(',') if e.strip()]
+                        pass
+
+                    # world
+                    elif k == 'world':
+                        v = v.strip_code()
+
+                    # ignore unnamed minor characters
+                    elif k == 'unnamed':
+                        self._discard = True
+
+                    # parse wiki tags into human-readable text
+                    else:
+                        # v = parse_markup(v)
+                        pass
+
+                    # add to dict (null-guarded)
+                    char_info[k] = v
+
+                # combine name and aliases
+                if char_info.get('name'):
+                    if char_info.get('aliases'):
+                        char_info['aliases'].extend(char_info.pop('name'))
+                    else:
+                        char_info['aliases'] = char_info.pop('name')
+
+                # ignore non-cosmere characters
+                if char_info.get('world', '').lower() not in cosmere_planets:
+                    self._discard = True
+
+            # no valid template to parse
+            else:
+                self._discard = True
 
         return char_info
 
@@ -215,7 +216,7 @@ def coppermind_query():
             "gcmtitle": "Category:Characters",
             "gcmprop": "ids|title",
             "gcmtype": "page",
-            "gcmlimit": "50",
+            "gcmlimit": "25",
             "formatversion": 2
         }
         continue_data = {}
@@ -225,7 +226,7 @@ def coppermind_query():
                 req.update(continue_data)
                 r = requests.get(wiki_api, params=req)
                 response = r.json()
-                logger.debug("Batch of 50 results received from coppermind.net.")
+                logger.debug("Batch of 25 results received from coppermind.net.")
                 if 'error' in response:
                     raise RuntimeError(response['error'])
                 if 'warnings' in response:

@@ -2,17 +2,17 @@ import argparse
 import difflib
 import json  # temp
 import operator
-import time
+import time  # temp
 from itertools import groupby
-from datetime import datetime
 
 import colorama
 
 from core.characters import coppermind_query
 from core.constants import network_scopes
-from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.caching import load_cache, detect_protocol
 from utils.logging import create_logger, get_active_project_loggers, close_file_handlers
+from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
+from utils.wiki import simplify_result
 
 
 logger = create_logger('csn.cli')
@@ -74,7 +74,7 @@ if __name__ == '__main__':
                     print("character data refreshed from coppermind.net.")
 
                     # display changed results
-                    delta = [rev for rev in old_data + new_data if rev not in old_data or rev not in new_data]
+                    delta = [simplify_result(r) for r in old_data + new_data if r not in old_data or r not in new_data]
 
                     if delta:
                         # TEMPORARY - cache wiki changes
@@ -94,29 +94,26 @@ if __name__ == '__main__':
                                     print(f"[[{char['title']}]] added.", end="\n\n")
                             elif len(grp) == 2:
                                 if grp[0] in old_data:
-                                    old_char, new_char = tuple(grp)
+                                    old, new = tuple(grp)
                                 else:
-                                    new_char, old_char = tuple(grp)
+                                    new, old = tuple(grp)
 
-                                if old_char['title'] != new_char['title']:
-                                    print(f"[[{old_char['title']}]] renamed to [[{new_char['title']}]].")
+                                if old['title'] != new['title']:
+                                    print(f"[[{old['title']}]] renamed to [[{new['title']}]].")
 
                                 # diff page content
-                                def timestamp_fmt(s: str):
-                                    iso_str = s.replace('Z', '+00:00')
-                                    return datetime.fromisoformat(iso_str).strftime('%d %b %Y %H:%I:%S')
-
+                                date_str = "%d %b %Y %H:%I:%S"
                                 diff = list(difflib.unified_diff(
-                                    old_char['revisions'][0]['content'].splitlines(),
-                                    new_char['revisions'][0]['content'].splitlines(),
-                                    fromfile=old_char['title'],
-                                    fromfiledate=timestamp_fmt(old_char['revisions'][0]['timestamp']),
-                                    tofile=new_char['title'],
-                                    tofiledate=timestamp_fmt(new_char['revisions'][0]['timestamp']),
+                                    old['content'].splitlines(),
+                                    new['content'].splitlines(),
+                                    fromfile=old['title'],
+                                    fromfiledate=old['timestamp'].strftime(date_str) if old['timestamp'] else '',
+                                    tofile=new['title'],
+                                    tofiledate=new['timestamp'].strftime(date_str) if new['timestamp'] else '',
                                     lineterm=''))
 
                                 if diff:
-                                    print(f"[[{new_char['title']}]] modified.")
+                                    print(f"[[{new['title']}]] modified.")
                                     print("content diff:")
                                     for line in diff:
                                         if line.startswith('-') and not line.startswith('---'):
