@@ -8,16 +8,14 @@ from itertools import groupby
 import colorama
 
 from core.characters import coppermind_query
-from core.constants import network_scopes
-from utils.caching import load_cache, detect_protocol
-from utils.logging import create_logger, get_active_project_loggers, close_file_handlers
+from utils.caching import detect_protocol, load_cache
+from utils.logging import close_file_handlers, create_logger, get_active_project_loggers
 from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.wiki import simplify_result
 
 
 logger = create_logger('csn.cli')
 colorama.init()
-
 
 if __name__ == '__main__':
 
@@ -79,7 +77,7 @@ if __name__ == '__main__':
                     if delta:
                         # TEMPORARY - cache wiki changes
                         with (coppermind_cache_path.parent / f'delta_{int(time.time())}.json').open('w') as fp:
-                            json.dump(delta, fp, indent=4, sort_keys=True)
+                            json.dump(delta, fp, indent=4, sort_keys=True, default=str)
 
                         print()
                         print("wiki changes:", end="\n\n")
@@ -137,7 +135,7 @@ if __name__ == '__main__':
 
         elif args.path:
             if any(ds in args.path.lower() for ds in ('coppermind', 'characters')):
-                print(args.path, "located at", coppermind_cache_path)
+                print("coppermind.net data located at", coppermind_cache_path)
 
     elif args.cmd == 'network':
         pass

@@ -1,12 +1,12 @@
 import operator
-import typing
 import re
+import typing
 
-import requests
 import mwparserfromhell as mwp
+import requests
 from tqdm import tqdm
 
-from core.constants import cosmere_planets, nationalities, info_fields
+from core.constants import cosmere_planets, info_fields, nationalities
 from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
@@ -18,6 +18,7 @@ logger = create_logger('csn.core.characters')
 
 class Character:
     """representation of a character in the Cosmere."""
+
     def __init__(self, query_result: dict):
         """construct character from coppermind.net api query results."""
         info = simplify_result(query_result)
@@ -125,15 +126,15 @@ class Character:
 
                     # clean field names and correct typos
                     cleanse_field = {
-                        'residnece': 'residence',
+                        'residnece':     'residence',
                         'residence-raw': 'residence',
-                        'residency': 'residence',
-                        'nantion': 'nation',
-                        'group': 'groups',
-                        'nickname': 'aliases',
-                        'powers': 'abilities',
-                        'title': 'titles',
-                        'occupation': 'profession'
+                        'residency':     'residence',
+                        'nantion':       'nation',
+                        'group':         'groups',
+                        'nickname':      'aliases',
+                        'powers':        'abilities',
+                        'title':         'titles',
+                        'occupation':    'profession'
                     }
                     k = cleanse_field.get(k, k)
 
@@ -254,4 +255,3 @@ logger.debug('Character generator initialized.')
 
 if __name__ == '__main__':
     print("names to sanitize:", [c for c in characters_ if '(' in c.name])
-

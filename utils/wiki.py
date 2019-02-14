@@ -9,8 +9,8 @@ def simplify_result(result: dict) -> dict:
     timestamp = result.get('revisions', [{}])[0].get('timestamp')
 
     return {
-        'pageid': int(page_id) if page_id else None,
-        'title': result.get('title', ''),
+        'pageid':    int(page_id) if page_id else None,
+        'title':     result.get('title', ''),
         'timestamp': datetime.fromisoformat(timestamp.replace('Z', '+00:00')) if timestamp else None,
-        'content': result.get('revisions', [{}])[0].get('content', '')
+        'content':   result.get('revisions', [{}])[0].get('content', '')
     }

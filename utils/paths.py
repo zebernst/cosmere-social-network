@@ -1,5 +1,6 @@
 from pathlib import Path
 
+
 # key paths in project
 root_dir: Path = Path(__file__).parent.parent
 site_dir: Path = root_dir / 'docs'

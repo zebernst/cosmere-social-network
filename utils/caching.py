@@ -1,9 +1,9 @@
 import functools
-import pickle
 import json
+import pickle
+from enum import auto, Enum
 from pathlib import Path
-from typing import Union, Any
-from enum import Enum, auto
+from typing import Any, Union
 
 from utils.logging import create_logger
 
@@ -20,12 +20,12 @@ class CacheProtocol(Enum):
 
 
 _protocols = {
-    'pkl': CacheProtocol.PICKLE,
+    'pkl':    CacheProtocol.PICKLE,
     'pickle': CacheProtocol.PICKLE,
-    'p': CacheProtocol.PICKLE,
-    'json': CacheProtocol.JSON,
-    'txt': CacheProtocol.PLAINTEXT,
-    'text': CacheProtocol.PLAINTEXT,
+    'p':      CacheProtocol.PICKLE,
+    'json':   CacheProtocol.JSON,
+    'txt':    CacheProtocol.PLAINTEXT,
+    'text':   CacheProtocol.PLAINTEXT,
 }
 
 
@@ -116,4 +116,5 @@ def cache(filename: Union[Path, str], protocol='auto'):
             return data
 
         return wrapper
+
     return decorator

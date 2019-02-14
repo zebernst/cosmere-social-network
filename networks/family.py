@@ -2,8 +2,8 @@ import json
 from itertools import groupby
 from typing import Dict, Union
 
-import networkx as nx
 import mwparserfromhell as mwp
+import networkx as nx
 
 from core.characters import characters_
 from core.constants import network_scopes
@@ -93,7 +93,7 @@ def create_graph() -> nx.OrderedGraph:
     return G
 
 
-def filter_graph(G:nx.Graph, min_component_size: int = 1) -> nx.Graph:
+def filter_graph(G: nx.Graph, min_component_size: int = 1) -> nx.Graph:
     # create copy of input graph
     G = G.copy()
 
