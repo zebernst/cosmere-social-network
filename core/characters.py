@@ -38,9 +38,9 @@ class Character:
         if 'User:' in self.name:
             self._discard = True
 
-        logger.debug(f"Character {self.name} from {self.world} created.")
+        logger.debug(f"Created: {self.name} from {self.world if self.world else 'Unknown'}.")
         if self._discard:
-            logger.debug(f"{self.name} marked for discard.")
+            logger.debug(f"Discarding {self.name}.")
 
     def __eq__(self, other):
         """return self == value."""
@@ -59,11 +59,11 @@ class Character:
 
     def __repr__(self):
         """return repr(self)."""
-        return f"<{self.name} ({self._pageid}): {self.world}>"
+        return f"<{self.name} (#{self._pageid}): {self.world}>"
 
     def __str__(self):
         """return str(self)."""
-        return f"{self.name}"
+        return self.name
 
     @property
     def monikers(self) -> typing.Set[str]:
@@ -109,10 +109,11 @@ class Character:
             # select outermost wiki template
             self._infobox_template = mwp.parse(content).filter_templates()
             if self._infobox_template:
-                infobox = self._infobox_template[0]
+                infobox = next((t for t in self._infobox_template if t.name.strip().lower() == 'character'),
+                               mwp.wikicode.Template(''))
 
                 # ignore non-character pages
-                if infobox.name.strip().lower() != 'character':
+                if not infobox:
                     self._discard = True
 
                 # ignore deleted characters (i.e. from early drafts)
@@ -121,7 +122,6 @@ class Character:
 
                 # split into key/value pairs
                 for entry in infobox.params:
-
                     k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
 
                     # clean field names and correct typos
@@ -196,8 +196,8 @@ def coppermind_query():
     """load data from coppermind.net"""
     logger.debug("Beginning query of coppermind.net.")
 
-    def _query():
-        """generator to query coppermind.net api for all characters"""
+    def batched_query():
+        """function to query coppermind.net api in batches for all character pages"""
         # query generator code based on https://www.mediawiki.org/wiki/API:Query#Continuing_queries
         wiki_api = "https://coppermind.net/w/api.php"
 
@@ -240,18 +240,20 @@ def coppermind_query():
 
         logger.debug("Finished query of coppermind.net.")
 
-    return sorted((page for batch in _query() for page in batch), key=operator.itemgetter('pageid'))
+    return sorted((page for batch in batched_query() for page in batch), key=operator.itemgetter('pageid'))
 
 
-def _coppermind_generator():
+def _generate_characters():
     """generator wrapper over coppermind_query() to delay execution of query"""
+    logger.debug('Character generator initialized.')
     for result in coppermind_query():
-        yield result
+        char = Character(result)
+        if not char._discard:
+            yield char
 
 
-# construct, filter, and return character objects from coppermind.net data
-characters_ = (c for c in (Character(result) for result in _coppermind_generator()) if not c._discard)
-logger.debug('Character generator initialized.')
+# provide direct access to character generator
+characters_ = _generate_characters()
 
 if __name__ == '__main__':
     print("names to sanitize:", [c for c in characters_ if '(' in c.name])

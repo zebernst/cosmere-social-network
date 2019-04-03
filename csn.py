@@ -3,6 +3,7 @@ import difflib
 import json  # temp
 import operator
 import time  # temp
+from datetime import datetime
 from itertools import groupby
 
 import colorama
@@ -76,7 +77,8 @@ if __name__ == '__main__':
 
                     if delta:
                         # TEMPORARY - cache wiki changes
-                        with (coppermind_cache_path.parent / f'delta_{int(time.time())}.json').open('w') as fp:
+                        time_str = datetime.now().isoformat(timespec="seconds")
+                        with (coppermind_cache_path.parent / f'delta_{time_str}.json').open('w') as fp:
                             json.dump(delta, fp, indent=4, sort_keys=True, default=str)
 
                         print()

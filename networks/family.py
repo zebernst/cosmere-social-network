@@ -23,7 +23,7 @@ def create_graph() -> nx.OrderedGraph:
     G = nx.OrderedGraph()
 
     # resolve generator
-    characters = tuple(characters_)
+    characters = set(characters_)
 
     # restructure character list into efficient data structures to reduce complexity
     monikers = {name: c for c in characters for name in c.monikers}
@@ -114,11 +114,11 @@ def extract_network_scopes(G: Union[nx.Graph, nx.OrderedGraph]) -> Dict[str, Uni
     # get world scopes
     node_attr_world = lambda t: t[1].get('world')
     sorted_nodes = sorted((tup for tup in G.nodes(data=True)), key=node_attr_world)
-    for wrld, grp in groupby(sorted_nodes, key=node_attr_world):
+    for world, grp in groupby(sorted_nodes, key=node_attr_world):
         sg = nx.OrderedGraph()
         sg.add_nodes_from(grp)
         sg.add_edges_from((src, dest) for src, dest in G.edges() if src in G and dest in G)
-        scopes[wrld] = filter_graph(sg, min_component_size=3)
+        scopes[world] = filter_graph(sg, min_component_size=3)
 
     return scopes
 
