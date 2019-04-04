@@ -10,7 +10,7 @@ from core.constants import cosmere_planets, info_fields, nationalities
 from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
-from utils.wiki import simplify_result
+from utils.wiki import extract_info
 
 
 logger = create_logger('csn.core.characters')
@@ -21,7 +21,7 @@ class Character:
 
     def __init__(self, query_result: dict):
         """construct character from coppermind.net api query results."""
-        info = simplify_result(query_result)
+        info = extract_info(query_result)
 
         self._discard = False
         self._pageid = info['pageid']
@@ -38,9 +38,9 @@ class Character:
         if 'User:' in self.name:
             self._discard = True
 
-        logger.debug(f"Created: {self.name} from {self.world if self.world else 'Unknown'}.")
+        logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
         if self._discard:
-            logger.debug(f"Discarding {self.name}.")
+            logger.debug(f"Discarded {self.name}.")
 
     def __eq__(self, other):
         """return self == value."""
@@ -109,25 +109,29 @@ class Character:
             # select outermost wiki template
             self._infobox_template = mwp.parse(content).filter_templates()
             if self._infobox_template:
-                infobox = next((t for t in self._infobox_template if t.name.strip().lower() == 'character'),
-                               mwp.wikicode.Template(''))
+                infobox = next((t for t in self._infobox_template if t.name.strip().lower() == 'character'), None)
 
                 # ignore non-character pages
-                if not infobox:
+                if infobox is None:
                     self._discard = True
+                    return char_info
 
                 # ignore deleted characters (i.e. from early drafts)
                 if any('deleted' in t.name.lower() for t in self._infobox_template):
                     self._discard = True
+                    return char_info
 
                 # split into key/value pairs
                 for entry in infobox.params:
-                    k, v = re.sub(r'[^A-Za-z\-]', '', str(entry.name)).lower(), entry.value
+                    k, v = re.sub(r'[^a-z\-]', '', str(entry.name).lower()), entry.value
+
+                    # normalize non-linking field names
+                    if k.endswith('-raw'):
+                        k = k[:-4]
 
                     # clean field names and correct typos
-                    cleanse_field = {
+                    cleansed_fields = {
                         'residnece':     'residence',
-                        'residence-raw': 'residence',
                         'residency':     'residence',
                         'nantion':       'nation',
                         'group':         'groups',
@@ -136,7 +140,7 @@ class Character:
                         'title':         'titles',
                         'occupation':    'profession'
                     }
-                    k = cleanse_field.get(k, k)
+                    k = cleansed_fields.get(k, k)
 
                     if k not in info_fields:
                         continue
@@ -164,6 +168,7 @@ class Character:
                     # ignore unnamed minor characters
                     elif k == 'unnamed':
                         self._discard = True
+                        return char_info
 
                     # parse wiki tags into human-readable text
                     else:
@@ -256,4 +261,4 @@ def _generate_characters():
 characters_ = _generate_characters()
 
 if __name__ == '__main__':
-    print("names to sanitize:", [c for c in characters_ if '(' in c.name])
+    print("names to sanitize:", sorted([c.name for c in characters_ if '(' in c.name]))

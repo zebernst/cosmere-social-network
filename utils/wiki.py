@@ -1,7 +1,7 @@
 from datetime import datetime
 
 
-def simplify_result(result: dict) -> dict:
+def extract_info(result: dict) -> dict:
     """flatten the relevant fields of an mediawiki api result into a single-level dictionary."""
 
     # possible null values

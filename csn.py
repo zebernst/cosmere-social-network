@@ -12,7 +12,7 @@ from core.characters import coppermind_query
 from utils.caching import detect_protocol, load_cache
 from utils.logging import close_file_handlers, create_logger, get_active_project_loggers
 from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
-from utils.wiki import simplify_result
+from utils.wiki import extract_info
 
 
 logger = create_logger('csn.cli')
@@ -87,16 +87,16 @@ if __name__ == '__main__':
                         for _, grp in groupby(sorted(delta, key=page_id), key=page_id):
                             grp = list(grp)
                             if len(grp) == 1:
-                                char = simplify_result(grp[0])
+                                char = extract_info(grp[0])
                                 if char in old_data:
                                     print(f"[[{char['title']}]] removed.", end="\n\n")
                                 else:
                                     print(f"[[{char['title']}]] added.", end="\n\n")
                             elif len(grp) == 2:
                                 if grp[0] in old_data:
-                                    old, new = tuple(simplify_result(r) for r in grp)
+                                    old, new = tuple(extract_info(r) for r in grp)
                                 else:
-                                    new, old = tuple(simplify_result(r) for r in grp)
+                                    new, old = tuple(extract_info(r) for r in grp)
 
                                 if old['title'] != new['title']:
                                     print(f"[[{old['title']}]] renamed to [[{new['title']}]].")
