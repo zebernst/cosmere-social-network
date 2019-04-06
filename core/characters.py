@@ -6,7 +6,7 @@ import mwparserfromhell as mwp
 import requests
 from tqdm import tqdm
 
-from core.constants import cosmere_planets, info_fields, nationalities
+from core.constants import cosmere_planets, info_fields,  cleansed_fields, nationalities
 from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
@@ -130,16 +130,6 @@ class Character:
                         k = k[:-4]
 
                     # clean field names and correct typos
-                    cleansed_fields = {
-                        'residnece':     'residence',
-                        'residency':     'residence',
-                        'nantion':       'nation',
-                        'group':         'groups',
-                        'nickname':      'aliases',
-                        'powers':        'abilities',
-                        'title':         'titles',
-                        'occupation':    'profession'
-                    }
                     k = cleansed_fields.get(k, k)
 
                     if k not in info_fields:

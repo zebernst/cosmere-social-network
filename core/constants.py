@@ -13,6 +13,18 @@ info_fields = ('name', 'aliases', 'titles',
                'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
                'species', 'occupation', 'unnamed')
 
+# mapping of typos and alternate names of standard info fields in character dictionary
+cleansed_fields = {
+    'residnece':  'residence',
+    'residency':  'residence',
+    'nantion':    'nation',
+    'group':      'groups',
+    'nickname':   'aliases',
+    'powers':     'abilities',
+    'title':      'titles',
+    'occupation': 'profession'
+}
+
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
