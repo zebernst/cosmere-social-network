@@ -238,7 +238,7 @@ def coppermind_query() -> typing.List[dict]:
     return sorted((page for batch in batched_query() for page in batch), key=operator.itemgetter('pageid'))
 
 
-def _generate_characters() -> typing.Generator[Character]:
+def _generate_characters() -> typing.Iterator[Character]:
     """generator wrapper over coppermind_query() to delay execution of query"""
     logger.debug('Character generator initialized.')
     for result in coppermind_query():
