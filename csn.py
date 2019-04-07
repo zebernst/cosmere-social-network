@@ -1,8 +1,6 @@
 import argparse
 import difflib
-import json  # temp
 import operator
-import time  # temp
 from datetime import datetime
 from itertools import groupby
 
@@ -39,8 +37,7 @@ def data_refresh(arg: str):
             if delta:
                 # TEMPORARY - cache wiki changes
                 time_str = datetime.now().isoformat(timespec="seconds")
-                with (coppermind_cache_path.parent / f'delta_{time_str}.json').open('w') as fp:
-                    json.dump(delta, fp, indent=4, sort_keys=True, default=str)
+                fp = (log_dir / 'deltas' / f'{time_str}.log').open('w')
 
                 print()
                 print("wiki changes:", end="\n\n")
@@ -51,8 +48,10 @@ def data_refresh(arg: str):
                         char = extract_info(grp[0])
                         if char in old_data:
                             print(f"[[{char['title']}]] removed.", end="\n\n")
+                            fp.write(f"[[{char['title']}]] removed.\n\n")
                         else:
                             print(f"[[{char['title']}]] added.", end="\n\n")
+                            fp.write(f"[[{char['title']}]] added.\n\n")
                     elif len(grp) == 2:
                         if grp[0] in old_data:
                             old, new = tuple(extract_info(r) for r in grp)
@@ -61,6 +60,7 @@ def data_refresh(arg: str):
 
                         if old['title'] != new['title']:
                             print(f"[[{old['title']}]] renamed to [[{new['title']}]].")
+                            fp.write(f"[[{old['title']}]] renamed to [[{new['title']}]].\n")
 
                         # diff page content
                         date_str = "%d %b %Y %H:%I:%S"
@@ -76,6 +76,8 @@ def data_refresh(arg: str):
                         if diff:
                             print(f"[[{new['title']}]] modified.")
                             print("content diff:")
+                            fp.write(f"[[{new['title']}]] modified.\ncontent diff:\n")
+                            fp.writelines(f"{s}\n" for s in diff)
                             for line in diff:
                                 if line.startswith('-') and not line.startswith('---'):
                                     print(f"{colorama.Fore.RED}{line}{colorama.Fore.RESET}")
@@ -88,6 +90,8 @@ def data_refresh(arg: str):
                                 else:
                                     print(line)
                             print(end="\n\n")
+                            fp.write("\n\n")
+                fp.close()
             else:
                 print("no changes detected in refreshed data.")
 
