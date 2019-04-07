@@ -8,7 +8,7 @@ network_scopes = ('*:all',  # all
 
 # relevant fields in the character info dictionary
 info_fields = ('name', 'aliases', 'titles',
-               'books', 'world', 'abilities',
+               'books', 'world', 'abilities', 'universe',
                'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors',
                'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
                'species', 'occupation', 'unnamed')

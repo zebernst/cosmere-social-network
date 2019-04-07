@@ -68,7 +68,7 @@ class Character:
     @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
-        return set(n for n in [self.name] + self.aliases + self.titles)
+        return set([self.name] + self.aliases + self.titles)
 
     @property
     def coppermind_url(self) -> str:
@@ -152,7 +152,7 @@ class Character:
                         pass
 
                     # world
-                    elif k == 'world':
+                    elif k == 'world' or k == 'universe':
                         v = v.strip_code()
 
                     # ignore unnamed minor characters
@@ -176,7 +176,7 @@ class Character:
                         char_info['aliases'] = char_info.pop('name')
 
                 # ignore non-cosmere characters
-                if char_info.get('world', '').lower() not in cosmere_planets:
+                if char_info.get('universe', '').lower() != 'cosmere':
                     self._discard = True
 
             # no valid template to parse
