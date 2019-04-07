@@ -6,7 +6,7 @@ import mwparserfromhell as mwp
 import requests
 from tqdm import tqdm
 
-from core.constants import cosmere_planets, info_fields,  cleansed_fields, nationalities
+from core.constants import cleansed_fields, info_fields, nationalities
 from utils.caching import cache
 from utils.logging import create_logger
 from utils.paths import coppermind_cache_path
@@ -187,7 +187,7 @@ class Character:
 
 
 @cache(coppermind_cache_path)
-def coppermind_query():
+def coppermind_query() -> typing.List[dict]:
     """load data from coppermind.net"""
     logger.debug("Beginning query of coppermind.net.")
 
@@ -238,7 +238,7 @@ def coppermind_query():
     return sorted((page for batch in batched_query() for page in batch), key=operator.itemgetter('pageid'))
 
 
-def _generate_characters():
+def _generate_characters() -> typing.Generator[Character]:
     """generator wrapper over coppermind_query() to delay execution of query"""
     logger.debug('Character generator initialized.')
     for result in coppermind_query():
