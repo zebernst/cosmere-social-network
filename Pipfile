@@ -12,6 +12,8 @@ networkx = "==2.2"
 tqdm = "*"
 mwparserfromhell = ">=0.5.2"
 colorama = "*"
+"beautifulsoup4" = "*"
+pip = "==18.0"
 
 [requires]
 python_version = "3.7"

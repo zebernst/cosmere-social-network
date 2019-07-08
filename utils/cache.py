@@ -5,7 +5,7 @@ from enum import auto, Enum
 from pathlib import Path
 from typing import Any, Union
 
-from utils.logging import create_logger
+from utils.logs import create_logger
 
 
 logger = create_logger('csn.utils.caching')

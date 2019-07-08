@@ -7,8 +7,8 @@ from itertools import groupby
 import colorama
 
 from core.characters import coppermind_query
-from utils.caching import detect_protocol, load_cache
-from utils.logging import close_file_handlers, create_logger, get_active_project_loggers
+from utils.cache import detect_protocol, load_cache
+from utils.logs import close_file_handlers, create_logger, get_active_project_loggers
 from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.wiki import extract_info
 

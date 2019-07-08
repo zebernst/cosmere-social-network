@@ -7,7 +7,7 @@ import networkx as nx
 
 from core.characters import characters_
 from core.constants import network_scopes
-from utils.logging import create_logger
+from utils.logs import create_logger
 from utils.paths import gml_dir, json_dir
 
 

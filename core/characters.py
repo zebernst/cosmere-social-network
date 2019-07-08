@@ -1,14 +1,16 @@
 import operator
 import re
 import typing
+from collections import defaultdict
 
 import mwparserfromhell as mwp
 import requests
+from mwparserfromhell.nodes import Wikilink, Template
 from tqdm import tqdm
 
-from core.constants import cleansed_fields, info_fields, nationalities
-from utils.caching import cache
-from utils.logging import create_logger
+from core.constants import cleansed_fields, info_fields, nationalities, cosmere_planets
+from utils.cache import cache
+from utils.logs import create_logger
 from utils.paths import coppermind_cache_path
 from utils.wiki import extract_info
 
@@ -29,6 +31,7 @@ class Character:
 
         self.name = info['title']
         self.info = self._parse_infobox(info['content'])
+        self.common_name = self.info.pop('common_name', '')
         self.aliases = self.info.pop('aliases', [])
         self.titles = self.info.pop('titles', [])
         self.world = self.info.pop('world', None)
@@ -41,7 +44,7 @@ class Character:
         if self._keep:
             logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
         else:
-            logger.debug(f"Ignored {self.name} ({self.world if self.world else 'Unknown'}).")
+            logger.debug(f"Ignoring {self.name} ({self.world if self.world else 'Unknown'}).")
 
     def __eq__(self, other):
         """return self == value."""
@@ -69,7 +72,7 @@ class Character:
     @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
-        return set([self.name] + self.aliases + self.titles)
+        return set([self.name, self.common_name] + self.aliases)  # + self.titles)
 
     @property
     def coppermind_url(self) -> str:
@@ -88,22 +91,56 @@ class Character:
             links = wikicode.filter_wikilinks()
             for t in templates:
                 # remove references
-                if 'ref' in t.name:
+                if 'ref' in t.name or 'wob' in t.name:
                     wikicode.remove(t)
-                elif 'tag' in t.name:
-                    if len(t.params) == 1:
-                        wikicode.replace(t, t.params[0])
-                    elif len(t.params) > 1:
-                        if 'highprince' in t.params[0].lower():
-                            wikicode.replace(t, "{0} of {1}".format(*t.params))
-                        elif 'army' in t.params[0].lower():
-                            wikicode.replace(t, "{1} {0}".format(*t.params))
             for l in links:
+                # simplify links
                 text = l.text if l.text else l.title
-                wikicode.replace(l, text)
+                wikicode.replace(l, Wikilink(text))
 
             # todo
-            return wikicode.strip_code()
+            return wikicode
+
+        def parse_names(wikicode: mwp.wikicode.Wikicode):
+            wikicode = parse_markup(wikicode)
+            for t in wikicode.filter(forcetype=Template):
+                if len(t.params) == 1:
+                    wikicode.replace(t, t.params[0])
+                elif len(t.params) > 1:
+                    if 'highprince' in t.params[0].lower():
+                        wikicode.replace(t, "{0} of {1}".format(*t.params))
+                    elif 'army' in t.params[0].lower():
+                        wikicode.replace(t, "{1} {0}".format(*t.params))
+
+            return wikicode.strip_code().split(',')
+
+        def parse_abilities(wikicode: mwp.wikicode.Wikicode):
+            wikicode = parse_markup(wikicode)
+            abilities = []
+            for wc in wikicode.filter(forcetype=(Template, Wikilink)):
+                if isinstance(wc, Template):
+                    if 'tag' in wc.name:
+                        params = tuple(p.lower()
+                                       for p in (p.name.strip_code()
+                                                 if p.showkey is True
+                                                 else p.value.strip_code()
+                                                 for p in wc.params)
+                                       if p != 'cat')
+
+                        if len(params) == 1:
+                            abilities.append(params[0])
+                        elif len(params) > 1:
+                            if any(params[0] == s for s in ('shard', 'vessel', 'splinter')):
+                                abilities.extend((params[0], f"{params[0]} of {params[1]}"))
+                            elif params[0] == 'squire':
+                                abilities.append(f'squire ({params[1].split()[-1]})')
+                            else:
+                                print("unknown ability while parsing character: ", params)
+
+                elif isinstance(wc, Wikilink):
+                    abilities.append(wc.title.strip_code().lower())
+
+            return abilities
 
         # parse infobox
         if content:
@@ -139,7 +176,8 @@ class Character:
                     # sanitize and process specific fields
                     # books
                     if k == 'books':
-                        v = [b.text.strip_code() if b.text else b.title.strip_code() for b in v.nodes
+                        v = [b.text.strip_code() if b.text else b.title.strip_code()
+                             for b in v.nodes
                              if isinstance(b, mwp.wikicode.Wikilink)]
 
                     # normalize nation/nationality
@@ -149,8 +187,9 @@ class Character:
 
                     # titles and aliases and names
                     elif k == 'titles' or k == 'aliases' or k == 'name':
-                        v = [e.strip() for e in parse_markup(v).split(',') if e.strip()]
-                        pass
+                        v = [name
+                             for name in (name.strip() for name in parse_names(v))
+                             if name]
 
                     # world
                     elif k == 'world' or k == 'universe':
@@ -169,12 +208,25 @@ class Character:
                     # add to dict (null-guarded)
                     char_info[k] = v
 
+                # sanitize abilities
+                if 'abilities' in char_info:
+                    char_info['abilities'] = parse_abilities(char_info['abilities'])
+
                 # combine name and aliases
                 if char_info.get('name'):
                     if char_info.get('aliases'):
                         char_info['aliases'].extend(char_info.pop('name'))
                     else:
                         char_info['aliases'] = char_info.pop('name')
+
+                # isolate common name
+                names = self.name.split()
+                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron'):
+                    char_info['common_name'] = None
+                elif "'s" in self.name:
+                    char_info['common_name'] = self.name
+                else:
+                    char_info['common_name'] = names[0]
 
                 # ignore non-cosmere characters
                 if char_info.get('universe', '').lower() != 'cosmere':
@@ -243,9 +295,18 @@ def coppermind_query() -> typing.List[dict]:
 def _generate_characters() -> typing.Iterator[Character]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
+
+    modify = {
+        'Waxillium Ladrian': lambda c: c.aliases.append('Wax'),
+        'Hoid': lambda c: c.aliases.remove('others'),
+        'Jackstom Harms': lambda c: None  #lambda c: c.titles.remove('Lord')
+    }
+
     for result in coppermind_query():
         char = Character(result)
         if char._keep:
+            if char.name in modify:
+                modify[char.name](char)
             yield char
 
 

@@ -35,7 +35,9 @@ def create_logger(name: str) -> logging.Logger:
 
 def get_active_project_loggers():
     loggers = logging.root.manager.loggerDict
-    return [logger for name, logger in loggers.items() if isinstance(logger, logging.Logger) and name.startswith('csn')]
+    return [logger
+            for name, logger in loggers.items()
+            if isinstance(logger, logging.Logger) and name.startswith('csn')]
 
 
 def close_file_handlers(logger: logging.Logger):
