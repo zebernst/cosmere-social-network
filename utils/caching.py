@@ -18,6 +18,30 @@ class CacheProtocol(Enum):
     PICKLE = auto()
     PLAINTEXT = auto()
 
+    @property
+    def read(self):
+        return {
+            CacheProtocol.JSON:      'rt',
+            CacheProtocol.PICKLE:    'rb',
+            CacheProtocol.PLAINTEXT: 'rt'
+        }[self]
+
+    @property
+    def write(self):
+        return {
+            CacheProtocol.JSON:      'wt',
+            CacheProtocol.PICKLE:    'wb',
+            CacheProtocol.PLAINTEXT: 'wt'
+        }[self]
+
+    @property
+    def append(self):
+        return {
+            CacheProtocol.JSON:      'at',
+            CacheProtocol.PICKLE:    'ab',
+            CacheProtocol.PLAINTEXT: 'at'
+        }[self]
+
 
 _protocols = {
     'pkl':    CacheProtocol.PICKLE,
@@ -50,13 +74,7 @@ def resolve_protocol(protocol: Union[CacheProtocol, str]) -> CacheProtocol:
 
 
 def load_cache(path: Path, protocol: CacheProtocol) -> Any:
-    # specify file pointer mode
-    if protocol in (CacheProtocol.PICKLE,):
-        read = 'rb'
-    else:
-        read = 'r'
-
-    with path.open(mode=read) as f:
+    with path.open(mode=protocol.read) as f:
         if protocol == CacheProtocol.PICKLE:
             data = pickle.load(f)
         elif protocol == CacheProtocol.JSON:
@@ -69,13 +87,7 @@ def load_cache(path: Path, protocol: CacheProtocol) -> Any:
 
 
 def save_cache(path: Path, protocol: CacheProtocol, data):
-    # specify file pointer mode
-    if protocol in (CacheProtocol.PICKLE,):
-        write = 'wb'
-    else:
-        write = 'w'
-
-    with path.open(mode=write) as f:
+    with path.open(mode=protocol.write) as f:
         if protocol == CacheProtocol.PICKLE:
             pickle.dump(data, f)
         elif protocol == CacheProtocol.JSON:
@@ -83,7 +95,7 @@ def save_cache(path: Path, protocol: CacheProtocol, data):
         else:
             f.write(data)
 
-        logger.debug(f'Cached data at {path}.')
+        logger.debug(f'Stored cached data at {path}.')
 
 
 def cache(filename: Union[Path, str], protocol='auto'):
@@ -96,7 +108,7 @@ def cache(filename: Union[Path, str], protocol='auto'):
     if protocol == 'auto' or protocol == CacheProtocol.AUTO:
         protocol = detect_protocol(cache_path)
     elif isinstance(protocol, str):
-        protocol = _protocols.get(protocol, CacheProtocol.PLAINTEXT)
+        protocol = resolve_protocol(protocol)
 
     def decorator(func):
 
@@ -104,13 +116,13 @@ def cache(filename: Union[Path, str], protocol='auto'):
         def wrapper(*args, **kwargs):
 
             if cache_path.is_file():
-                logger.debug(f'Loading cached data for {func.__name__}().')
+                logger.info(f'Loading cached data for {func.__name__}().')
                 data = load_cache(cache_path, protocol)
 
             else:
-                logger.debug(f'No cached data found for {func.__name__}(), so {func.__name__}() must be called.')
+                logger.info(f'No cached data found for {func.__name__}(); executing function.')
                 data = func(*args, **kwargs)
-                logger.debug(f'Caching data returned from {func.__name__}().')
+                logger.info(f'Caching data returned from {func.__name__}().')
                 save_cache(cache_path, protocol, data)
 
             return data

@@ -51,9 +51,7 @@ const data = d3.json(dataUrl)
                    let matches = _(data.nodes)
                        .filter(node => _(node.names)
                                .some(s => _.includes(s.toLowerCase(), request.term.toLowerCase())))
-                       .map(n => {
-                           return ({name: n.id, aliases: _.difference(n.names, [n.id]), value: n.id});
-                       })
+                       .map(n => ({name: n.id, aliases: _.difference(n.names, [n.id]), value: n.id}))
                        .value();
 
                    response(matches)

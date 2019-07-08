@@ -21,7 +21,7 @@ colorama.init()
 def data_refresh(arg: str):
     if any(dataset == arg.lower() for dataset in ('coppermind', 'characters')):
         # remove cache and re-download data
-        logger.debug("Refreshing coppermind.net character data.")
+        logger.info("Refreshing coppermind.net character data.")
 
         # cache already exists
         if coppermind_cache_path.is_file():

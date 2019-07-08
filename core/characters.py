@@ -23,7 +23,7 @@ class Character:
         """construct character from coppermind.net api query results."""
         info = extract_info(query_result)
 
-        self._discard = False
+        self._keep = True
         self._pageid = info['pageid']
         self._infobox_template = ""
 
@@ -36,11 +36,12 @@ class Character:
 
         # discard unofficial character pages
         if 'User:' in self.name:
-            self._discard = True
+            self._keep = False
 
-        logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
-        if self._discard:
-            logger.debug(f"Discarded {self.name}.")
+        if self._keep:
+            logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
+        else:
+            logger.debug(f"Ignored {self.name} ({self.world if self.world else 'Unknown'}).")
 
     def __eq__(self, other):
         """return self == value."""
@@ -113,12 +114,12 @@ class Character:
 
                 # ignore non-character pages
                 if infobox is None:
-                    self._discard = True
+                    self._keep = False
                     return char_info
 
                 # ignore deleted characters (i.e. from early drafts)
                 if any('deleted' in t.name.lower() for t in self._infobox_template):
-                    self._discard = True
+                    self._keep = False
                     return char_info
 
                 # split into key/value pairs
@@ -157,7 +158,7 @@ class Character:
 
                     # ignore unnamed minor characters
                     elif k == 'unnamed':
-                        self._discard = True
+                        self._keep = False
                         return char_info
 
                     # parse wiki tags into human-readable text
@@ -177,11 +178,11 @@ class Character:
 
                 # ignore non-cosmere characters
                 if char_info.get('universe', '').lower() != 'cosmere':
-                    self._discard = True
+                    self._keep = False
 
             # no valid template to parse
             else:
-                self._discard = True
+                self._keep = False
 
         return char_info
 
@@ -189,7 +190,7 @@ class Character:
 @cache(coppermind_cache_path)
 def coppermind_query() -> typing.List[dict]:
     """load data from coppermind.net"""
-    logger.debug("Beginning query of coppermind.net.")
+    logger.info("Beginning query of coppermind.net.")
 
     def batched_query():
         """function to query coppermind.net api in batches for all character pages"""
@@ -216,13 +217,14 @@ def coppermind_query() -> typing.List[dict]:
             "formatversion": 2
         }
         continue_data = {}
-        with tqdm(total=num_pages, unit=' pages') as progressbar:
+        with tqdm(total=num_pages, unit=' pages') as progress_bar:
             while continue_data is not None:
                 req = payload.copy()
                 req.update(continue_data)
                 r = requests.get(wiki_api, params=req)
                 response = r.json()
-                logger.debug(f"Batch of {payload.get('gcmlimit')} results received from coppermind.net.")
+                num_results = len(response.get('query', {}).get('pages', []))
+                logger.debug(f"Batch of {num_results} results received from coppermind.net.")
                 if 'error' in response:
                     raise RuntimeError(response['error'])
                 if 'warnings' in response:
@@ -231,19 +233,19 @@ def coppermind_query() -> typing.List[dict]:
                     yield response['query'].get('pages', [])
 
                 continue_data = response.get('continue', None)
-                progressbar.update(len(response['query']['pages']))
+                progress_bar.update(num_results)
 
-        logger.debug("Finished query of coppermind.net.")
+        logger.info("Finished query of coppermind.net.")
 
     return sorted((page for batch in batched_query() for page in batch), key=operator.itemgetter('pageid'))
 
 
 def _generate_characters() -> typing.Iterator[Character]:
-    """generator wrapper over coppermind_query() to delay execution of query"""
+    """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
     for result in coppermind_query():
         char = Character(result)
-        if not char._discard:
+        if char._keep:
             yield char
 
 
