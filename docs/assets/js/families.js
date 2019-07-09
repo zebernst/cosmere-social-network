@@ -1,5 +1,5 @@
 /* d3 force graph for family relationships *
- *     [uses force-directed-graph.js]      */
+ *     [uses force.js]     */
 
 // persist graph
 let graph;

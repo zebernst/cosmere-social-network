@@ -32,17 +32,24 @@ class Character:
         self.name = info['title']
         self.info = self._parse_infobox(info['content'])
         self.common_name = self.info.pop('common_name', '')
+        self.surname = self.info.pop('surname', '')
         self.aliases = self.info.pop('aliases', [])
         self.titles = self.info.pop('titles', [])
         self.world = self.info.pop('world', None)
         self.books = self.info.pop('books', None)
+        self.abilities = self.info.pop('abilities', [])
 
         # discard unofficial character pages
         if 'User:' in self.name:
             self._keep = False
 
+        # sanitize name
+        if '(' in self.name:
+            self.info['original_name'] = self.name
+            self.name = re.sub(r"\s\([\w\s]+\)", '', self.name)
+
         if self._keep:
-            logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
+            logger.debug(f"Created  {self.name} ({self.world if self.world else 'Unknown'}).")
         else:
             logger.debug(f"Ignoring {self.name} ({self.world if self.world else 'Unknown'}).")
 
@@ -72,7 +79,7 @@ class Character:
     @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
-        return set([self.name, self.common_name] + self.aliases)  # + self.titles)
+        return set([self.name, self.common_name, self.surname] + self.aliases)  # + self.titles)
 
     @property
     def coppermind_url(self) -> str:
@@ -219,14 +226,18 @@ class Character:
                     else:
                         char_info['aliases'] = char_info.pop('name')
 
-                # isolate common name
+                # isolate common name and surname
                 names = self.name.split()
-                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron'):
-                    char_info['common_name'] = None
+                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron', 'Miss'):
+                    char_info['common_name'] = ''
+                    char_info['surname'] = names[-1]
                 elif "'s" in self.name:
                     char_info['common_name'] = self.name
+                    char_info['surname'] = ''
                 else:
                     char_info['common_name'] = names[0]
+                    char_info['surname'] = names[-1] if len(names) > 1 else ''
+
 
                 # ignore non-cosmere characters
                 if char_info.get('universe', '').lower() != 'cosmere':
@@ -289,7 +300,10 @@ def coppermind_query() -> typing.List[dict]:
 
         logger.info("Finished query of coppermind.net.")
 
-    return sorted((page for batch in batched_query() for page in batch), key=operator.itemgetter('pageid'))
+    return sorted((page
+                   for batch in batched_query()
+                   for page in batch),
+                  key=operator.itemgetter('pageid'))
 
 
 def _generate_characters() -> typing.Iterator[Character]:
@@ -299,7 +313,7 @@ def _generate_characters() -> typing.Iterator[Character]:
     modify = {
         'Waxillium Ladrian': lambda c: c.aliases.append('Wax'),
         'Hoid': lambda c: c.aliases.remove('others'),
-        'Jackstom Harms': lambda c: None  #lambda c: c.titles.remove('Lord')
+        'Gave Entrone': lambda c: re.sub(r".*", '', c.common_name)
     }
 
     for result in coppermind_query():
@@ -314,4 +328,4 @@ def _generate_characters() -> typing.Iterator[Character]:
 characters_ = _generate_characters()
 
 if __name__ == '__main__':
-    print("names to sanitize:", sorted([c.name for c in characters_ if '(' in c.name]))
+    characters = list(characters_)

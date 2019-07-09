@@ -1,4 +1,6 @@
+import operator
 from pathlib import Path
+import yaml
 
 from utils.paths import book_dir
 from xml.etree import ElementTree
@@ -6,7 +8,7 @@ from pprint import pprint
 from bs4 import BeautifulSoup
 import re
 
-from core.characters import characters_
+from core.characters import characters_, Character
 
 
 # easy access to book files
@@ -38,41 +40,130 @@ if __name__ == '__main__':
         'warbreaker':                      re.compile(r"^x_(chapter\d+|(pro|epi)logue)")
     }
 
-    ns = {'opf': 'http://www.idpf.org/2007/opf'}
-
     key = 'mistborn/era2/bands-of-mourning'
     world = 'scadrial'
     book_dir = book_files(key)
-    root = ElementTree.parse(book_dir / 'content.opf').getroot()
+    content_opf = ElementTree.parse(book_dir / 'content.opf').getroot()
     files = (book_dir / c.attrib['href']
-             for c in root.findall("opf:manifest/*[@media-type='application/xhtml+xml']", ns)
+             for c in content_opf.findall("opf:manifest/*[@media-type='application/xhtml+xml']",
+                                          namespaces=dict(opf='http://www.idpf.org/2007/opf'))
              if book_content_regex.get(key).match(c.attrib['id']))
 
-    sanitize = re.compile(r"[?!.,…'’“”]")
-    monikers = {re.sub(sanitize, '', name): c
-                for c in characters
-                for name in c.monikers
-                if name is not None}
+    sanitize = re.compile(r"[?!.,…'’“”‘]")
+
+    monikers = {}
+    for c in characters:
+        for name in c.monikers:
+            if name in monikers:
+                if isinstance(monikers[name], Character):
+                    monikers[name] = [monikers[name], c]
+                elif isinstance(monikers[name], list):
+                    monikers[name].append(c)
+            else:
+                monikers[name] = c
+
     # and (c.world == world or c.info.get(''))}
 
-    for m in monikers:
-        if ' ' in m.lower() and monikers[m].common_name:
-            print(m, '--', monikers[m].common_name)
+    # for m in monikers:
+    #     if ' ' in m.lower() and monikers[m].common_name:
+    #         print(m, '--', monikers[m].common_name)
+
+    disambiguation = {}
+    if key not in disambiguation:
+        disambiguation[key] = {}
 
     for cnt, chapter in enumerate(files):
         with chapter.open() as f:
-            if cnt == 2:
+            if cnt == 3:
                 print(chapter)
                 soup = BeautifulSoup(f.read(), 'lxml')
                 text = '\n'.join([e.text for e in soup.find_all('p', text=True)])
-                tokens = re.split(r'[\n\s—]+', re.sub(sanitize, '', text))
-                for i in range(len(tokens) - 15 + 1):
-                    run = ' '.join(tokens[i:i + 15])
-                    chars = set((tok, monikers[tok]) for tok in run.split() if tok in monikers)
-                    if len(chars) > 1:
-                        print(i, chars)
-                break
+                text = re.sub(r"['’‘]s\b", '', text)
+                text = re.sub(sanitize, '', text)
+                tokens = [t for t in re.split(r'[\n\s—]+', text) if t]
+                run_size = 25
+                idx = 0
+                while idx < len(tokens):
+                    local_tokens = tokens[idx:idx + run_size]
+                    run = ' '.join(local_tokens).strip()
+                    # chars = sorted(((i, monikers[tok])
+                    #                 for i, tok in enumerate(local_tokens)
+                    #                 if tok in monikers),
+                    #                key=operator.itemgetter(0))
 
-            # print(len(f.readlines()), 'lines long')
+                    def clarify_REFACTORME(keyword, names: list, line: str, world: str):
+                        this_world = [c for c in names if c.world.lower() == world]
+                        if len(this_world) == 1:
+                            return this_world[0]
+
+                        print(f'Ambiguious reference found for `{keyword}`! Which character listed below '
+                              f'is found in the following run?:')
+                        print(line)
+                        for i2, name2 in enumerate(names):
+                            print(f"  {i2+1}: {name2.name} ({name2.world}) -- {name2.info}")
+                        print("  0: None of these are correct.")
+                        response = input("> ")
+                        while not response.isdigit() or int(response) > len(names):
+                            response = input("> ")
+                        idx2 = int(response) - 1
+                        if idx2 < 0:
+                            return None
+                        else:
+                            return names[idx2]
+
+                        # todo: implement `this is not a character` option
+
+                    chars = []
+                    for i, tok in enumerate(local_tokens):
+                        name = tok
+                        char: Character = None
+                        if tok in ('Lord', 'Miss') and i+1 < len(local_tokens):  # ...
+                            titled_name = ' '.join(local_tokens[i:i+1])
+                            if titled_name in monikers:
+                                if isinstance(monikers[titled_name], list):
+                                    char = clarify_REFACTORME(titled_name, monikers[titled_name], run, world)
+                                elif isinstance(monikers[titled_name], Character):
+                                    char = monikers[titled_name]
+
+                        if char is None:
+                            if name in monikers:
+                                if isinstance(monikers[name], list):
+                                    char = clarify_REFACTORME(name, monikers[name], run, world)
+                                elif isinstance(monikers[name], Character):
+                                    char = monikers[name]
+
+                        # todo: disambiguation stores word, resolved character, and position, checks if resolved
+                        #       word exists within length of last run
+
+                        if char:
+                            if char.world.lower() != world and 'worldhopping' not in char.abilities:
+                                if char.name not in disambiguation[key]:
+                                    print(f"Non-worldhopping character found! Please confirm presence "
+                                          f"of {char.name} ({char.world}) in the following run:")
+                                    print(run)
+                                    disambiguation[key][char.name] = {
+                                        'present': input(">  character present? y/n: ").lower().startswith('y'),
+                                        'loc': idx + i
+                                    }
+                                elif disambiguation[key][char.name]['present']:
+                                    chars.append((i, char))
+                            else:
+                                chars.append((i, char))
+
+                    # advance past first found character
+                    if len(chars) >= 2:
+                        idx += chars[0][0]+1
+                        print(f"{run:200s} // {chars}")
+
+                    # advance until only character is at beginning of run (max threshold)
+                    elif len(chars) == 1:
+                        idx += chars[0][0] if chars[0][0] > 0 else 1
+                        print(f"{run:200s} // {chars}")
+
+                    # skip run if no chars found
+                    else:
+                        idx += run_size-1
+                        print(f"{run:200s} // {chars}")
+                break
 
     # pprint(root)

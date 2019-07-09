@@ -9,6 +9,7 @@ log_dir: Path = root_dir / 'logs'
 data_dir: Path = root_dir / 'data'
 cache_dir: Path = data_dir / 'cache'
 book_dir: Path = data_dir / 'books'
+disambiguation_dir: Path = data_dir / 'disambiguation'
 
 # cached data
 coppermind_cache_path: Path = cache_dir / 'coppermind.json'
