@@ -6,11 +6,9 @@ from utils.paths import disambiguation_dir
 from utils.epub import chapters
 
 
-def clarify_REFACTORME(key, names: dict, line: str, world: str):
-    this_world = [c for c in names[key] if c.world.lower() == world]
-    if len(this_world) == 1:
-        return this_world[0]
+# todo: split name identification in runs into separate file, divorce from disambiguation
 
+def clarify_REFACTORME(key, names: dict, line: str, world: str):
     print(f'Ambiguous reference found for `{key}`! Please choose the correct character that '
           f'appears in the following run:')
     print(line)
@@ -72,6 +70,10 @@ if __name__ == '__main__':
         for chapter, tokens in chapters(key):
             run_size = 25
             idx = 0
+
+            if chapter not in disambiguation:
+                disambiguation[chapter] = {}
+
             while idx < len(tokens):
                 local_tokens = tokens[idx:idx + run_size]
                 run = ' '.join(local_tokens).strip()
@@ -98,6 +100,7 @@ if __name__ == '__main__':
 
                     elif full_name not in monikers and name in ('Lady', 'Lord', 'Miss', 'Master'):
                         i += 1
+                        continue
 
                     elif name in monikers:
                         if isinstance(monikers[name], list):
@@ -113,6 +116,7 @@ if __name__ == '__main__':
 
                     else:
                         i += 1
+                        continue
 
                     # todo: advance by two tokens if possible, else fall back to one
 
@@ -122,8 +126,8 @@ if __name__ == '__main__':
                     if char is not None:
                         if char.world.lower() != world and 'worldhopping' not in char.abilities:
                             if idx + i not in disambiguation[chapter]:
-                                print(f"Non-worldhopping character found! Please confirm presence "
-                                      f"of {char.name} ({char.world}) in the following run:")
+                                print(f"Non-native non-worldhopping character found! Please confirm presence "
+                                      f"of {char.name} (from {char.world}) in the following run:")
                                 print(run)
                                 disambiguation[chapter][idx + i] = input(">  character present? y/n: ").lower().startswith('y')
                             elif disambiguation[chapter][idx + i]:
@@ -146,5 +150,5 @@ if __name__ == '__main__':
                     idx += run_size - 1
                     print(f"{run:200s} // {chars}")
 
-        with (disambiguation_dir / key).with_suffix('.yml').open(mode='w') as f:
-            yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
+            with (disambiguation_dir / key).with_suffix('.yml').open(mode='w') as f:
+                yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)

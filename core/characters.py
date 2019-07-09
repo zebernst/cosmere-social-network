@@ -305,6 +305,8 @@ def coppermind_query() -> typing.List[dict]:
                    for page in batch),
                   key=operator.itemgetter('pageid'))
 
+# todo: move modification to separate function in disambiguation.py
+
 
 def _generate_characters() -> typing.Iterator[Character]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
@@ -329,3 +331,4 @@ characters_ = _generate_characters()
 
 if __name__ == '__main__':
     characters = list(characters_)
+    pass
