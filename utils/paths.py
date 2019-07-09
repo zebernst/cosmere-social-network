@@ -1,4 +1,5 @@
 from pathlib import Path
+from core.constants import book_keys
 
 
 # key paths in project
@@ -21,3 +22,6 @@ json_dir: Path = site_dir / 'api' / 'data' / 'networks'
 # ensure paths exist
 for path in (root_dir, data_dir, site_dir, log_dir, gml_dir, json_dir, cache_dir):
     path.mkdir(parents=True, exist_ok=True)
+for key in book_keys:
+    path = disambiguation_dir / key
+    path.parent.mkdir(parents=True, exist_ok=True)
