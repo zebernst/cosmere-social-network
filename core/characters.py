@@ -79,7 +79,7 @@ class Character:
     @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
-        return set([self.name, self.common_name, self.surname] + self.aliases)  # + self.titles)
+        return set([self.name, self.common_name, self.surname] + self.aliases + self.titles)
 
     @property
     def coppermind_url(self) -> str:
@@ -228,7 +228,7 @@ class Character:
 
                 # isolate common name and surname
                 names = self.name.split()
-                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron', 'Miss'):
+                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron', 'Miss', 'Lady'):
                     char_info['common_name'] = ''
                     char_info['surname'] = names[-1]
                 elif "'s" in self.name:
