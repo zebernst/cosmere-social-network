@@ -28,6 +28,47 @@ cleansed_fields = {
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
+book_keys = ['arcanum',
+             'elantris',
+             'emperors-soul',
+             'mistborn/era1/final-empire',
+             'mistborn/era1/well-of-ascension',
+             'mistborn/era1/hero-of-ages',
+             'mistborn/era2/alloy-of-law',
+             'mistborn/era2/shadows-of-self',
+             'mistborn/era2/bands-of-mourning',
+             'mistborn/secret-history',
+             'shadows-for-silence',
+             'sixth-of-the-dusk',
+             'stormlight/way-of-kings',
+             'stormlight/words-of-radiance',
+             'stormlight/edgedancer',
+             'stormlight/oathbringer',
+             'warbreaker',
+             'white-sand'
+             ]
+worlds = {
+    'arcanum':                         None,
+    'dragonsteel':                     'yolen',
+    'elantris':                        'sel',
+    'emperors-soul':                   'sel',
+    'mistborn/era1/final-empire':      'scadrial',
+    'mistborn/era1/well-of-ascension': 'scadrial',
+    'mistborn/era1/hero-of-ages':      'scadrial',
+    'mistborn/era2/alloy-of-law':      'scadrial',
+    'mistborn/era2/shadows-of-self':   'scadrial',
+    'mistborn/era2/bands-of-mourning': 'scadrial',
+    'mistborn/secret-history':         'scadrial',
+    'shadows-for-silence':             'threnody',
+    'sixth-of-the-dusk':               'first of the sun',
+    'stormlight/way-of-kings':         'roshar',
+    'stormlight/words-of-radiance':    'roshar',
+    'stormlight/edgedancer':           'roshar',
+    'stormlight/oathbringer':          'roshar',
+    'warbreaker':                      'nalthis',
+    'white-sand':                      'taldain',
+}
+
 # case-insensitive mapping of demonyms for nations in the cosmere
 nationalities = {
     'aimia':         'Aimian',

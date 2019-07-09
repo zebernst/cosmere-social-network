@@ -1,36 +1,119 @@
-part0006.xhtml: {1097: null, 2009: 587, 4007: false, 4008: false, 4757: null, 4956: null}
-part0008.xhtml: {154: 9976, 298: 1212, 328: 1212}
-part0009.xhtml: {18: false, 65: null}
-part0010.xhtml: {31: null, 50: 9976, 134: 9976, 140: 9976, 166: 9976, 601: 1212, 720: false,
-  725: 1212, 1906: 1212, 2476: 1212, 2910: false, 3424: 1212}
-part0011.xhtml: {695: 1212, 822: 1212, 1375: null, 1400: 1212}
-part0013.xhtml: {133: false, 1155: null, 1243: null}
-part0014.xhtml: {1330: false, 1507: null, 1623: null}
-part0015.xhtml: {169: 10026}
-part0016.xhtml: {}
-part0017.xhtml: {455: null, 621: 8905}
-part0018.xhtml: {6: null, 599: 1638, 2340: 1212, 2868: false, 2945: false, 3351: 1212}
-part0019.xhtml: {715: null, 718: null, 1942: null}
-part0020.xhtml: {571: false, 938: 6844, 1882: 8911, 2392: 8911, 2424: 8911, 3601: false,
-  3602: false}
-part0021.xhtml: {605: null, 873: 1212, 899: null, 1536: false, 2147: false}
-part0022.xhtml: {1225: 6485, 1294: 1640, 2690: false, 2828: null}
-part0023.xhtml: {}
-part0024.xhtml: {72: 1640, 2877: false, 2967: false, 3228: 1212}
-part0026.xhtml: {674: false, 5312: null}
-part0027.xhtml: {1181: false}
-part0028.xhtml: {948: 126, 2350: null, 3087: false}
-part0029.xhtml: {}
-part0030.xhtml: {511: 1633}
-part0031.xhtml: {625: 587}
-part0032.xhtml: {}
-part0033.xhtml: {}
-part0034.xhtml: {}
-part0035.xhtml: {}
-part0036.xhtml: {17: false, 1479: null}
-part0037.xhtml: {}
-part0038.xhtml: {1011: 8372, 3071: null}
-part0039.xhtml: {1180: null}
-part0040.xhtml: {106: false, 1018: 8372, 1321: false, 1637: 1640, 1640: 1212, 1725: false,
-  1764: 1212}
-part0041.xhtml: {1056: 10026}
+x_prologue:
+  1097: null
+  2009: 587
+  4007: false
+  4008: false
+  4757: null
+  4956: null
+x_chapter1:
+  154: 9976
+  298: 1212
+  328: 1212
+x_chapter2:
+  18: false
+  65: null
+x_chapter3:
+  31: null
+  50: 9976
+  134: 9976
+  140: 9976
+  166: 9976
+  601: 1212
+  720: false
+  725: 1212
+  1906: 1212
+  2476: 1212
+  2910: false
+  3424: 1212
+x_chapter4:
+  695: 1212
+  822: 1212
+  1375: null
+  1400: 1212
+x_chapter5:
+  133: false
+  1155: null
+  1243: null
+x_chapter6:
+  1330: false
+  1507: null
+  1623: null
+x_chapter7:
+  169: null
+x_chapter8: {}
+x_chapter9:
+  455: null
+  621: 8905
+x_chapter10:
+  6: null
+  599: 1638
+  2340: 1212
+  2868: false
+  2945: false
+  3351: 1212
+x_chapter11:
+  715: null
+  718: null
+  1942: null
+x_chapter12:
+  571: false
+  938: 6844
+  1882: 8911
+  2392: 8911
+  2424: 8911
+  3601: false
+  3602: false
+x_chapter13:
+  605: null
+  873: 1212
+  899: null
+  1536: false
+  2147: false
+x_chapter14:
+  1225: 6485
+  1294: 1640
+  2690: false
+  2828: null
+x_chapter15: {}
+x_chapter16:
+  72: 1640
+  2877: false
+  2967: false
+  3228: 1212
+x_chapter17:
+  674: false
+  5312: null
+x_chapter18:
+  1181: false
+x_chapter19:
+  948: 126
+  2350: null
+  3087: false
+x_chapter20: {}
+x_chapter21:
+  511: 1633
+x_chapter22:
+  625: 587
+x_chapter23: {}
+x_chapter24: {}
+x_chapter25: {}
+x_chapter26: {}
+x_chapter27:
+  17: false
+  1479: null
+x_chapter28: {}
+x_chapter29:
+  1011: 8372
+  3071: null
+x_chapter30:
+  1180: null
+x_chapter31:
+  106: false
+  1018: 8372
+  1321: false
+  1637: 1640
+  1640: 1212
+  1725: false
+  1764: 1212
+x_epilogue:
+  1056: null
