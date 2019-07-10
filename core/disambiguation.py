@@ -14,6 +14,8 @@ logger = create_logger('csn.core.disambiguation')
 # todo: split name identification in runs into separate file, divorce from disambiguation
 
 def clarify_REFACTORME(key, names: dict, line: str, world: str):
+    # todo: check character's .books attribute against current processing key
+
     print(f'Ambiguous reference found for `{key}`! Please choose the correct character that '
           f'appears in the following run:')
     print(line)

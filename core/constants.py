@@ -68,6 +68,26 @@ worlds = {
     'warbreaker':                      'nalthis',
     'white-sand':                      'taldain',
 }
+books = {
+    'Arcanum Unbounded':                          'arcanum',
+    'Elantris':                                   'elantris',
+    'The Hope of Elantris':                       'elantris',
+    "The Emperor's Soul":                         'emperors-soul',
+    'Mistborn':                                   'mistborn',
+    'Mistborn Era 1':                             'mistborn',
+    'Mistborn Era 2':                             'mistborn',
+    'Shadows of Self':                            'mistborn',
+    'Mistborn: Birthright':                       'mistborn',
+    'The Eleventh Metal':                         'mistborn',
+    'Shadows for Silence in the Forests of Hell': 'shadows-for-silence',
+    'Shadows for Silence':                        'shadows-for-silence',
+    'Sixth of the Dusk':                          'sixth-of-the-dusk',
+    'Stormlight Archive':                         'stormlight',
+    'The Stormlight Archive':                     'stormlight',
+    'The Liar of Partinel':                       None,
+    'Warbreaker':                                 'warbreaker',
+    'White Sand':                                 'white-sand',
+}
 
 # case-insensitive mapping of demonyms for nations in the cosmere
 nationalities = {

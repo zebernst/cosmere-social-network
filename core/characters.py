@@ -7,7 +7,7 @@ import requests
 from mwparserfromhell.nodes import Template, Wikilink
 from tqdm import tqdm
 
-from core.constants import cleansed_fields, info_fields, nationalities
+from core.constants import cleansed_fields, info_fields, nationalities, books
 from utils.cache import cache
 from utils.logs import create_logger
 from utils.paths import coppermind_cache_path
@@ -182,7 +182,7 @@ class Character:
                     # sanitize and process specific fields
                     # books
                     if k == 'books':
-                        v = [b.text.strip_code() if b.text else b.title.strip_code()
+                        v = [books.get(b.text.strip_code() if b.text else b.title.strip_code())
                              for b in v.nodes
                              if isinstance(b, mwp.wikicode.Wikilink)]
 
