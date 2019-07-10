@@ -1,14 +1,13 @@
 import operator
 import re
 import typing
-from collections import defaultdict
 
 import mwparserfromhell as mwp
 import requests
-from mwparserfromhell.nodes import Wikilink, Template
+from mwparserfromhell.nodes import Template, Wikilink
 from tqdm import tqdm
 
-from core.constants import cleansed_fields, info_fields, nationalities, cosmere_planets
+from core.constants import cleansed_fields, info_fields, nationalities
 from utils.cache import cache
 from utils.logs import create_logger
 from utils.paths import coppermind_cache_path

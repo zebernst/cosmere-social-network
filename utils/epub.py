@@ -1,8 +1,14 @@
-from utils.paths import book_dir, disambiguation_dir
-from xml.etree import ElementTree
-from bs4 import BeautifulSoup
 import re
+from xml.etree import ElementTree
 
+from bs4 import BeautifulSoup
+
+from utils.logs import create_logger
+from utils.paths import book_dir
+
+
+# todo: add logging
+logger = create_logger('csn.utils.epub')
 
 content_map = {
     'arcanum':                         None,

@@ -1,9 +1,14 @@
 import yaml
 
-from core.characters import characters_, Character
+from core.characters import Character, characters_
 from core.constants import book_keys, worlds
-from utils.paths import disambiguation_dir
 from utils.epub import chapters
+from utils.logs import create_logger
+from utils.paths import disambiguation_dir
+
+
+# todo: add logging
+logger = create_logger('csn.core.disambiguation')
 
 
 # todo: split name identification in runs into separate file, divorce from disambiguation
