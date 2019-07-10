@@ -7,10 +7,10 @@ from itertools import groupby
 import colorama
 
 from core.characters import coppermind_query
-from utils.cache import detect_protocol, load_cache
+from utils.caching import detect_protocol, load_cache
 from utils.logs import close_file_handlers, create_logger, get_active_project_loggers
 from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
-from utils.wiki import extract_info
+from utils.wiki import extract_relevant_info
 
 
 logger = create_logger('csn.cli')
@@ -45,7 +45,7 @@ def data_refresh(arg: str):
                 for _, grp in groupby(sorted(delta, key=page_id), key=page_id):
                     grp = list(grp)
                     if len(grp) == 1:
-                        char = extract_info(grp[0])
+                        char = extract_relevant_info(grp[0])
                         if char in old_data:
                             print(f"[[{char['title']}]] removed.", end="\n\n")
                             fp.write(f"[[{char['title']}]] removed.\n\n")
@@ -54,9 +54,9 @@ def data_refresh(arg: str):
                             fp.write(f"[[{char['title']}]] added.\n\n")
                     elif len(grp) == 2:
                         if grp[0] in old_data:
-                            old, new = tuple(extract_info(r) for r in grp)
+                            old, new = tuple(extract_relevant_info(r) for r in grp)
                         else:
-                            new, old = tuple(extract_info(r) for r in grp)
+                            new, old = tuple(extract_relevant_info(r) for r in grp)
 
                         if old['title'] != new['title']:
                             print(f"[[{old['title']}]] renamed to [[{new['title']}]].")

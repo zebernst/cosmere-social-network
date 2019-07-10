@@ -1,19 +1,14 @@
-import operator
 import re
 import typing
 
 import mwparserfromhell as mwp
-import requests
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
-from tqdm import tqdm
 
 from core.constants import books, cleansed_fields, info_fields, nationalities
 from core.disambiguation import final_cleanse
-from utils.cache import cache
 from utils.logs import create_logger
-from utils.paths import coppermind_cache_path
-from utils.wiki import extract_info
+from utils.wiki import extract_relevant_info, coppermind_query
 
 
 logger = create_logger('csn.core.characters')
@@ -24,7 +19,7 @@ class Character:
 
     def __init__(self, query_result: dict):
         """construct character from coppermind.net api query results."""
-        info = extract_info(query_result)
+        info = extract_relevant_info(query_result)
 
         self._keep = True
         self._pageid = info['pageid']
@@ -248,62 +243,6 @@ class Character:
                 self._keep = False
 
         return char_info
-
-
-@cache(coppermind_cache_path)
-def coppermind_query() -> typing.List[dict]:
-    """load data from coppermind.net"""
-    logger.info("Beginning query of coppermind.net.")
-
-    def batch_query():
-        """function to query coppermind.net api in batches for all character pages"""
-        # query generator code based on https://www.mediawiki.org/wiki/API:Query#Continuing_queries
-        wiki_api = "https://coppermind.net/w/api.php"
-
-        # get total number of pages to fetch
-        r = requests.get(wiki_api, params=dict(action='query', format='json',
-                                               prop='categoryinfo', titles='Category:Characters'))
-        num_pages = r.json().get('query', {}).get('pages', {}).get('40', {}).get('categoryinfo', {}).get('pages')
-
-        # query server until finished
-        payload = {
-            "action":        "query",
-            "format":        "json",
-            "prop":          "revisions",
-            "generator":     "categorymembers",
-            "rvprop":        "content|timestamp",
-            "rvsection":     "0",
-            "gcmtitle":      "Category:Characters",
-            "gcmprop":       "ids|title",
-            "gcmtype":       "page",
-            "gcmlimit":      "50",
-            "formatversion": 2
-        }
-        continue_data = {}
-        with tqdm(total=num_pages, unit=' pages') as progress_bar:
-            while continue_data is not None:
-                req = payload.copy()
-                req.update(continue_data)
-                r = requests.get(wiki_api, params=req)
-                response = r.json()
-                num_results = len(response.get('query', {}).get('pages', []))
-                logger.debug(f"Batch of {num_results} results received from coppermind.net.")
-                if 'error' in response:
-                    raise RuntimeError(response['error'])
-                if 'warnings' in response:
-                    print(response['warnings'])
-                if 'query' in response:
-                    yield response['query'].get('pages', [])
-
-                continue_data = response.get('continue', None)
-                progress_bar.update(num_results)
-
-        logger.info("Finished query of coppermind.net.")
-
-    return sorted((page
-                   for batch in batch_query()
-                   for page in batch),
-                  key=operator.itemgetter('pageid'))
 
 
 def _generate_characters() -> typing.Iterator[Character]:
