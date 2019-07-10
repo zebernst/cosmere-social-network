@@ -73,6 +73,10 @@ class Character:
         return self.name
 
     @property
+    def id(self):
+        return self._pageid
+
+    @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
         return set([self.name, self.common_name, self.surname] + self.aliases + self.titles)

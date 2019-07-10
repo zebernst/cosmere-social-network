@@ -69,7 +69,7 @@ if __name__ == '__main__':
             else:
                 monikers[name] = c
 
-    char_ids = {c._pageid: c for c in characters}
+    char_ids = {c.id: c for c in characters}
 
     for key in book_keys:
         if key != 'mistborn/era2/bands-of-mourning':
@@ -108,7 +108,7 @@ if __name__ == '__main__':
                                 char = char_ids[char_id] if char_id is not None else None
                             else:
                                 char = clarify_REFACTORME(full_name, monikers, run)
-                                disambiguation[chapter][idx + i] = char._pageid if char else None
+                                disambiguation[chapter][idx + i] = char.id if char else None
                         else:
                             char = monikers[full_name]
                         i += 2
@@ -124,7 +124,7 @@ if __name__ == '__main__':
                                 char = char_ids[char_id] if char_id is not None else None
                             else:
                                 char = clarify_REFACTORME(name, monikers, run)
-                                disambiguation[chapter][idx + i] = char._pageid if char else None
+                                disambiguation[chapter][idx + i] = char.id if char else None
                         else:
                             char = monikers[name]
                         i += 1
