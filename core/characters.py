@@ -5,8 +5,7 @@ import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from core.constants import books, cleansed_fields, info_fields, nationalities
-from core.disambiguation import final_cleanse
+from core.constants import books, cleansed_fields, info_fields, nationalities, titles
 from utils.logs import create_logger
 from utils.wiki import extract_relevant_info, coppermind_query
 
@@ -183,9 +182,10 @@ class Character:
                     # sanitize and process specific fields
                     # books
                     if k == 'books':
-                        v = [books.get(b.text.strip_code() if b.text else b.title.strip_code())
-                             for b in v.nodes
-                             if isinstance(b, mwp.wikicode.Wikilink)]
+                        v = [b for b in (books.get(b.text.strip_code() if b.text else b.title.strip_code())
+                                         for b in v.nodes
+                                         if isinstance(b, mwp.wikicode.Wikilink))
+                             if b is not None]
 
                     # normalize nation/nationality
                     elif k == 'nationality' or k == 'nation':
@@ -228,7 +228,7 @@ class Character:
 
                 # isolate common name and surname
                 names = self.name.split()
-                if names[0] in ('King', 'Queen', 'Prince', 'Princess', 'Lord', 'Baron', 'Miss', 'Lady'):
+                if names[0] in titles:
                     char_info['common_name'] = ''
                     char_info['surname'] = names[-1]
                 elif "'s" in self.name:
@@ -249,6 +249,20 @@ class Character:
         return char_info
 
 
+def explicit_modify(ch: Character):
+    if ch.name == 'Waxillium Ladrian':
+        ch.aliases.append('Wax')
+    elif ch.name == 'Hoid':
+        ch.aliases.remove('others')
+    elif ch.name == 'Gave Entrone':
+        ch.common_name = ''
+    elif ch.name == 'Wulfden the First':
+        ch.surname = ''
+    elif ch.name == 'Bloody Tan':
+        ch.common_name = 'Bloody Tan'
+        ch.surname = ''
+
+
 def _generate_characters() -> typing.Iterator[Character]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
@@ -256,7 +270,7 @@ def _generate_characters() -> typing.Iterator[Character]:
     for result in coppermind_query():
         char = Character(result)
         if char._keep:
-            final_cleanse(char)
+            explicit_modify(char)
             yield char
 
 

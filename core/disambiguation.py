@@ -1,9 +1,7 @@
-import re
-
 import yaml
 
 from core.characters import Character, characters_
-from core.constants import book_keys, worlds
+from core.constants import book_keys, titles, worlds
 from utils.epub import chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir
@@ -13,29 +11,26 @@ from utils.paths import disambiguation_dir
 logger = create_logger('csn.core.disambiguation')
 
 
-def final_cleanse(ch: Character):
-    if ch.name == 'Waxillium Ladrian':
-        ch.aliases.append('Wax')
-    elif ch.name == 'Hoid':
-        ch.aliases.remove('others')
-    elif ch.name == 'Gave Entrone':
-        re.sub(r".*", '', ch.common_name)
-
-
 # todo: split name identification in runs into separate file, divorce from disambiguation
 
-def clarify_REFACTORME(key, names: dict, line: str):
+def clarify_REFACTORME(name: str, names: dict, line: str):
     # todo: check character's .books attribute against current processing key
 
-    print(f'Ambiguous reference found for `{key}`! Please choose the correct character that '
+    local_chars = [c for c in names[name] if any(b == key.split('/')[0] for b in c.books)]
+    if len(local_chars) == 1:
+        logger.debug(f'Automatically matched ambiguous character {repr(local_chars[0])} from {name} -- '
+                     f'only character with presence in {key}')
+        return local_chars[0]
+
+    print(f'Ambiguous reference found for `{name}`! Please choose the correct character that '
           f'appears in the following run:')
     print(line)
-    for i2, name2 in enumerate(names[key]):
+    for i2, name2 in enumerate(names[name]):
         print(f"  {i2 + 1}: {name2.name} ({name2.world}) -- {name2.info}")
     print("  o: The character is not listed.")
     print("  x: This is not a character.")
     response = input("> ")
-    while not ((response.isdigit() and int(response) <= len(names[key]))
+    while not ((response.isdigit() and int(response) <= len(names[name]))
                or response.lower().startswith('x')
                or response.lower().startswith('o')):
         response = input("> ")
@@ -48,11 +43,22 @@ def clarify_REFACTORME(key, names: dict, line: str):
 
         if isinstance(names[response], list):
             # todo: clean up recursive calls
-            return clarify_REFACTORME(response, names, line)
+            ch = clarify_REFACTORME(response, names, line)
         else:
-            return names[response]
-    idx2 = int(response) - 1
-    return names[key][idx2]
+            ch = names[response]
+    else:
+        idx2 = int(response) - 1
+        ch = names[name][idx2]
+
+    logger.debug(f'Manually matched ambiguous character {repr(ch)}.')
+    return ch
+
+
+def verify(key: str, ch: Character, word: str):
+    belongs = any(b == key.split('/')[0] for b in ch.books)
+    if not belongs:
+        logger.debug(f'Ignoring potential match of {repr(ch)} from "{word}" - character does not appear in {key}')
+    return belongs
 
 
 if __name__ == '__main__':
@@ -96,7 +102,6 @@ if __name__ == '__main__':
                 chars = []
                 i = 0
                 while i < len(local_tokens):
-                    # for i, tok in enumerate(local_tokens):
                     name = local_tokens[i]
                     full_name = ' '.join(local_tokens[i:i + 2])
                     char: Character = None
@@ -110,10 +115,10 @@ if __name__ == '__main__':
                                 char = clarify_REFACTORME(full_name, monikers, run)
                                 disambiguation[chapter][idx + i] = char.id if char else None
                         else:
-                            char = monikers[full_name]
+                            char = monikers[full_name] if verify(key, monikers[full_name], full_name) else None
                         i += 2
 
-                    elif full_name not in monikers and name in ('Lady', 'Lord', 'Miss', 'Master'):
+                    elif full_name not in monikers and name in titles:
                         i += 1
                         continue
 
@@ -126,7 +131,7 @@ if __name__ == '__main__':
                                 char = clarify_REFACTORME(name, monikers, run)
                                 disambiguation[chapter][idx + i] = char.id if char else None
                         else:
-                            char = monikers[name]
+                            char = monikers[name] if verify(key, monikers[name], name) else None
                         i += 1
 
                     else:
@@ -139,6 +144,8 @@ if __name__ == '__main__':
                     #       word exists within length of last run
 
                     if char is not None:
+                        # if not verify(key, char):
+                        #     char = None
                         if char.world.lower() != world and 'worldhopping' not in char.abilities:
                             if idx + i not in disambiguation[chapter]:
                                 print(f"Non-native non-worldhopping character found! Please confirm presence "

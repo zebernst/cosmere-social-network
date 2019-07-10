@@ -28,6 +28,9 @@ cleansed_fields = {
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
+titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'Lady',
+          'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Captain')
+
 book_keys = ['arcanum',
              'elantris',
              'emperors-soul',
@@ -76,6 +79,7 @@ books = {
     'Mistborn':                                   'mistborn',
     'Mistborn Era 1':                             'mistborn',
     'Mistborn Era 2':                             'mistborn',
+    'The Alloy of Law':                           'mistborn',
     'Shadows of Self':                            'mistborn',
     'Mistborn: Birthright':                       'mistborn',
     'The Eleventh Metal':                         'mistborn',
