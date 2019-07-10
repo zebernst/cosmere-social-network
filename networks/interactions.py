@@ -1,5 +1,3 @@
-from ebooklib import epub
-
 ##### algorithm notes #####
 
 # for each word in text, if word is in set of names (use dict??) then look up to 15 words

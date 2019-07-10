@@ -1,3 +1,5 @@
+import re
+
 import yaml
 
 from core.characters import Character, characters_
@@ -11,9 +13,18 @@ from utils.paths import disambiguation_dir
 logger = create_logger('csn.core.disambiguation')
 
 
+def final_cleanse(ch: Character):
+    if ch.name == 'Waxillium Ladrian':
+        ch.aliases.append('Wax')
+    elif ch.name == 'Hoid':
+        ch.aliases.remove('others')
+    elif ch.name == 'Gave Entrone':
+        re.sub(r".*", '', ch.common_name)
+
+
 # todo: split name identification in runs into separate file, divorce from disambiguation
 
-def clarify_REFACTORME(key, names: dict, line: str, world: str):
+def clarify_REFACTORME(key, names: dict, line: str):
     # todo: check character's .books attribute against current processing key
 
     print(f'Ambiguous reference found for `{key}`! Please choose the correct character that '
@@ -37,14 +48,11 @@ def clarify_REFACTORME(key, names: dict, line: str, world: str):
 
         if isinstance(names[response], list):
             # todo: clean up recursive calls
-            return clarify_REFACTORME(response, names, line, world)
+            return clarify_REFACTORME(response, names, line)
         else:
             return names[response]
     idx2 = int(response) - 1
     return names[key][idx2]
-
-    # todo: implement `this is not a character` option
-    # todo: implement `search for correct character`
 
 
 if __name__ == '__main__':
@@ -99,7 +107,7 @@ if __name__ == '__main__':
                                 char_id = disambiguation[chapter][idx + i]
                                 char = char_ids[char_id] if char_id is not None else None
                             else:
-                                char = clarify_REFACTORME(full_name, monikers, run, world)
+                                char = clarify_REFACTORME(full_name, monikers, run)
                                 disambiguation[chapter][idx + i] = char._pageid if char else None
                         else:
                             char = monikers[full_name]
@@ -115,7 +123,7 @@ if __name__ == '__main__':
                                 char_id = disambiguation[chapter][idx + i]
                                 char = char_ids[char_id] if char_id is not None else None
                             else:
-                                char = clarify_REFACTORME(name, monikers, run, world)
+                                char = clarify_REFACTORME(name, monikers, run)
                                 disambiguation[chapter][idx + i] = char._pageid if char else None
                         else:
                             char = monikers[name]

@@ -4,10 +4,12 @@ import typing
 
 import mwparserfromhell as mwp
 import requests
-from mwparserfromhell.nodes import Template, Wikilink
+from mwparserfromhell.nodes.template import Template
+from mwparserfromhell.nodes.wikilink import Wikilink
 from tqdm import tqdm
 
-from core.constants import cleansed_fields, info_fields, nationalities, books
+from core.constants import books, cleansed_fields, info_fields, nationalities
+from core.disambiguation import final_cleanse
 from utils.cache import cache
 from utils.logs import create_logger
 from utils.paths import coppermind_cache_path
@@ -237,7 +239,6 @@ class Character:
                     char_info['common_name'] = names[0]
                     char_info['surname'] = names[-1] if len(names) > 1 else ''
 
-
                 # ignore non-cosmere characters
                 if char_info.get('universe', '').lower() != 'cosmere':
                     self._keep = False
@@ -254,7 +255,7 @@ def coppermind_query() -> typing.List[dict]:
     """load data from coppermind.net"""
     logger.info("Beginning query of coppermind.net.")
 
-    def batched_query():
+    def batch_query():
         """function to query coppermind.net api in batches for all character pages"""
         # query generator code based on https://www.mediawiki.org/wiki/API:Query#Continuing_queries
         wiki_api = "https://coppermind.net/w/api.php"
@@ -266,16 +267,16 @@ def coppermind_query() -> typing.List[dict]:
 
         # query server until finished
         payload = {
-            "action": "query",
-            "format": "json",
-            "prop": "revisions",
-            "generator": "categorymembers",
-            "rvprop": "content|timestamp",
-            "rvsection": "0",
-            "gcmtitle": "Category:Characters",
-            "gcmprop": "ids|title",
-            "gcmtype": "page",
-            "gcmlimit": "50",
+            "action":        "query",
+            "format":        "json",
+            "prop":          "revisions",
+            "generator":     "categorymembers",
+            "rvprop":        "content|timestamp",
+            "rvsection":     "0",
+            "gcmtitle":      "Category:Characters",
+            "gcmprop":       "ids|title",
+            "gcmtype":       "page",
+            "gcmlimit":      "50",
             "formatversion": 2
         }
         continue_data = {}
@@ -300,28 +301,19 @@ def coppermind_query() -> typing.List[dict]:
         logger.info("Finished query of coppermind.net.")
 
     return sorted((page
-                   for batch in batched_query()
+                   for batch in batch_query()
                    for page in batch),
                   key=operator.itemgetter('pageid'))
-
-# todo: move modification to separate function in disambiguation.py
 
 
 def _generate_characters() -> typing.Iterator[Character]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
 
-    modify = {
-        'Waxillium Ladrian': lambda c: c.aliases.append('Wax'),
-        'Hoid': lambda c: c.aliases.remove('others'),
-        'Gave Entrone': lambda c: re.sub(r".*", '', c.common_name)
-    }
-
     for result in coppermind_query():
         char = Character(result)
         if char._keep:
-            if char.name in modify:
-                modify[char.name](char)
+            final_cleanse(char)
             yield char
 
 

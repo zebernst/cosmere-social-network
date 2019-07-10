@@ -7,7 +7,6 @@ from utils.logs import create_logger
 from utils.paths import book_dir
 
 
-# todo: add logging
 logger = create_logger('csn.utils.epub')
 
 content_map = {
@@ -35,10 +34,12 @@ def chapters(key: str):
     chapter_dir = book_dir / key / 'mobi8' / 'OEBPS'
 
     content_opf = ElementTree.parse(chapter_dir / 'content.opf').getroot()
-    files = ((c.attrib['id'], chapter_dir / c.attrib['href'])
+    files = [(c.attrib['id'], chapter_dir / c.attrib['href'])
              for c in content_opf.findall("opf:manifest/*[@media-type='application/xhtml+xml']",
                                           namespaces=dict(opf='http://www.idpf.org/2007/opf'))
-             if content_map.get(key).match(c.attrib['id']))
+             if content_map.get(key).match(c.attrib['id'])]
+
+    logger.debug(f"Identified {len(files)} chapters to parse from {key}.")
 
     sanitize = re.compile(r"[?!.,…'’“”‘]")
 
@@ -49,4 +50,4 @@ def chapters(key: str):
             text = re.sub(r"['’‘]s\b", '', text)
             text = re.sub(sanitize, '', text)
             tokens = [t for t in re.split(r'[\n\s—]+', text) if t]
-            yield (chapter, tokens)
+            yield chapter, tokens
