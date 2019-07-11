@@ -20,7 +20,7 @@ logger = create_logger('csn.networks.interactions')
 def create_graph(book: str):
     G = nx.Graph()
 
-    nodes = {c.id: dict(name=c.name, world=c.world, names=list(c.monikers))
+    nodes = {c.name: {}
              for c in characters}
     G.add_nodes_from(nodes.items())
 
@@ -106,14 +106,15 @@ def create_graph(book: str):
             chars = set(c for i, c in found)
             if len(chars) > 1:
                 for u, v in combinations(chars, r=2):
-                    if G.has_edge(u, v):
-                        G[u][v]['weight'] += 1
+                    if G.has_edge(u.name, v.name):
+                        G[u.name][v.name]['weight'] += 1
                     else:
-                        G.add_edge(u, v, weight=1)
+                        G.add_edge(u.name, v.name, weight=1)
 
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
 
+    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight') if w <= 2])
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
