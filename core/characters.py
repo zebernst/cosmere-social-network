@@ -7,7 +7,8 @@ from mwparserfromhell.nodes.wikilink import Wikilink
 
 from core.constants import books, cleansed_fields, info_fields, nationalities, titles
 from utils.logs import create_logger
-from utils.wiki import extract_relevant_info, coppermind_query
+from utils.regex import possession, punctuation
+from utils.wiki import coppermind_query, extract_relevant_info
 
 
 logger = create_logger('csn.core.characters')
@@ -78,7 +79,7 @@ class Character:
     @property
     def monikers(self) -> typing.Set[str]:
         """return a set of monikers that the character is known by."""
-        return set([self.name, self.common_name, self.surname] + self.aliases + self.titles)
+        return set(n for n in [self.name, self.common_name, self.surname] + self.aliases + self.titles if n)
 
     @property
     def coppermind_url(self) -> str:
@@ -284,14 +285,16 @@ characters_ = _generate_characters()
 characters = list(_generate_characters())
 monikers = {}
 for c in characters:
-    for one in c.monikers:
-        if one in monikers:
-            if isinstance(monikers[one], Character):
-                monikers[one] = [monikers[one], c]
-            elif isinstance(monikers[one], list):
-                monikers[one].append(c)
+    for name in c.monikers:
+        name = re.sub(possession, '', name)
+        name = re.sub(punctuation, '', name)
+        if name in monikers:
+            if isinstance(monikers[name], Character):
+                monikers[name] = [monikers[name], c]
+            elif isinstance(monikers[name], list):
+                monikers[name].append(c)
         else:
-            monikers[one] = c
+            monikers[name] = c
 
 if __name__ == '__main__':
     print('debugging!')

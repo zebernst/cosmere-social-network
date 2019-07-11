@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 from utils.logs import create_logger
 from utils.paths import book_dir
+from utils.regex import possession, punctuation
 
 
 logger = create_logger('csn.utils.epub')
@@ -41,13 +42,11 @@ def chapters(key: str):
 
     logger.debug(f"Identified {len(files)} chapters to parse from {key}.")
 
-    sanitize = re.compile(r"[?!.,…'’“”‘]")
-
     for chapter, path in files:
         with path.open() as f:
             soup = BeautifulSoup(f.read(), 'lxml')
             text = '\n'.join([e.text for e in soup.find_all('p', text=True)])
-            text = re.sub(r"['’‘]s\b", '', text)
-            text = re.sub(sanitize, '', text)
+            text = re.sub(possession, '', text)
+            text = re.sub(punctuation, '', text)
             tokens = [t for t in re.split(r'[\n\s—]+', text) if t]
             yield chapter, tokens
