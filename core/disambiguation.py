@@ -2,7 +2,7 @@ from typing import Optional
 
 import colorama
 
-from core.characters import Character, characters_
+from core.characters import Character, characters, monikers
 from utils.input import ask, menu, yn_question
 from utils.logs import create_logger
 
@@ -10,18 +10,7 @@ from utils.logs import create_logger
 # todo: add logging
 logger = create_logger('csn.core.disambiguation')
 
-_characters = list(characters_)
-_char_ids = {c.id: c for c in _characters}
-monikers = {}
-for c in _characters:
-    for one in c.monikers:
-        if one in monikers:
-            if isinstance(monikers[one], Character):
-                monikers[one] = [monikers[one], c]
-            elif isinstance(monikers[one], list):
-                monikers[one].append(c)
-        else:
-            monikers[one] = c
+_char_ids = {c.id: c for c in characters}
 
 
 def char_search(prompt: Optional[str]) -> Optional[Character]:

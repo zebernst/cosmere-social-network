@@ -1,43 +1,28 @@
-##### algorithm notes #####
+import json
+from itertools import combinations
+from typing import Union
 
-# for each word in text, if word is in set of names (use dict??) then look up to 15 words
-# forward in the text and increment the edge size for each pair of names that need to be
-# associated.
-
-# use a modified multidictionary with {moniker: [chars]} to indicate any clashes in names
-# (notably surnames) and ask the user to clarify which character it is. use this data structure
-# in the disambiguation process to give the user options which names to pick from
-
-# at least semi-automate process (narrow down title (king, etc) by world, but ask user to
-# be certain rather than assuming wrong.
-
-# also use up to 30 words at a time (advance by 5?) and compare indices in a modified
-# queue to make sure that there are no duplicate instances of conversation being counted
-
-# use techniques from comp261 when designing the algorithm. keep track of offset from beginning
-# of string to first name found and use that to advance forward.
-
-# make a dictionary that stores name position -> disambiguated character name whenever ambiguous
-# names are found and user input is required. make disambiguation a cli task. this will allow
-# processing of the source text independent of the format that it comes in - epub, mobi, html, txt, etc
-
-# make this file (interactions.py) rely on a saved datastructure or use a dispatchable method to fetch
-# the data, to enable divorcing of analysis from source material and allowing user to specify which
-# kind they have.
+import networkx as nx
 import yaml
 
-from core.characters import Character
-from core.constants import book_keys, titles, worlds
-from core.disambiguation import disambiguate_name, disambiguate_title, monikers, verify_presence
+from core.characters import Character, characters, monikers
+from core.constants import book_keys, titles
+from core.disambiguation import disambiguate_name, disambiguate_title, verify_presence
 from utils.epub import chapters
-from utils.paths import disambiguation_dir
+from utils.logs import create_logger
+from utils.paths import disambiguation_dir, gml_dir, json_dir
 
 
-for book in book_keys:
-    if book != 'mistborn/era2/bands-of-mourning':
-        continue
+# todo: add logging
+logger = create_logger('csn.networks.interactions')
 
-    world = worlds.get(book)
+
+def create_graph(book: str):
+    G = nx.Graph()
+
+    nodes = {c.id: dict(name=c.name, world=c.world, names=list(c.monikers))
+             for c in characters}
+    G.add_nodes_from(nodes.items())
 
     with (disambiguation_dir / book).with_suffix('.yml').open(mode='r') as f:
         disambiguation = yaml.load(f, yaml.Loader)
@@ -53,16 +38,17 @@ for book in book_keys:
 
         while idx < len(tokens):
             local_tokens = tokens[idx:idx + run_size]
-            context = [' '.join(tokens[idx-(i*run_size):idx-((i-1)*run_size)]).strip() for i in range(4, -1, -1)]
+            context = [' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
+                       for i in range(4, -1, -1)]
 
-            chars = []
+            found = []
             i = 0
             while i < len(local_tokens):
                 char: Character = None
                 pos = idx + i
 
                 this_token = local_tokens[i]
-                next_token = local_tokens[i+1] if i+1 < len(local_tokens) else ''
+                next_token = local_tokens[i + 1] if i + 1 < len(local_tokens) else ''
                 third_token = local_tokens[i + 2] if i + 2 < len(local_tokens) else ''
                 two_tokens = this_token + ' ' + next_token
                 next_two_tokens = next_token + ' ' + third_token
@@ -72,7 +58,8 @@ for book in book_keys:
                     if isinstance(monikers[three_tokens], list):
                         char = disambiguate_name(book, three_tokens, disambiguation[chapter], pos, context)
                     else:
-                        char = monikers[three_tokens] if verify_presence(book, monikers[three_tokens], three_tokens) else None
+                        char = monikers[three_tokens] if verify_presence(book, monikers[three_tokens],
+                                                                         three_tokens) else None
 
                     i += 3
 
@@ -102,23 +89,60 @@ for book in book_keys:
                     continue
 
                 if char is not None:
-                    chars.append((i, char))
+                    found.append((i, char))
 
             # advance past first found character
-            if len(chars) >= 2:
-                idx += chars[0][0] + 1
+            if len(found) >= 2:
+                idx += found[0][0] + 1
 
             # advance until only character is at beginning of run (max threshold)
-            elif len(chars) == 1:
-                idx += chars[0][0] if chars[0][0] > 0 else 1
+            elif len(found) == 1:
+                idx += found[0][0] if found[0][0] > 0 else 1
 
             # skip run if no chars found
             else:
                 idx += run_size - 1
 
-            characters = set(c for i, c in chars)
-            if len(characters) > 1:
-                print(characters)
+            chars = set(c for i, c in found)
+            if len(chars) > 1:
+                for u, v in combinations(chars, r=2):
+                    if G.has_edge(u, v):
+                        G[u][v]['weight'] += 1
+                    else:
+                        G.add_edge(u, v, weight=1)
 
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
+
+    G.remove_nodes_from(list(nx.isolates(G)))
+    return G
+
+
+def save_network_gml(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
+    filename = gml_dir / 'interactions' / f'{key}.gml'
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    nx.write_gml(G, str(filename))
+    logger.info(f" GML graph data for {key} characters written to {filename}")
+
+
+def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
+    filename = json_dir / 'interactions' / f'{key}.json'
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    with filename.open(mode='w') as f:
+        json.dump(nx.node_link_data(G), f)
+    logger.info(f"JSON graph data for {key} characters written to {filename}")
+
+
+if __name__ == '__main__':
+
+    for key in book_keys:
+        if key != 'mistborn/era2/bands-of-mourning':
+            continue
+
+        G = create_graph(key)
+        save_network_gml(key, G)
+        save_network_json(key, G)
+        print('pause!')
+

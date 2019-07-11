@@ -281,6 +281,17 @@ def _generate_characters() -> typing.Iterator[Character]:
 # provide direct access to character generator
 characters_ = _generate_characters()
 
+characters = list(_generate_characters())
+monikers = {}
+for c in characters:
+    for one in c.monikers:
+        if one in monikers:
+            if isinstance(monikers[one], Character):
+                monikers[one] = [monikers[one], c]
+            elif isinstance(monikers[one], list):
+                monikers[one].append(c)
+        else:
+            monikers[one] = c
+
 if __name__ == '__main__':
-    characters = list(characters_)
-    pass
+    print('debugging!')
