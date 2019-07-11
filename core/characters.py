@@ -261,6 +261,10 @@ def explicit_modify(ch: Character):
     elif ch.name == 'Bloody Tan':
         ch.common_name = 'Bloody Tan'
         ch.surname = ''
+    elif ch.name == 'Push':
+        ch._keep = False
+    elif ch.name == 'Red' and ch.world == 'Scadrial':
+        ch._keep = False
 
 
 def _generate_characters() -> typing.Iterator[Character]:
@@ -269,8 +273,8 @@ def _generate_characters() -> typing.Iterator[Character]:
 
     for result in coppermind_query():
         char = Character(result)
+        explicit_modify(char)
         if char._keep:
-            explicit_modify(char)
             yield char
 
 

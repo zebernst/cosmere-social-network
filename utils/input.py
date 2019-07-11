@@ -2,7 +2,8 @@ from typing import Callable
 
 
 def menu(prompt: str, options: list, validator: Callable[[str], bool], error: str = None):
-    print(prompt)
+    if prompt:
+        print(prompt)
     for opt in options:
         print(opt)
     response = input("> ")
@@ -14,13 +15,14 @@ def menu(prompt: str, options: list, validator: Callable[[str], bool], error: st
 
 
 def ask(prompt: str, validator: Callable[[str], bool], error: str = None):
-    print(prompt)
+    if prompt:
+        print(prompt + " ('#' to cancel)")
     response = input("> ")
-    while not validator(response):
+    while not (validator(response) or response == '#'):
         if error:
             print(error)
         response = input("> ")
-    return response
+    return response if response != '#' else None
 
 
 def yn_question(prompt: str):
