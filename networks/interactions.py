@@ -27,10 +27,9 @@
 import yaml
 
 from core.characters import Character
-from core.constants import book_keys, worlds, titles
-from core.disambiguation import disambiguate_name, verify_presence, monikers, char_search, save, disambiguate_title
+from core.constants import book_keys, titles, worlds
+from core.disambiguation import disambiguate_name, disambiguate_title, monikers, verify_presence
 from utils.epub import chapters
-from utils.input import yn_question
 from utils.paths import disambiguation_dir
 
 
@@ -54,11 +53,14 @@ for book in book_keys:
 
         while idx < len(tokens):
             local_tokens = tokens[idx:idx + run_size]
-            run = ' '.join(local_tokens).strip()
+            context = [' '.join(tokens[idx-(i*run_size):idx-((i-1)*run_size)]).strip() for i in range(4, -1, -1)]
 
             chars = []
             i = 0
             while i < len(local_tokens):
+                char: Character = None
+                pos = idx + i
+
                 this_token = local_tokens[i]
                 next_token = local_tokens[i+1] if i+1 < len(local_tokens) else ''
                 third_token = local_tokens[i + 2] if i + 2 < len(local_tokens) else ''
@@ -66,12 +68,9 @@ for book in book_keys:
                 next_two_tokens = next_token + ' ' + third_token
                 three_tokens = two_tokens + ' ' + third_token
 
-                char: Character = None
-
                 if three_tokens in monikers:
                     if isinstance(monikers[three_tokens], list):
-                        print(run)
-                        char = disambiguate_name(book, three_tokens, disambiguation[chapter], pos=idx + i)
+                        char = disambiguate_name(book, three_tokens, disambiguation[chapter], pos, context)
                     else:
                         char = monikers[three_tokens] if verify_presence(book, monikers[three_tokens], three_tokens) else None
 
@@ -79,8 +78,7 @@ for book in book_keys:
 
                 elif two_tokens in monikers:
                     if isinstance(monikers[two_tokens], list):
-                        print(run)
-                        char = disambiguate_name(book, two_tokens, disambiguation[chapter], pos=idx + i)
+                        char = disambiguate_name(book, two_tokens, disambiguation[chapter], pos, context)
                     else:
                         char = monikers[two_tokens] if verify_presence(book, monikers[two_tokens], two_tokens) else None
 
@@ -88,14 +86,12 @@ for book in book_keys:
 
                 elif this_token in titles:
                     if next_token not in monikers and next_two_tokens not in monikers:
-                        print(run)
-                        char = disambiguate_title(this_token, disambiguation[chapter], pos=idx + i)
+                        char = disambiguate_title(this_token, disambiguation[chapter], pos, context)
                     i += 1
 
                 elif this_token in monikers:
                     if isinstance(monikers[this_token], list):
-                        print(run)
-                        char = disambiguate_name(book, this_token, disambiguation[chapter], pos=idx + i)
+                        char = disambiguate_name(book, this_token, disambiguation[chapter], pos, context)
                     else:
                         char = monikers[this_token] if verify_presence(book, monikers[this_token], this_token) else None
 
@@ -106,31 +102,23 @@ for book in book_keys:
                     continue
 
                 if char is not None:
-                    if char.world.lower() != world and 'worldhopping' not in char.abilities:
-                        if idx + i not in disambiguation[chapter]:
-                            print(f"Non-native non-worldhopping character found! Please confirm presence "
-                                  f"of {char.name} (from {char.world}) in the following run (y/n):")
-                            print(run)
-                            disambiguation[chapter][idx + i] = input("> ").lower().startswith('y')
-                        elif disambiguation[chapter][idx + i]:
-                            chars.append((i, char))
-                    else:
-                        chars.append((i, char))
+                    chars.append((i, char))
 
             # advance past first found character
             if len(chars) >= 2:
                 idx += chars[0][0] + 1
-                print(f"{run:200s} // {chars}")
 
             # advance until only character is at beginning of run (max threshold)
             elif len(chars) == 1:
                 idx += chars[0][0] if chars[0][0] > 0 else 1
-                print(f"{run:200s} // {chars}")
 
             # skip run if no chars found
             else:
                 idx += run_size - 1
-                print(f"{run:200s} // {chars}")
+
+            characters = set(c for i, c in chars)
+            if len(characters) > 1:
+                print(characters)
 
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)

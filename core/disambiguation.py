@@ -1,5 +1,7 @@
 from typing import Optional
 
+import colorama
+
 from core.characters import Character, characters_
 from utils.input import ask, menu, yn_question
 from utils.logs import create_logger
@@ -86,7 +88,7 @@ def recall(pos: int, disambiguation: dict) -> Optional[Character]:
     return _char_ids.get(disambiguation.get(pos), None)
 
 
-def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int) -> Optional[Character]:
+def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, context: list) -> Optional[Character]:
     if pos in disambiguation:
         char = recall(pos, disambiguation)
         if char is not None:
@@ -95,12 +97,14 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int) -> Op
         return char
 
     else:
+        print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context[:-1]))
+        print(colorama.Style.BRIGHT + context[-1])
         char = clarify_list(key, name, monikers)
         save(pos, char, disambiguation)
         return char
 
 
-def disambiguate_title(title: str, disambiguation: dict, pos: int) -> Optional[Character]:
+def disambiguate_title(title: str, disambiguation: dict, pos: int, context: list) -> Optional[Character]:
     if pos in disambiguation:
         char = recall(pos, disambiguation)
         if char is not None:
@@ -109,6 +113,8 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int) -> Optional[C
         return char
 
     else:
+        print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context[:-1]))
+        print(colorama.Style.BRIGHT + context[-1])
         if yn_question(f'Ambiguous reference found for "{title}". '
                        f'Does this refer to a character?'):
             char = char_search(f"Who does this refer to?")
