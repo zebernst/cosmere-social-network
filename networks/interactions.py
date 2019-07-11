@@ -14,6 +14,9 @@ from utils.paths import disambiguation_dir, gml_dir, json_dir
 
 
 # todo: add logging
+from utils.types import RunContext
+
+
 logger = create_logger('csn.networks.interactions')
 
 
@@ -38,8 +41,11 @@ def create_graph(book: str, min_weight: int = 3):
 
         while idx < len(tokens):
             local_tokens = tokens[idx:idx + run_size]
-            context = [' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
-                       for i in range(4, -1, -1)]
+            context = RunContext(prev=(' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
+                                       for i in range(4, 0, -1)),
+                                 run=' '.join(tokens[idx:idx + run_size]),
+                                 next=(' '.join(tokens[idx + (i*run_size):idx + ((i+1)*run_size)]).strip()
+                                       for i in range(1, 3)))
 
             found = []
             i = 0
@@ -141,7 +147,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'mistborn/era2/bands-of-mourning':
+        if key != 'stormlight/way-of-kings':
             continue
 
         G = create_graph(key)
