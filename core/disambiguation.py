@@ -37,7 +37,7 @@ def clarify_list(key: str, name: str, names: dict):
         return None
 
     if len(local_chars) == 1:
-        logger.debug(f'Match of ambiguous character confirmed automatically -- "{name}" identified as '
+        logger.debug(f'Matched ambiguous character from "{name}", identified automatically as '
                      f'{repr(local_chars[0])} with presence in {key}.')
         return local_chars[0]
 
@@ -53,19 +53,19 @@ def clarify_list(key: str, name: str, names: dict):
         return None
     elif response.startswith('o'):
         ch = char_search("Type the name of the character the keyword is referring to: ")
-        logger.debug(f'Match of ambiguous character confirmed manually      -- "{name}" identified as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous character from "{name}", identified manually as {repr(ch)}.')
         return ch
     else:
         ch = names[name][int(response) - 1]
-        logger.debug(f'Match of ambiguous character confirmed from list     -- "{name}" identified as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous character from "{name}", identified from list as {repr(ch)}.')
         return ch
 
 
 def verify_presence(key: str, ch: Character, word: str):
     in_book = any(b == key.split('/')[0] for b in ch.books)
     if not in_book:
-        logger.debug(f'Match of ambiguous character rejected  automatically -- "{word}" identified as '
-                     f'{repr(ch)} does not appear in {key}.')
+        logger.debug(f'Rejected ambiguous character from "{word}", identified automatically as '
+                     f'{repr(ch)} who does not appear in {key}.')
     return in_book
 
 
@@ -81,8 +81,7 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
     if pos in disambiguation:
         char = recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Match of ambiguous character confirmed automatically -- '
-                         f'{repr(char)} found in disambiguation.')
+            logger.debug(f'Matched ambiguous character from disambiguation, identified automatically as {repr(char)}.')
         return char
 
     else:
@@ -97,8 +96,8 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: list
     if pos in disambiguation:
         char = recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Match of ambiguous character confirmed automatically -- '
-                         f'{repr(char)} found in disambiguation.')
+            logger.debug(f'Matched ambiguous character from disambiguation, identified automatically as {repr(char)}.')
+
         return char
 
     else:
@@ -112,5 +111,5 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: list
             char = None
             save(pos, None, disambiguation)
         if char is not None:
-            logger.debug(f'Match of ambiguous character confirmed manually      -- "{title}" identified as {repr(char)}.')
+            logger.debug(f'Matched ambiguous character from "{title}", identified manually as {repr(char)}.')
         return char

@@ -17,7 +17,7 @@ from utils.paths import disambiguation_dir, gml_dir, json_dir
 logger = create_logger('csn.networks.interactions')
 
 
-def create_graph(book: str):
+def create_graph(book: str, min_weight: int = 3):
     G = nx.Graph()
 
     nodes = {c.name: {}
@@ -111,10 +111,12 @@ def create_graph(book: str):
                     else:
                         G.add_edge(u.name, v.name, weight=1)
 
+                    logger.debug(f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{context[-1]}"')
+
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
 
-    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight') if w <= 2])
+    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight') if w < min_weight])
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
