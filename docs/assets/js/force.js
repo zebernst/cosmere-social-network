@@ -245,7 +245,7 @@ function forceDirectedGraph() {
             .classed("label", true)
             .attr("dx", 12)
             .attr("dy", ".35em")
-            .text(d => d.id)
+            .text(d => d.name)
             .call(l => l.transition(t).style("opacity", 1))
             .merge(label);
 

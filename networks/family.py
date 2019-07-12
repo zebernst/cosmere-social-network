@@ -5,7 +5,7 @@ from typing import Dict, Union
 import mwparserfromhell as mwp
 import networkx as nx
 
-from core.characters import characters_
+from core.characters import characters
 from utils.logs import create_logger
 from utils.paths import gml_dir, json_dir
 
@@ -22,22 +22,21 @@ def create_graph() -> nx.OrderedGraph:
     G = nx.OrderedGraph()
 
     # resolve generator
-    characters = set(characters_)
+    relevant_chars = set(c for c in characters if any(x in c.info for x in fields))
 
     # restructure character list into efficient data structures to reduce complexity
-    monikers = {name: c for c in characters for name in c.monikers}
+    names = {c.name: c for c in relevant_chars}
+    monikers = {alias: c for c in relevant_chars for alias in c.monikers}
 
     # filter on characters who have family info and add nodes to graph
-    nodes = {c.name: dict(world=c.world, names=list(c.monikers))
-             for c in characters
-             if any(x in c.info for x in fields)}
+    nodes = {c.id: dict(world=c.world, name=c.name) for c in relevant_chars}
     G.add_nodes_from(nodes.items())
     logger.debug("Added character nodes to graph.")
 
     # add edges between relevant nodes
     for char in characters:
         # ignore characters with no family info
-        if char.name not in nodes:
+        if char.id not in nodes:
             continue
 
         # loop through character's family connections
@@ -52,41 +51,41 @@ def create_graph() -> nx.OrderedGraph:
                 relation_forename = relation.split(' ')[0]
                 char_surname = char.name.split(' ')[-1]
 
-                target_id = None
+                target = None
 
                 # if direct match found, add edge to graph
-                if relation in nodes:
-                    target_id = relation
+                if relation in names:
+                    target = names[relation]
                     logger.debug(f'Identified exact target of edge ({char.name}, {relation}).')
 
                 # check if characters share a surname
-                elif f"{relation_forename} {char_surname}" in nodes:
-                    target_id = f"{relation_forename} {char_surname}"
+                elif f"{relation_forename} {char_surname}" in names:
+                    target = names[f"{relation_forename} {char_surname}"]
                     logger.debug(f'Identified likely target of edge ({char.name}, {relation}) '
-                                 f'to be {relation_forename} {char_surname} via surname.')
+                                 f'to be {target.name} via surname.')
 
                 # check if connection matches any character aliases
                 elif relation in monikers:
-                    target_id = monikers[relation].name
+                    target = monikers[relation]
                     logger.debug(f'Identified likely target of edge ({char.name}, {relation}) '
-                                 f'to be {monikers[relation].name} via alias.')
+                                 f'to be {target.name} via alias.')
 
                 # last resort: loop through all characters and match substrings
                 else:
                     found = False
                     for name, other in monikers.items():
                         if relation in name:
-                            target_id = other.name
+                            target = other
                             found = True
                             logger.debug(f'Could not confirm target of edge ({char.name}, {relation}), '
-                                         f'assuming {target_id}.')
+                                         f'assuming {target.name}.')
                             break
                     if not found:
                         logger.info(f'Could not identify target of edge ({char.name}, {relation}).')
 
                 # add edge if target is valid
-                if target_id and target_id in nodes:
-                    G.add_edge(char.name, target_id)
+                if target is not None and target.id in nodes:
+                    G.add_edge(char.id, target.id)
 
     return G
 

@@ -1,43 +1,63 @@
 graph [
   node [
     id 0
-    label "Silence Montane"
+    label "3679"
+    name "Silence Montane"
+    world "Threnody"
   ]
   node [
     id 1
-    label "Lamentation Winebare"
+    label "3690"
+    name "Lamentation Winebare"
+    world "Threnody"
   ]
   node [
     id 2
-    label "Sebruki"
+    label "3691"
+    name "Sebruki"
+    world "Threnody"
   ]
   node [
     id 3
-    label "William Ann Montane"
+    label "3692"
+    name "William Ann Montane"
+    world "Threnody"
   ]
   node [
     id 4
-    label "Chesterton Divide"
+    label "3693"
+    name "Chesterton Divide"
+    world "Threnody"
   ]
   node [
     id 5
-    label "Daggon"
+    label "3731"
+    name "Daggon"
+    world "Threnody"
   ]
   node [
     id 6
-    label "Theopolis"
+    label "4344"
+    name "Theopolis"
+    world "Threnody"
   ]
   node [
     id 7
-    label "Dob"
+    label "4345"
+    name "Dob"
+    world "Threnody"
   ]
   node [
     id 8
-    label "Red Young"
+    label "5095"
+    name "Red Young"
+    world "Threnody"
   ]
   node [
     id 9
-    label "William Montane"
+    label "5653"
+    name "William Montane"
+    world "Threnody"
   ]
   edge [
     source 0

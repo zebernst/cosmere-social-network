@@ -1,1216 +1,995 @@
 graph [
   node [
     id 0
-    label "Raoden"
+    label "18"
     world "Sel"
-      names "King of Elantris"
-      names "Kaloo"
-      names "Spirit"
-      names "King of Arelon"
-      names "Raoden"
+    name "Raoden"
   ]
   node [
     id 1
-    label "Sarene"
+    label "19"
     world "Sel"
-      names "Sarene"
-      names "Queen of Arelon"
-      names "'Ene"
-      names "Princess of Teod"
-      names "Leky Stick"
-      names "Queen of Elantris"
+    name "Sarene"
   ]
   node [
     id 2
-    label "Iadon"
-    world "Sel"
-      names "King of Arelon"
-      names "Iadon"
+    label "5653"
+    world "Threnody"
+    name "William Montane"
   ]
   node [
     id 3
-    label "Eshen"
+    label "24"
     world "Sel"
-      names "Eshen"
-      names "Queen of Arelon"
+    name "Iadon"
   ]
   node [
     id 4
-    label "Wikim Davar"
-    world "Roshar"
-      names "Wikim"
-      names "Wikim Davar"
-      names "Davar"
+    label "25"
+    world "Sel"
+    name "Eshen"
   ]
   node [
     id 5
-    label "Jushu Davar"
+    label "26"
     world "Roshar"
-      names "Jushu"
-      names "Jushu Davar"
-      names "Davar"
+    name "Wikim Davar"
   ]
   node [
     id 6
-    label "Balat Davar"
+    label "27"
     world "Roshar"
-      names "Davar"
-      names "Balat Davar"
-      names "Balat"
+    name "Jushu Davar"
   ]
   node [
     id 7
-    label "Evi Kholin"
+    label "28"
     world "Roshar"
-      names "Evi"
-      names "Evi Kholin"
-      names "Kholin"
+    name "Balat Davar"
   ]
   node [
     id 8
-    label "Eventeo"
-    world "Sel"
-      names "King of Teod"
-      names "Eventeo"
+    label "31"
+    world "Roshar"
+    name "Evi Kholin"
   ]
   node [
     id 9
-    label "Kiin"
-    world "Sel"
-      names "Dreok Crushthroat"
-      names "Kiin"
+    label "9252"
+    world "Roshar"
+    name "Lunamor"
   ]
   node [
     id 10
-    label "Daora"
-    world "Sel"
-      names "Daora"
+    label "2606"
+    world "Roshar"
+    name "Stormfather"
   ]
   node [
     id 11
-    label "Daorn"
-    world "Sel"
-      names "Daorn"
+    label "2608"
+    world "Roshar"
+    name "Wistiow"
   ]
   node [
     id 12
-    label "Kaise"
-    world "Sel"
-      names "Kaise"
+    label "2609"
+    world "Roshar"
+    name "Rillir Roshone"
   ]
   node [
     id 13
-    label "Lukel"
-    world "Sel"
-      names "Lukel"
+    label "2626"
+    world "Roshar"
+    name "Eshonai"
   ]
   node [
     id 14
-    label "Jalla"
-    world "Sel"
-      names "Jalla"
+    label "1093"
+    world "Nalthis"
+    name "Shashara"
   ]
   node [
     id 15
-    label "Adien"
+    label "2119"
     world "Sel"
-      names "Adien"
+    name "Ashe"
   ]
   node [
     id 16
-    label "Telrii"
+    label "2121"
     world "Sel"
-      names "King of Arelon"
-      names "Telrii"
-      names "Duke"
+    name "Atara"
   ]
   node [
     id 17
-    label "Roial"
-    world "Sel"
-      names "Duke of Ial Plantation"
-      names "Roial"
+    label "9294"
+    world "Roshar"
+    name "Aratin Khal"
   ]
   node [
     id 18
-    label "Ahan"
+    label "79"
     world "Sel"
-      names "Ahan"
-      names "Count"
+    name "Eventeo"
   ]
   node [
     id 19
-    label "Kelsier"
-    world "Scadrial"
-      names "Survivor"
-      names "Survivor of Death"
-      names "Survivor of Hathsin"
-      names "Sovereign"
-      names "Lord of the Mists"
-      names "Kelsier"
-      names "Survivor of Mists"
+    label "9295"
+    world "Roshar"
+    name "Meleran Khal"
   ]
   node [
     id 20
-    label "Marsh"
-    world "Scadrial"
-      names "Ironeyes"
-      names "Death"
-      names "Marsh"
+    label "84"
+    world "Sel"
+    name "Kiin"
   ]
   node [
     id 21
-    label "Mare"
-    world "Scadrial"
-      names "Mare"
+    label "85"
+    world "Sel"
+    name "Daora"
   ]
   node [
     id 22
-    label "Vin"
-    world "Scadrial"
-      names "Empress of the New Empire"
-      names "Vin"
-      names "Ascendant Warrior"
-      names "Heir to the Survivor"
-      names "Preservation"
-      names "Mother"
-      names "Lady Mistborn"
-      names "Valette Renoux"
+    label "86"
+    world "Sel"
+    name "Daorn"
   ]
   node [
     id 23
-    label "Edgard Ladrian"
-    world "Scadrial"
-      names "Edgard"
-      names "Ladrian"
-      names "Edgard Ladrian"
-      names "Breeze"
-      names "Counselor of Gods"
+    label "87"
+    world "Sel"
+    name "Kaise"
   ]
   node [
     id 24
-    label "Spook"
-    world "Scadrial"
-      names "Jedal"
-      names "Spook"
-      names "Lord Mistborn"
-      names "Lestibournes"
-      names "Survivor of the Flames"
+    label "88"
+    world "Sel"
+    name "Lukel"
   ]
   node [
     id 25
-    label "Clubs"
-    world "Scadrial"
-      names "Cladent"
-      names "Clubs"
+    label "89"
+    world "Sel"
+    name "Jalla"
   ]
   node [
     id 26
-    label "Reen"
-    world "Scadrial"
-      names "Reen"
+    label "90"
+    world "Sel"
+    name "Adien"
   ]
   node [
     id 27
-    label "Elend Venture"
-    world "Scadrial"
-      names "Last Emperor"
-      names "Venture"
-      names "Elend"
-      names "Elend Venture"
+    label "91"
+    world "Sel"
+    name "Telrii"
   ]
   node [
     id 28
-    label "Straff Venture"
-    world "Scadrial"
-      names "Straff"
-      names "Straff Venture"
-      names "Venture"
+    label "2131"
+    world "Roshar"
+    name "Malise Gevelmar"
   ]
   node [
     id 29
-    label "Ashweather Cett"
-    world "Scadrial"
-      names "Ashweather Cett"
-      names "Ashweather"
-      names "Cett"
+    label "94"
+    world "Sel"
+    name "Roial"
   ]
   node [
     id 30
-    label "Allrianne Cett"
-    world "Scadrial"
-      names "Allrianne"
-      names "Allrianne Cett"
-      names "Cett"
+    label "95"
+    world "Sel"
+    name "Ahan"
   ]
   node [
     id 31
-    label "Zane Venture"
-    world "Scadrial"
-      names "Zane Venture"
-      names "Venture"
-      names "The Watcher"
-      names "Zane"
+    label "3679"
+    world "Threnody"
+    name "Silence Montane"
   ]
   node [
     id 32
-    label "Vasher"
-    world "Nalthis"
-      names "Vasher"
-      names "Kalad the Usurper"
-      names "Zahel"
-      names "Warbreaker the Peaceful"
-      names "Peacegiver the Blessed"
-      names "Strifelover"
-      names "Talaxin"
+    label "97"
+    world "Scadrial"
+    name "Kelsier"
   ]
   node [
     id 33
-    label "Sisirinah"
-    world "Nalthis"
-      names "Sisirinah"
-      names "Siri"
-      names "Princess of Idris"
-      names "Queen of Hallandren"
-      names "Vessel"
+    label "98"
+    world "Scadrial"
+    name "Marsh"
   ]
   node [
     id 34
-    label "Vivenna"
-    world "Nalthis"
-      names "Vivenna"
-      names "Commander of the Kholinar Wall Guard"
-      names "Highmarshal"
-      names "Princess of Idris"
-      names "Azure"
+    label "99"
+    world "Scadrial"
+    name "Mare"
   ]
   node [
     id 35
-    label "Lightsong"
-    world "Nalthis"
-      names "Lightsong"
-      names "Lord of Heroes"
-      names "Stennimar"
-      names "Lightsong the Bold"
-      names "God of Bravery"
-      names "Lightsong the Brave"
+    label "100"
+    world "Scadrial"
+    name "Vin"
   ]
   node [
     id 36
-    label "Denth"
-    world "Nalthis"
-      names "Denth"
-      names "VaraTreledees"
+    label "1638"
+    world "Scadrial"
+    name "Marasi Colms"
   ]
   node [
     id 37
-    label "Susebron"
-    world "Nalthis"
-      names "God King of Hallandren"
-      names "Susebron"
-      names "Immortal Majesty"
-      names "Seb"
-      names "His Excellent Grace"
-      names "Susebron the Grand"
+    label "104"
+    world "Scadrial"
+    name "Edgard Ladrian"
   ]
   node [
     id 38
-    label "Llarimar"
-    world "Nalthis"
-      names "Scoot"
-      names "Llarimar"
+    label "105"
+    world "Scadrial"
+    name "Spook"
   ]
   node [
     id 39
-    label "Kaladin"
-    world "Roshar"
-      names "Bridgeboy"
-      names "Kaladin Stormblessed"
-      names "Knight Radiant"
-      names "Lordship"
-      names "Captain of the Bridgemen"
-      names "Kaladin"
+    label "106"
+    world "Scadrial"
+    name "Clubs"
   ]
   node [
     id 40
-    label "Shallan Davar"
-    world "Roshar"
-      names "Swiftspren"
-      names "Shallan"
-      names "Veil"
-      names "Shallan Davar"
-      names "Davar"
-      names "Radiant"
+    label "1640"
+    world "Scadrial"
+    name "Steris Harms"
   ]
   node [
     id 41
-    label "Jasnah Kholin"
-    world "Roshar"
-      names "Jasnah"
-      names "Jasnah Kholin"
-      names "Kholin"
-      names "Queen of Alethkar"
+    label "3691"
+    world "Threnody"
+    name "Sebruki"
   ]
   node [
     id 42
-    label "Sylphrena"
-    world "Roshar"
-      names "Ancient Daughter"
-      names "Sylphrena"
+    label "3692"
+    world "Threnody"
+    name "William Ann Montane"
   ]
   node [
     id 43
-    label "Adolin Kholin"
-    world "Roshar"
-      names "Adolin"
-      names "Adolin Kholin"
-      names "Kholin"
-      names "Highprince of Alethkar"
+    label "116"
+    world "Scadrial"
+    name "Reen"
   ]
   node [
     id 44
-    label "Renarin Kholin"
-    world "Roshar"
-      names "Renarin Kholin"
-      names "Renarin"
-      names "Kholin"
+    label "119"
+    world "Scadrial"
+    name "Elend Venture"
   ]
   node [
     id 45
-    label "Gavilar Kholin"
-    world "Roshar"
-      names "Gavilar"
-      names "Gavilar Kholin"
-      names "King of Alethkar"
-      names "Kholin"
+    label "120"
+    world "Scadrial"
+    name "Straff Venture"
   ]
   node [
     id 46
-    label "Tien"
-    world "Roshar"
-      names "Tien"
+    label "125"
+    world "Scadrial"
+    name "Ashweather Cett"
   ]
   node [
     id 47
-    label "Lirin"
-    world "Roshar"
-      names "Lirin"
+    label "126"
+    world "Scadrial"
+    name "Allrianne Cett"
   ]
   node [
     id 48
-    label "Hesina"
-    world "Roshar"
-      names "Hesina"
+    label "2181"
+    world "Scadrial"
+    name "Vin's sister"
   ]
   node [
     id 49
-    label "Roshone"
-    world "Roshar"
-      names "Roshone"
+    label "2183"
+    world "Scadrial"
+    name "Vin's mother"
   ]
   node [
     id 50
-    label "Navani Kholin"
-    world "Roshar"
-      names "Navani Kholin"
-      names "Navani"
-      names "Kholin"
+    label "136"
+    world "Scadrial"
+    name "Zane Venture"
   ]
   node [
     id 51
-    label "Elhokar Kholin"
+    label "2192"
     world "Roshar"
-      names "King of Alethkar"
-      names "Elhokar Kholin"
-      names "Kholin"
-      names "Elhokar"
+    name "Lin Davar"
   ]
   node [
     id 52
-    label "Kenton"
-    world "Taldain"
-      names "Kenton"
-      names "Lord Mastrell"
+    label "145"
+    world "Nalthis"
+    name "Vasher"
   ]
   node [
     id 53
-    label "Praxton"
-    world "Taldain"
-      names "Praxton"
-      names "Lord Mastrell"
+    label "146"
+    world "Nalthis"
+    name "Sisirinah"
   ]
   node [
     id 54
-    label "Dedelin"
-    world "Nalthis"
-      names "King of Idris"
-      names "Dedelin"
+    label "2193"
+    world "Roshar"
+    name "Shallan's mother"
   ]
   node [
     id 55
-    label "Fafen"
+    label "148"
     world "Nalthis"
-      names "Fafen"
-      names "Princess of Idris"
+    name "Vivenna"
   ]
   node [
     id 56
-    label "Dalinar Kholin"
-    world "Roshar"
-      names "Dalinar"
-      names "Highprince of War"
-      names "Kholin"
-      names "Dalinar Kholin"
-      names "Highprince of Alethkar (formerly)"
-      names "The Blackthorn"
+    label "149"
+    world "Nalthis"
+    name "Lightsong"
   ]
   node [
     id 57
-    label "Ais"
-    world "Taldain"
-      names "Ais"
+    label "150"
+    world "Nalthis"
+    name "Denth"
   ]
   node [
     id 58
-    label "Mellis"
-    world "Taldain"
-      names "Mellis"
+    label "151"
+    world "Nalthis"
+    name "Susebron"
   ]
   node [
     id 59
-    label "Melloni"
-    world "Taldain"
-      names "Melloni"
+    label "3220"
+    world "Sel"
+    name "Sarene's mother"
   ]
   node [
     id 60
-    label "Kenton's mother"
-    world "Taldain"
-      names "Kenton's mother"
+    label "153"
+    world "Nalthis"
+    name "Llarimar"
   ]
   node [
     id 61
-    label "Tevidian Tekiel"
-    world "Scadrial"
-      names "Tekiel"
-      names "Tevidian"
-      names "Tevidian Tekiel"
+    label "3221"
+    world "Sel"
+    name "Teorn"
   ]
   node [
     id 62
-    label "Helaran Davar"
-    world "Roshar"
-      names "Helaran"
-      names "Helaran Davar"
-      names "Davar"
+    label "5268"
+    world "First of the Sun"
+    name "Sixth of the Dusk"
   ]
   node [
     id 63
-    label "Jedal"
+    label "5525"
     world "Scadrial"
-      names "Jedal"
+    name "Elend's mother"
   ]
   node [
     id 64
-    label "Lunamor"
-    world "Roshar"
-      names "Lunamor"
-      names "Rock"
-      names "Numuhukumakiaki'aialunamor"
+    label "5526"
+    world "Scadrial"
+    name "Allrianne's mother"
   ]
   node [
     id 65
-    label "Shashara"
-    world "Nalthis"
-      names "Glorysinger"
-      names "Shashara"
+    label "5527"
+    world "Sel"
+    name "Raoden's mother"
   ]
   node [
     id 66
-    label "Aratin Khal"
+    label "164"
     world "Roshar"
-      names "Aratin"
-      names "Aratin Khal"
-      names "Khal"
+    name "Kaladin"
   ]
   node [
     id 67
-    label "Meleran Khal"
+    label "165"
     world "Roshar"
-      names "Meleran"
-      names "Khal"
-      names "Meleran Khal"
+    name "Shallan Davar"
   ]
   node [
     id 68
-    label "Fen Rnamdi"
+    label "166"
     world "Roshar"
-      names "Fen Rnamdi"
-      names "Queen"
-      names "Rnamdi"
-      names "Fen"
+    name "Jasnah Kholin"
   ]
   node [
     id 69
-    label "Lopen"
+    label "167"
     world "Roshar"
-      names "Lopen"
+    name "Sylphrena"
   ]
   node [
     id 70
-    label "Waxillium Ladrian"
-    world "Scadrial"
-      names "Dawnshot"
-      names "Waxillium Ladrian"
-      names "Ladrian"
-      names "Asinthew"
-      names "Wax"
-      names "Waxillium"
+    label "1194"
+    world "Roshar"
+    name "Lopen"
   ]
   node [
     id 71
-    label "Cord"
+    label "172"
     world "Roshar"
-      names "Cord"
+    name "Adolin Kholin"
   ]
   node [
     id 72
-    label "Oroden"
+    label "173"
     world "Roshar"
-      names "Oroden"
+    name "Renarin Kholin"
   ]
   node [
     id 73
-    label "Toh"
+    label "174"
     world "Roshar"
-      names "Toh"
+    name "Gavilar Kholin"
   ]
   node [
     id 74
-    label "Rua"
+    label "175"
     world "Roshar"
-      names "Naco"
-      names "Rua"
+    name "Tien"
   ]
   node [
     id 75
-    label "Beautiful Song"
+    label "181"
     world "Roshar"
-      names "Song"
-      names "Beautiful"
-      names "Beautiful Song"
+    name "Lirin"
   ]
   node [
     id 76
-    label "Gift"
+    label "182"
     world "Roshar"
-      names "Gift"
+    name "Hesina"
   ]
   node [
     id 77
-    label "Kdralk"
+    label "183"
     world "Roshar"
-      names "Kdralk"
+    name "Roshone"
   ]
   node [
     id 78
-    label "Kmakl"
+    label "4789"
     world "Roshar"
-      names "Prince consort of Thaylenah"
-      names "Kmakl"
+    name "Pattern"
   ]
   node [
     id 79
-    label "Kmakra"
+    label "187"
     world "Roshar"
-      names "Kmakra"
+    name "Navani Kholin"
   ]
   node [
     id 80
-    label "Kuma'tiki"
-    world "Roshar"
-      names "Kuma'tiki"
+    label "1212"
+    world "Scadrial"
+    name "Waxillium Ladrian"
   ]
   node [
     id 81
-    label "Molinar"
+    label "10041"
     world "Roshar"
-      names "Molinar"
+    name "Laral Roshone"
   ]
   node [
     id 82
-    label "Tuaka'li'na'calmi'nor"
+    label "10427"
     world "Roshar"
-      names "Tuaka"
-      names "Tuaka'li'na'calmi'nor"
-      names "Song"
+    name "Rock"
   ]
   node [
     id 83
-    label "Timbre"
+    label "196"
     world "Roshar"
-      names "Timbre"
+    name "Elhokar Kholin"
   ]
   node [
     id 84
-    label "Tanalan"
+    label "9413"
     world "Roshar"
-      names "Tanalan"
+    name "Cord"
   ]
   node [
     id 85
-    label "Star"
+    label "5845"
     world "Roshar"
-      names "Star"
+    name "Lopen's mother"
   ]
   node [
     id 86
-    label "Wzmal"
-    world "Roshar"
-      names "Wzmal"
+    label "5524"
+    world "Scadrial"
+    name "Kelsier's mother"
   ]
   node [
     id 87
-    label "Tanalan's mother"
-    world "Roshar"
-      names "Tanalan's mother"
+    label "8414"
+    world "Taldain"
+    name "Kenton"
   ]
   node [
     id 88
-    label "Tanalan's father"
+    label "9610"
     world "Roshar"
-      names "Tanalan's father"
-      names "Tanalan"
+    name "Molinar"
   ]
   node [
     id 89
-    label "Marasi Colms"
-    world "Scadrial"
-      names "Colms"
-      names "Marasi Colms"
-      names "Marasi"
+    label "8422"
+    world "Taldain"
+    name "Praxton"
   ]
   node [
     id 90
-    label "Steris Harms"
+    label "3307"
     world "Scadrial"
-      names "Steris"
-      names "Steris Harms"
-      names "Harms"
+    name "Gneorndin Cett"
   ]
   node [
     id 91
-    label "Ruthar"
+    label "9307"
     world "Roshar"
-      names "Highprince of Alethkar"
-      names "Ruthar"
+    name "Fen Rnamdi"
   ]
   node [
     id 92
-    label "Laral Roshone"
-    world "Roshar"
-      names "Laral Roshone"
-      names "Laral"
-      names "Roshone"
+    label "8945"
+    world "Taldain"
+    name "Mellis"
   ]
   node [
     id 93
-    label "Ashe"
-    world "Sel"
-      names "Ashe"
+    label "8947"
+    world "Taldain"
+    name "Melloni"
   ]
   node [
     id 94
-    label "Atara"
-    world "Sel"
-      names "Atara"
-      names "Queen of Arelon"
+    label "6403"
+    world "Scadrial"
+    name "Jackstom Harms"
   ]
   node [
     id 95
-    label "Malise Gevelmar"
+    label "9480"
     world "Roshar"
-      names "Malise"
-      names "Malise Gevelmar"
-      names "Gevelmar"
+    name "Oroden"
   ]
   node [
     id 96
-    label "Vin's sister"
+    label "2318"
     world "Scadrial"
-      names "Vin's sister"
+    name "Telsin Ladrian"
   ]
   node [
     id 97
-    label "Vin's mother"
-    world "Scadrial"
-      names "Vin's mother"
+    label "1811"
+    world "Roshar"
+    name "Ruthar"
   ]
   node [
     id 98
-    label "Lin Davar"
-    world "Roshar"
-      names "Lin"
-      names "Davar"
-      names "Lin Davar"
+    label "278"
+    world "Nalthis"
+    name "Dedelin"
   ]
   node [
     id 99
-    label "Shallan's mother"
-    world "Roshar"
-      names "Shallan's mother"
+    label "279"
+    world "Nalthis"
+    name "Fafen"
   ]
   node [
     id 100
-    label "Rock"
+    label "6418"
     world "Roshar"
-      names "Rock"
-      names "(junior)"
+    name "General Khal"
   ]
   node [
     id 101
-    label "Telsin Ladrian"
-    world "Scadrial"
-      names "Sequence"
-      names "Telsin"
-      names "Ladrian"
-      names "Telsin Ladrian"
+    label "6419"
+    world "Roshar"
+    name "Halam Khal"
   ]
   node [
     id 102
-    label "Opa"
-    world "Sel"
-      names "Opa"
+    label "9498"
+    world "Roshar"
+    name "Toh"
   ]
   node [
     id 103
-    label "Ien"
-    world "Sel"
-      names "Ien"
+    label "4382"
+    world "Roshar"
+    name "Aesudan Kholin"
   ]
   node [
     id 104
-    label "Dio"
-    world "Sel"
-      names "Dio"
+    label "9507"
+    world "Roshar"
+    name "Rua"
   ]
   node [
     id 105
-    label "Ridger"
-    world "Nalthis"
-      names "Ridger"
-      names "Heir to the throne of Idris"
+    label "5412"
+    world "Roshar"
+    name "Eshonai's mother"
   ]
   node [
     id 106
-    label "Stormfather"
+    label "9518"
     world "Roshar"
-      names "God of Storms"
-      names "Stormfather"
-      names "Kelek"
-      names "Spren of Storms"
-      names "Jezerezeh"
-      names "Storm Rider"
-      names "Rider of Storms"
+    name "Beautiful Song"
   ]
   node [
     id 107
-    label "Wistiow"
+    label "4921"
     world "Roshar"
-      names "Citylord"
-      names "Wistiow"
+    name "Demid"
   ]
   node [
     id 108
-    label "Rillir Roshone"
+    label "4922"
     world "Roshar"
-      names "Rillir"
-      names "Rillir Roshone"
-      names "Roshone"
+    name "Venli"
   ]
   node [
     id 109
-    label "Eshonai"
-    world "Roshar"
-      names "Eshonai"
+    label "5434"
+    world "First of the Sun"
+    name "Kokerlii"
   ]
   node [
     id 110
-    label "Valam"
-    world "Roshar"
-      names "Highprince of Jah Keved"
-      names "Valam"
-      names "King of Jah Keved"
+    label "5435"
+    world "First of the Sun"
+    name "Sak"
   ]
   node [
     id 111
-    label "Seeli"
+    label "5948"
     world "Roshar"
-      names "Seeli"
+    name "Gavinor Kholin"
   ]
   node [
     id 112
-    label "Heb"
+    label "9537"
     world "Roshar"
-      names "Heb"
+    name "Gift"
   ]
   node [
     id 113
-    label "Taffa"
+    label "4930"
     world "Roshar"
-      names "Taffa"
+    name "Relis Ruthar"
   ]
   node [
     id 114
-    label "Teshav Khal"
+    label "324"
     world "Roshar"
-      names "Teshav"
-      names "Teshav Khal"
-      names "Khal"
+    name "Dalinar Kholin"
   ]
   node [
     id 115
-    label "Shaor"
-    world "Sel"
-      names "Shaor"
-      names "Soine"
+    label "4939"
+    world "Roshar"
+    name "Gevelmar"
   ]
   node [
     id 116
-    label "Dashe"
-    world "Sel"
-      names "Dashe"
+    label "4941"
+    world "Roshar"
+    name "Glys"
   ]
   node [
     id 117
-    label "Matisse"
-    world "Sel"
-      names "Matisse"
+    label "9038"
+    world "Taldain"
+    name "Kenton's mother"
   ]
   node [
     id 118
-    label "Eoldess"
-    world "Sel"
-      names "Eoldess"
+    label "2895"
+    world "Roshar"
+    name "Valam"
   ]
   node [
     id 119
-    label "Sarene's mother"
-    world "Sel"
-      names "Queen of Teod"
-      names "Sarene's mother"
+    label "2897"
+    world "Roshar"
+    name "Seeli"
   ]
   node [
     id 120
-    label "Teorn"
-    world "Sel"
-      names "Teorn"
-      names "Crown Prince of Teod"
+    label "2898"
+    world "Roshar"
+    name "Heb"
   ]
   node [
     id 121
-    label "Gneorndin Cett"
-    world "Scadrial"
-      names "Gneorndin"
-      names "Gneorndin Cett"
-      names "Cett"
+    label "2899"
+    world "Roshar"
+    name "Taffa"
   ]
   node [
     id 122
-    label "Tatara"
-    world "Nalthis"
-      names "Tatara"
+    label "4952"
+    world "Roshar"
+    name "Jayla Ruthar"
   ]
   node [
     id 123
-    label "Seaden"
-    world "Sel"
-      names "Seaden"
+    label "6491"
+    world "Scadrial"
+    name "Paalm"
   ]
   node [
     id 124
-    label "Aeo"
-    world "Sel"
-      names "Aeo"
+    label "2910"
+    world "Roshar"
+    name "Teshav Khal"
   ]
   node [
     id 125
-    label "Torena"
+    label "2917"
     world "Sel"
-      names "Torena"
+    name "Shaor"
   ]
   node [
     id 126
-    label "Silence Montane"
-    world "Threnody"
-      names "Silence"
-      names "Montane"
-      names "Silence Montane"
-      names "White Fox"
+    label "9583"
+    world "Roshar"
+    name "Kdralk"
   ]
   node [
     id 127
-    label "Sebruki"
-    world "Threnody"
-      names "Sebruki"
+    label "9591"
+    world "Roshar"
+    name "Kmakl"
   ]
   node [
     id 128
-    label "William Ann Montane"
-    world "Threnody"
-      names "William Ann Montane"
-      names "Montane"
-      names "William"
+    label "9592"
+    world "Roshar"
+    name "Kmakra"
   ]
   node [
     id 129
-    label "Caull"
+    label "9594"
     world "Roshar"
-      names "Caull"
+    name "Kuma'tiki"
   ]
   node [
     id 130
-    label "Taleb"
+    label "4991"
     world "Roshar"
-      names "Taleb"
+    name "Redin"
   ]
   node [
     id 131
-    label "Waber"
-    world "Roshar"
-      names "Waber"
+    label "6529"
+    world "Scadrial"
+    name "Winsting Innate"
   ]
   node [
     id 132
-    label "Aesudan Kholin"
+    label "3974"
     world "Roshar"
-      names "Aesudan Kholin"
-      names "Aesudan"
-      names "Kholin"
-      names "Queen of Alethkar"
+    name "Caull"
   ]
   node [
     id 133
-    label "Margel"
+    label "6536"
     world "Scadrial"
-      names "Margel"
+    name "Allri Innate"
   ]
   node [
     id 134
-    label "Pattern"
-    world "Roshar"
-      names "Pattern"
+    label "6538"
+    world "Scadrial"
+    name "Replar Innate"
   ]
   node [
     id 135
-    label "Demid"
+    label "5005"
     world "Roshar"
-      names "Demid"
+    name "Sudi Valam"
   ]
   node [
     id 136
-    label "Venli"
-    world "Roshar"
-      names "Venli"
+    label "911"
+    world "Scadrial"
+    name "Tevidian Tekiel"
   ]
   node [
     id 137
-    label "Relis Ruthar"
+    label "3987"
     world "Roshar"
-      names "Relis Ruthar"
-      names "Ruthar"
-      names "Relis"
+    name "Taleb"
   ]
   node [
     id 138
-    label "Gevelmar"
+    label "3990"
     world "Roshar"
-      names "Gevelmar"
+    name "Waber"
   ]
   node [
     id 139
-    label "Glys"
-    world "Roshar"
-      names "Glys"
+    label "5522"
+    world "Nalthis"
+    name "Susebron's mother"
   ]
   node [
     id 140
-    label "Jayla Ruthar"
-    world "Roshar"
-      names "Jayla Ruthar"
-      names "Ruthar"
-      names "Jayla"
+    label "5523"
+    world "Nalthis"
+    name "Vivenna's mother"
   ]
   node [
     id 141
-    label "Redin"
-    world "Roshar"
-      names "Redin"
+    label "2973"
+    world "Sel"
+    name "Dashe"
   ]
   node [
     id 142
-    label "Sudi Valam"
-    world "Roshar"
-      names "Sudi Valam"
-      names "Sudi"
-      names "Valam"
+    label "2974"
+    world "Sel"
+    name "Matisse"
   ]
   node [
     id 143
-    label "Ivory"
-    world "Roshar"
-      names "Ivory"
+    label "4511"
+    world "Scadrial"
+    name "Margel"
   ]
   node [
     id 144
-    label "Sixth of the Dusk"
-    world "First of the Sun"
-      names "(character)"
-      names "Sixth"
-      names "Sixth of the Dusk"
+    label "3488"
+    world "Nalthis"
+    name "Tatara"
   ]
   node [
     id 145
-    label "Eshonai's mother"
+    label "9631"
     world "Roshar"
-      names "Eshonai's mother"
+    name "Tuaka'li'na'calmi'nor"
   ]
   node [
     id 146
-    label "Kokerlii"
-    world "First of the Sun"
-      names "Kokerlii"
+    label "9635"
+    world "Roshar"
+    name "Timbre"
   ]
   node [
     id 147
-    label "Sak"
-    world "First of the Sun"
-      names "Sak"
+    label "9640"
+    world "Roshar"
+    name "Tanalan"
   ]
   node [
     id 148
-    label "Susebron's mother"
-    world "Nalthis"
-      names "Susebron's mother"
+    label "3498"
+    world "Sel"
+    name "Seaden"
   ]
   node [
     id 149
-    label "Vivenna's mother"
-    world "Nalthis"
-      names "Queen of Idris"
-      names "Vivenna's mother"
+    label "9651"
+    world "Roshar"
+    name "Star"
   ]
   node [
     id 150
-    label "Kelsier's mother"
-    world "Scadrial"
-      names "Kelsier's mother"
+    label "3509"
+    world "Sel"
+    name "Aeo"
   ]
   node [
     id 151
-    label "Elend's mother"
-    world "Scadrial"
-      names "Elend's mother"
+    label "5057"
+    world "Roshar"
+    name "Ivory"
   ]
   node [
     id 152
-    label "Allrianne's mother"
-    world "Scadrial"
-      names "Allrianne's mother"
+    label "970"
+    world "Roshar"
+    name "Helaran Davar"
   ]
   node [
     id 153
-    label "Raoden's mother"
-    world "Sel"
-      names "Raoden's mother"
+    label "9677"
+    world "Roshar"
+    name "Wzmal"
   ]
   node [
     id 154
-    label "William Montane"
-    world "Threnody"
-      names "Montane"
-      names "William"
-      names "William Montane"
+    label "8672"
+    world "Taldain"
+    name "Ais"
   ]
   node [
     id 155
-    label "Lopen's mother"
-    world "Roshar"
-      names "Lopen's mother"
+    label "2529"
+    world "Sel"
+    name "Opa"
   ]
   node [
     id 156
-    label "Gavinor Kholin"
-    world "Roshar"
-      names "Gavinor"
-      names "Gavinor Kholin"
-      names "Kholin"
+    label "2530"
+    world "Sel"
+    name "Ien"
   ]
   node [
     id 157
-    label "Jackstom Harms"
-    world "Scadrial"
-      names "Jackstom"
-      names "Lord"
-      names "Jackstom Harms"
-      names "Harms"
+    label "2532"
+    world "Sel"
+    name "Dio"
   ]
   node [
     id 158
-    label "General Khal"
-    world "Roshar"
-      names "Khal"
-      names "General Khal"
-      names "General"
+    label "999"
+    world "Scadrial"
+    name "Jedal"
   ]
   node [
     id 159
-    label "Halam Khal"
-    world "Roshar"
-      names "Halam"
-      names "Halam Khal"
-      names "Khal"
+    label "3047"
+    world "Sel"
+    name "Eoldess"
   ]
   node [
     id 160
-    label "Paalm"
-    world "Scadrial"
-      names "Bleeder"
-      names "Lessie"
-      names "Paalm"
-      names "Replar Innate"
+    label "9708"
+    world "Roshar"
+    name "Tanalan's mother"
   ]
   node [
     id 161
-    label "Winsting Innate"
-    world "Scadrial"
-      names "Winsting Innate"
-      names "Winsting"
-      names "Innate"
+    label "9709"
+    world "Roshar"
+    name "Tanalan's father"
   ]
   node [
     id 162
-    label "Allri Innate"
-    world "Scadrial"
-      names "Allri"
-      names "Innate"
-      names "Allri Innate"
+    label "2548"
+    world "Nalthis"
+    name "Ridger"
   ]
   node [
     id 163
-    label "Replar Innate"
-    world "Scadrial"
-      names "Replar Innate"
-      names "Replar"
-      names "Innate"
+    label "3580"
+    world "Sel"
+    name "Torena"
   ]
   edge [
     source 0
-    target 2
+    target 3
   ]
   edge [
     source 0
-    target 153
+    target 65
   ]
   edge [
     source 0
@@ -1218,71 +997,55 @@ graph [
   ]
   edge [
     source 0
-    target 103
+    target 156
   ]
   edge [
     source 1
-    target 8
+    target 18
   ]
   edge [
     source 1
-    target 119
+    target 59
   ]
   edge [
     source 1
-    target 120
+    target 61
   ]
   edge [
     source 1
-    target 93
+    target 15
   ]
   edge [
     source 2
-    target 153
+    target 31
   ]
   edge [
     source 2
-    target 3
+    target 42
   ]
   edge [
-    source 4
-    target 98
+    source 3
+    target 65
   ]
   edge [
-    source 4
-    target 99
-  ]
-  edge [
-    source 4
-    target 62
-  ]
-  edge [
-    source 4
-    target 6
-  ]
-  edge [
-    source 4
-    target 5
-  ]
-  edge [
-    source 4
-    target 40
-  ]
-  edge [
-    source 4
-    target 95
+    source 3
+    target 4
   ]
   edge [
     source 5
-    target 98
+    target 51
   ]
   edge [
     source 5
-    target 99
+    target 54
   ]
   edge [
     source 5
-    target 62
+    target 152
+  ]
+  edge [
+    source 5
+    target 7
   ]
   edge [
     source 5
@@ -1290,886 +1053,902 @@ graph [
   ]
   edge [
     source 5
-    target 40
+    target 67
   ]
   edge [
     source 5
-    target 95
+    target 28
   ]
   edge [
     source 6
-    target 98
+    target 51
   ]
   edge [
     source 6
-    target 99
+    target 54
   ]
   edge [
     source 6
-    target 62
+    target 152
   ]
   edge [
     source 6
-    target 40
+    target 7
   ]
   edge [
     source 6
-    target 95
+    target 67
+  ]
+  edge [
+    source 6
+    target 28
   ]
   edge [
     source 7
-    target 73
+    target 51
   ]
   edge [
     source 7
-    target 56
+    target 54
   ]
   edge [
     source 7
-    target 43
+    target 152
   ]
   edge [
     source 7
-    target 44
+    target 67
+  ]
+  edge [
+    source 7
+    target 28
   ]
   edge [
     source 8
-    target 9
-  ]
-  edge [
-    source 8
-    target 119
-  ]
-  edge [
-    source 8
-    target 120
-  ]
-  edge [
-    source 8
-    target 104
-  ]
-  edge [
-    source 9
-    target 10
-  ]
-  edge [
-    source 9
-    target 12
-  ]
-  edge [
-    source 9
-    target 11
-  ]
-  edge [
-    source 9
-    target 13
-  ]
-  edge [
-    source 9
-    target 15
-  ]
-  edge [
-    source 10
-    target 13
-  ]
-  edge [
-    source 10
-    target 15
-  ]
-  edge [
-    source 10
-    target 12
-  ]
-  edge [
-    source 10
-    target 11
-  ]
-  edge [
-    source 11
-    target 13
-  ]
-  edge [
-    source 11
-    target 12
-  ]
-  edge [
-    source 11
-    target 15
-  ]
-  edge [
-    source 12
-    target 13
-  ]
-  edge [
-    source 12
-    target 15
-  ]
-  edge [
-    source 13
-    target 15
-  ]
-  edge [
-    source 13
-    target 14
-  ]
-  edge [
-    source 16
-    target 94
-  ]
-  edge [
-    source 16
-    target 115
-  ]
-  edge [
-    source 17
-    target 118
-  ]
-  edge [
-    source 17
     target 102
   ]
   edge [
-    source 18
-    target 123
+    source 8
+    target 114
   ]
   edge [
-    source 18
+    source 8
+    target 71
+  ]
+  edge [
+    source 8
+    target 72
+  ]
+  edge [
+    source 9
+    target 145
+  ]
+  edge [
+    source 9
+    target 112
+  ]
+  edge [
+    source 9
+    target 84
+  ]
+  edge [
+    source 9
+    target 149
+  ]
+  edge [
+    source 9
+    target 129
+  ]
+  edge [
+    source 9
+    target 106
+  ]
+  edge [
+    source 9
+    target 82
+  ]
+  edge [
+    source 10
+    target 114
+  ]
+  edge [
+    source 11
+    target 81
+  ]
+  edge [
+    source 12
+    target 77
+  ]
+  edge [
+    source 13
+    target 105
+  ]
+  edge [
+    source 13
+    target 108
+  ]
+  edge [
+    source 14
+    target 52
+  ]
+  edge [
+    source 14
+    target 57
+  ]
+  edge [
+    source 15
+    target 59
+  ]
+  edge [
+    source 16
+    target 27
+  ]
+  edge [
+    source 16
     target 125
   ]
   edge [
-    source 19
-    target 150
+    source 17
+    target 124
   ]
   edge [
-    source 19
+    source 17
+    target 100
+  ]
+  edge [
+    source 17
+    target 101
+  ]
+  edge [
+    source 17
+    target 19
+  ]
+  edge [
+    source 18
     target 20
   ]
   edge [
+    source 18
+    target 59
+  ]
+  edge [
+    source 18
+    target 61
+  ]
+  edge [
+    source 18
+    target 157
+  ]
+  edge [
     source 19
+    target 124
+  ]
+  edge [
+    source 19
+    target 100
+  ]
+  edge [
+    source 19
+    target 101
+  ]
+  edge [
+    source 20
     target 21
   ]
   edge [
     source 20
-    target 150
+    target 23
+  ]
+  edge [
+    source 20
+    target 22
+  ]
+  edge [
+    source 20
+    target 24
+  ]
+  edge [
+    source 20
+    target 26
+  ]
+  edge [
+    source 21
+    target 24
+  ]
+  edge [
+    source 21
+    target 26
+  ]
+  edge [
+    source 21
+    target 23
+  ]
+  edge [
+    source 21
+    target 22
   ]
   edge [
     source 22
-    target 61
+    target 24
   ]
   edge [
     source 22
-    target 97
+    target 23
   ]
   edge [
     source 22
     target 26
   ]
   edge [
-    source 22
-    target 96
-  ]
-  edge [
-    source 22
-    target 27
+    source 23
+    target 24
   ]
   edge [
     source 23
-    target 30
+    target 26
   ]
   edge [
     source 24
-    target 63
+    target 26
   ]
   edge [
     source 24
-    target 133
-  ]
-  edge [
-    source 25
-    target 133
-  ]
-  edge [
-    source 26
-    target 97
+    target 25
   ]
   edge [
     source 27
-    target 28
-  ]
-  edge [
-    source 27
-    target 151
-  ]
-  edge [
-    source 27
-    target 31
+    target 125
   ]
   edge [
     source 28
-    target 151
+    target 115
   ]
   edge [
     source 28
-    target 31
+    target 51
   ]
   edge [
-    source 29
+    source 28
     target 152
   ]
   edge [
-    source 29
-    target 30
+    source 28
+    target 67
   ]
   edge [
     source 29
-    target 121
+    target 159
+  ]
+  edge [
+    source 29
+    target 155
   ]
   edge [
     source 30
-    target 152
+    target 148
   ]
   edge [
     source 30
-    target 121
+    target 163
+  ]
+  edge [
+    source 31
+    target 42
+  ]
+  edge [
+    source 31
+    target 41
   ]
   edge [
     source 32
-    target 65
+    target 86
   ]
   edge [
-    source 33
-    target 54
+    source 32
+    target 33
   ]
   edge [
-    source 33
-    target 149
-  ]
-  edge [
-    source 33
+    source 32
     target 34
   ]
   edge [
     source 33
-    target 105
-  ]
-  edge [
-    source 33
-    target 55
-  ]
-  edge [
-    source 33
-    target 37
-  ]
-  edge [
-    source 34
-    target 54
-  ]
-  edge [
-    source 34
-    target 149
-  ]
-  edge [
-    source 34
-    target 105
-  ]
-  edge [
-    source 34
-    target 55
+    target 86
   ]
   edge [
     source 35
-    target 38
-  ]
-  edge [
-    source 36
-    target 65
-  ]
-  edge [
-    source 37
-    target 148
-  ]
-  edge [
-    source 38
-    target 122
-  ]
-  edge [
-    source 39
-    target 47
-  ]
-  edge [
-    source 39
-    target 48
-  ]
-  edge [
-    source 39
-    target 46
-  ]
-  edge [
-    source 39
-    target 72
-  ]
-  edge [
-    source 39
-    target 42
-  ]
-  edge [
-    source 40
-    target 98
-  ]
-  edge [
-    source 40
-    target 99
-  ]
-  edge [
-    source 40
-    target 62
-  ]
-  edge [
-    source 40
-    target 43
-  ]
-  edge [
-    source 40
-    target 134
-  ]
-  edge [
-    source 40
-    target 95
-  ]
-  edge [
-    source 41
-    target 45
-  ]
-  edge [
-    source 41
-    target 50
-  ]
-  edge [
-    source 41
-    target 51
-  ]
-  edge [
-    source 41
-    target 143
-  ]
-  edge [
-    source 43
-    target 56
-  ]
-  edge [
-    source 43
-    target 44
-  ]
-  edge [
-    source 44
-    target 56
-  ]
-  edge [
-    source 44
-    target 139
-  ]
-  edge [
-    source 45
-    target 56
-  ]
-  edge [
-    source 45
-    target 50
-  ]
-  edge [
-    source 45
-    target 51
-  ]
-  edge [
-    source 46
-    target 47
-  ]
-  edge [
-    source 46
-    target 48
-  ]
-  edge [
-    source 46
-    target 72
-  ]
-  edge [
-    source 47
-    target 48
-  ]
-  edge [
-    source 47
-    target 72
-  ]
-  edge [
-    source 48
-    target 72
-  ]
-  edge [
-    source 49
-    target 92
-  ]
-  edge [
-    source 49
-    target 108
-  ]
-  edge [
-    source 50
-    target 56
-  ]
-  edge [
-    source 50
-    target 51
-  ]
-  edge [
-    source 51
-    target 132
-  ]
-  edge [
-    source 51
-    target 156
-  ]
-  edge [
-    source 52
-    target 53
-  ]
-  edge [
-    source 52
-    target 60
-  ]
-  edge [
-    source 53
-    target 60
-  ]
-  edge [
-    source 54
-    target 149
-  ]
-  edge [
-    source 54
-    target 105
-  ]
-  edge [
-    source 54
-    target 55
-  ]
-  edge [
-    source 55
-    target 149
-  ]
-  edge [
-    source 55
-    target 105
-  ]
-  edge [
-    source 56
-    target 106
-  ]
-  edge [
-    source 57
-    target 58
-  ]
-  edge [
-    source 57
-    target 59
-  ]
-  edge [
-    source 58
-    target 59
-  ]
-  edge [
-    source 61
-    target 96
-  ]
-  edge [
-    source 62
-    target 98
-  ]
-  edge [
-    source 62
-    target 99
-  ]
-  edge [
-    source 62
-    target 95
-  ]
-  edge [
-    source 63
-    target 133
-  ]
-  edge [
-    source 64
-    target 82
-  ]
-  edge [
-    source 64
-    target 76
-  ]
-  edge [
-    source 64
-    target 71
-  ]
-  edge [
-    source 64
-    target 85
-  ]
-  edge [
-    source 64
-    target 80
-  ]
-  edge [
-    source 64
-    target 75
-  ]
-  edge [
-    source 64
-    target 100
-  ]
-  edge [
-    source 66
-    target 158
-  ]
-  edge [
-    source 66
-    target 114
-  ]
-  edge [
-    source 66
-    target 159
-  ]
-  edge [
-    source 66
-    target 67
-  ]
-  edge [
-    source 67
-    target 158
-  ]
-  edge [
-    source 67
-    target 114
-  ]
-  edge [
-    source 67
-    target 159
-  ]
-  edge [
-    source 68
-    target 78
-  ]
-  edge [
-    source 68
-    target 77
-  ]
-  edge [
-    source 69
-    target 155
-  ]
-  edge [
-    source 69
-    target 74
-  ]
-  edge [
-    source 70
-    target 101
-  ]
-  edge [
-    source 70
-    target 160
-  ]
-  edge [
-    source 70
-    target 90
-  ]
-  edge [
-    source 71
-    target 82
-  ]
-  edge [
-    source 71
-    target 76
-  ]
-  edge [
-    source 71
-    target 85
-  ]
-  edge [
-    source 71
-    target 80
-  ]
-  edge [
-    source 71
-    target 75
-  ]
-  edge [
-    source 71
-    target 100
-  ]
-  edge [
-    source 75
-    target 82
-  ]
-  edge [
-    source 75
-    target 76
-  ]
-  edge [
-    source 75
-    target 85
-  ]
-  edge [
-    source 75
-    target 80
-  ]
-  edge [
-    source 75
-    target 100
-  ]
-  edge [
-    source 76
-    target 82
-  ]
-  edge [
-    source 76
-    target 85
-  ]
-  edge [
-    source 76
-    target 80
-  ]
-  edge [
-    source 76
-    target 100
-  ]
-  edge [
-    source 77
-    target 78
-  ]
-  edge [
-    source 79
-    target 86
-  ]
-  edge [
-    source 79
-    target 81
-  ]
-  edge [
-    source 80
-    target 82
-  ]
-  edge [
-    source 80
-    target 85
-  ]
-  edge [
-    source 80
-    target 100
-  ]
-  edge [
-    source 81
-    target 86
-  ]
-  edge [
-    source 82
-    target 85
-  ]
-  edge [
-    source 82
-    target 100
-  ]
-  edge [
-    source 83
     target 136
   ]
   edge [
-    source 84
-    target 88
+    source 35
+    target 49
   ]
   edge [
-    source 84
-    target 87
+    source 35
+    target 43
   ]
   edge [
-    source 85
-    target 100
+    source 35
+    target 48
   ]
   edge [
-    source 87
-    target 88
+    source 35
+    target 44
   ]
   edge [
-    source 89
-    target 157
+    source 36
+    target 94
   ]
   edge [
-    source 89
+    source 36
+    target 40
+  ]
+  edge [
+    source 37
+    target 47
+  ]
+  edge [
+    source 38
+    target 158
+  ]
+  edge [
+    source 38
+    target 143
+  ]
+  edge [
+    source 39
+    target 143
+  ]
+  edge [
+    source 40
+    target 80
+  ]
+  edge [
+    source 40
+    target 94
+  ]
+  edge [
+    source 41
+    target 42
+  ]
+  edge [
+    source 43
+    target 49
+  ]
+  edge [
+    source 44
+    target 45
+  ]
+  edge [
+    source 44
+    target 63
+  ]
+  edge [
+    source 44
+    target 50
+  ]
+  edge [
+    source 45
+    target 63
+  ]
+  edge [
+    source 45
+    target 50
+  ]
+  edge [
+    source 46
+    target 64
+  ]
+  edge [
+    source 46
+    target 47
+  ]
+  edge [
+    source 46
     target 90
   ]
   edge [
-    source 90
-    target 157
+    source 47
+    target 64
   ]
   edge [
-    source 91
-    target 140
+    source 47
+    target 90
   ]
   edge [
-    source 91
-    target 137
+    source 48
+    target 136
   ]
   edge [
-    source 92
-    target 107
+    source 48
+    target 49
   ]
   edge [
-    source 93
-    target 119
+    source 51
+    target 67
   ]
   edge [
-    source 94
-    target 115
+    source 51
+    target 152
   ]
   edge [
-    source 95
-    target 138
+    source 51
+    target 54
   ]
   edge [
-    source 95
+    source 53
     target 98
   ]
   edge [
-    source 96
-    target 97
+    source 53
+    target 140
+  ]
+  edge [
+    source 53
+    target 55
+  ]
+  edge [
+    source 53
+    target 162
+  ]
+  edge [
+    source 53
+    target 99
+  ]
+  edge [
+    source 53
+    target 58
+  ]
+  edge [
+    source 54
+    target 67
+  ]
+  edge [
+    source 54
+    target 152
+  ]
+  edge [
+    source 55
+    target 98
+  ]
+  edge [
+    source 55
+    target 140
+  ]
+  edge [
+    source 55
+    target 162
+  ]
+  edge [
+    source 55
+    target 99
+  ]
+  edge [
+    source 56
+    target 60
+  ]
+  edge [
+    source 58
+    target 139
+  ]
+  edge [
+    source 59
+    target 61
+  ]
+  edge [
+    source 60
+    target 144
+  ]
+  edge [
+    source 62
+    target 109
+  ]
+  edge [
+    source 62
+    target 110
+  ]
+  edge [
+    source 64
+    target 90
+  ]
+  edge [
+    source 66
+    target 75
+  ]
+  edge [
+    source 66
+    target 76
+  ]
+  edge [
+    source 66
+    target 74
+  ]
+  edge [
+    source 66
+    target 95
+  ]
+  edge [
+    source 66
+    target 69
+  ]
+  edge [
+    source 67
+    target 152
+  ]
+  edge [
+    source 67
+    target 71
+  ]
+  edge [
+    source 67
+    target 78
+  ]
+  edge [
+    source 68
+    target 73
+  ]
+  edge [
+    source 68
+    target 79
+  ]
+  edge [
+    source 68
+    target 83
+  ]
+  edge [
+    source 68
+    target 151
+  ]
+  edge [
+    source 70
+    target 85
+  ]
+  edge [
+    source 70
+    target 104
+  ]
+  edge [
+    source 71
+    target 114
+  ]
+  edge [
+    source 71
+    target 72
+  ]
+  edge [
+    source 72
+    target 114
+  ]
+  edge [
+    source 72
+    target 116
+  ]
+  edge [
+    source 73
+    target 114
+  ]
+  edge [
+    source 73
+    target 79
+  ]
+  edge [
+    source 73
+    target 83
+  ]
+  edge [
+    source 74
+    target 75
+  ]
+  edge [
+    source 74
+    target 76
+  ]
+  edge [
+    source 74
+    target 95
+  ]
+  edge [
+    source 75
+    target 76
+  ]
+  edge [
+    source 75
+    target 95
+  ]
+  edge [
+    source 76
+    target 95
+  ]
+  edge [
+    source 77
+    target 81
+  ]
+  edge [
+    source 79
+    target 114
+  ]
+  edge [
+    source 79
+    target 83
+  ]
+  edge [
+    source 80
+    target 96
+  ]
+  edge [
+    source 80
+    target 123
+  ]
+  edge [
+    source 82
+    target 145
+  ]
+  edge [
+    source 82
+    target 112
+  ]
+  edge [
+    source 82
+    target 84
+  ]
+  edge [
+    source 82
+    target 149
+  ]
+  edge [
+    source 82
+    target 129
+  ]
+  edge [
+    source 82
+    target 106
+  ]
+  edge [
+    source 83
+    target 103
+  ]
+  edge [
+    source 83
+    target 111
+  ]
+  edge [
+    source 84
+    target 145
+  ]
+  edge [
+    source 84
+    target 112
+  ]
+  edge [
+    source 84
+    target 149
+  ]
+  edge [
+    source 84
+    target 129
+  ]
+  edge [
+    source 84
+    target 106
+  ]
+  edge [
+    source 87
+    target 89
+  ]
+  edge [
+    source 87
+    target 117
+  ]
+  edge [
+    source 88
+    target 128
+  ]
+  edge [
+    source 88
+    target 153
+  ]
+  edge [
+    source 89
+    target 117
+  ]
+  edge [
+    source 91
+    target 127
+  ]
+  edge [
+    source 91
+    target 126
+  ]
+  edge [
+    source 92
+    target 154
+  ]
+  edge [
+    source 92
+    target 93
+  ]
+  edge [
+    source 93
+    target 154
+  ]
+  edge [
+    source 97
+    target 122
+  ]
+  edge [
+    source 97
+    target 113
+  ]
+  edge [
+    source 98
+    target 140
+  ]
+  edge [
+    source 98
+    target 162
   ]
   edge [
     source 98
     target 99
   ]
   edge [
-    source 105
-    target 149
+    source 99
+    target 140
   ]
   edge [
-    source 109
+    source 99
+    target 162
+  ]
+  edge [
+    source 100
+    target 124
+  ]
+  edge [
+    source 100
+    target 101
+  ]
+  edge [
+    source 101
+    target 124
+  ]
+  edge [
+    source 103
+    target 111
+  ]
+  edge [
+    source 105
+    target 108
+  ]
+  edge [
+    source 106
     target 145
   ]
   edge [
-    source 109
-    target 136
-  ]
-  edge [
-    source 110
-    target 142
-  ]
-  edge [
-    source 110
-    target 141
-  ]
-  edge [
-    source 111
+    source 106
     target 112
   ]
   edge [
-    source 111
-    target 113
+    source 106
+    target 149
+  ]
+  edge [
+    source 106
+    target 129
+  ]
+  edge [
+    source 107
+    target 108
+  ]
+  edge [
+    source 108
+    target 146
   ]
   edge [
     source 112
-    target 113
+    target 145
   ]
   edge [
-    source 114
-    target 158
+    source 112
+    target 149
   ]
   edge [
-    source 114
-    target 159
+    source 112
+    target 129
   ]
   edge [
-    source 116
-    target 117
+    source 113
+    target 122
   ]
   edge [
-    source 117
-    target 124
+    source 118
+    target 135
+  ]
+  edge [
+    source 118
+    target 130
   ]
   edge [
     source 119
     target 120
   ]
   edge [
-    source 121
-    target 152
+    source 119
+    target 121
   ]
   edge [
-    source 123
-    target 125
-  ]
-  edge [
-    source 126
-    target 154
-  ]
-  edge [
-    source 126
-    target 128
+    source 120
+    target 121
   ]
   edge [
     source 126
     target 127
   ]
   edge [
-    source 127
-    target 128
-  ]
-  edge [
     source 128
-    target 154
+    target 153
   ]
   edge [
     source 129
-    target 130
-  ]
-  edge [
-    source 129
-    target 131
-  ]
-  edge [
-    source 132
-    target 156
-  ]
-  edge [
-    source 135
-    target 136
-  ]
-  edge [
-    source 136
     target 145
   ]
   edge [
-    source 137
-    target 140
+    source 129
+    target 149
+  ]
+  edge [
+    source 130
+    target 135
+  ]
+  edge [
+    source 131
+    target 134
+  ]
+  edge [
+    source 132
+    target 137
+  ]
+  edge [
+    source 132
+    target 138
+  ]
+  edge [
+    source 133
+    target 134
+  ]
+  edge [
+    source 140
+    target 162
   ]
   edge [
     source 141
     target 142
   ]
   edge [
-    source 144
-    target 146
+    source 142
+    target 150
   ]
   edge [
-    source 144
-    target 147
+    source 143
+    target 158
   ]
   edge [
-    source 158
-    target 159
+    source 145
+    target 149
   ]
   edge [
-    source 161
+    source 147
+    target 161
+  ]
+  edge [
+    source 147
+    target 160
+  ]
+  edge [
+    source 148
     target 163
   ]
   edge [
-    source 162
-    target 163
+    source 160
+    target 161
   ]
 ]
