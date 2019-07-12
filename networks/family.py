@@ -47,8 +47,6 @@ def create_graph() -> nx.OrderedGraph:
                 relation = link.title.strip_code()
                 if "_" in relation:
                     relation = relation.replace('_', ' ')
-                if "'s " in relation:
-                    continue
 
                 # get potential full name
                 relation_forename = relation.split(' ')[0]

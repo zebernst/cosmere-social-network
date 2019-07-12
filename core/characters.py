@@ -195,18 +195,14 @@ class Character:
 
                     # titles and aliases and names
                     elif k == 'titles' or k == 'aliases' or k == 'name':
-                        v = [name
-                             for name in (name.strip() for name in parse_names(v))
-                             if name]
+                        v = [n
+                             for n in (n.strip()
+                                       for n in parse_names(v))
+                             if n]
 
                     # world
                     elif k == 'world' or k == 'universe':
                         v = v.strip_code()
-
-                    # ignore unnamed minor characters
-                    elif k == 'unnamed':
-                        self._keep = False
-                        return char_info
 
                     # parse wiki tags into human-readable text
                     else:
