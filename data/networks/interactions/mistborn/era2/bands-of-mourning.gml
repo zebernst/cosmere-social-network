@@ -229,18 +229,18 @@ graph [
   ]
   edge [
     source 4
+    target 11
+    weight 9
+  ]
+  edge [
+    source 4
     target 20
     weight 4
   ]
   edge [
     source 4
-    target 11
-    weight 8
-  ]
-  edge [
-    source 4
     target 7
-    weight 9
+    weight 10
   ]
   edge [
     source 4
@@ -295,7 +295,7 @@ graph [
   edge [
     source 7
     target 12
-    weight 185
+    weight 186
   ]
   edge [
     source 7

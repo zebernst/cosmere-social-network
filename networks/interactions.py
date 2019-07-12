@@ -144,11 +144,11 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'shadows-for-silence':
+        if key != 'mistborn/era2/bands-of-mourning':
             continue
 
         G = create_graph(key)
         save_network_gml(key, G)
         save_network_json(key, G)
-        print('pause!')
+        print('done!')
 
