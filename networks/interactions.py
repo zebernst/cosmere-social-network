@@ -121,8 +121,8 @@ def create_graph(book: str, min_weight: int = 3):
 
     G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight')
                          if w < min_weight
-                         and 'Hoid' not in u.name
-                         and 'Hoid' not in v.name])
+                         and 'Hoid' not in u
+                         and 'Hoid' not in v])
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 

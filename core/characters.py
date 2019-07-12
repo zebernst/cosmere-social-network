@@ -252,13 +252,13 @@ def explicit_modify(ch: Character):
     elif ch.name == 'Hoid':
         # todo: manually specify locations where hoid appears but is unnamed (i.e. wb storyteller, mb beggar, etc)
         ch.aliases.remove('others')
-        ch.aliases.add('Roamer')
-        ch.aliases.add('Dust')
-        ch.aliases.add('Fool')
-        ch.aliases.add('Topaz')
-        ch.aliases.add('Drifter')
-        ch.aliases.add('Cephandrius')
-        ch.aliases.add("Lunu'anaki")
+        ch.aliases.append('Roamer')
+        ch.aliases.append('Dust')
+        ch.aliases.append('Fool')
+        ch.aliases.append('Topaz')
+        ch.aliases.append('Drifter')
+        ch.aliases.append('Cephandrius')
+        ch.aliases.append("Lunu'anaki")
     elif ch.name == 'Gave Entrone':
         ch.common_name = ''
     elif ch.name == 'Wulfden the First':
@@ -274,6 +274,8 @@ def explicit_modify(ch: Character):
         ch.common_name = 'William Ann'
     elif ch.name == 'Sixth of the Dusk':
         ch.common_name = 'Dusk'
+    elif ch.name == 'Wan ShaiLu':
+        ch.common_name = 'Shai'
 
 
 def _generate_characters() -> typing.Iterator[Character]:
