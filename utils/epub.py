@@ -43,7 +43,7 @@ def chapters(key: str):
     logger.debug(f"Identified {len(files)} chapters to parse from {key}.")
 
     for chapter, path in files:
-        with path.open() as f:
+        with path.open(encoding='utf-8') as f:
             soup = BeautifulSoup(f.read(), 'lxml')
             text = '\n'.join([e.text for e in soup.find_all('p', text=True)])
             text = re.sub(possession, '', text)

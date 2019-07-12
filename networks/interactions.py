@@ -11,9 +11,6 @@ from core.disambiguation import disambiguate_name, disambiguate_title, verify_pr
 from utils.epub import chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
-
-
-# todo: add logging
 from utils.types import RunContext
 
 
@@ -117,7 +114,7 @@ def create_graph(book: str, min_weight: int = 3):
                     else:
                         G.add_edge(u.name, v.name, weight=1)
 
-                    logger.debug(f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{context[-1]}"')
+                    logger.debug(f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{context.run}"')
 
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
@@ -132,7 +129,7 @@ def save_network_gml(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
     filename.parent.mkdir(parents=True, exist_ok=True)
 
     nx.write_gml(G, str(filename))
-    logger.info(f" GML graph data for {key} characters written to {filename}")
+    logger.info(f"GML  graph data for {key} characters written to {filename}")
 
 
 def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
@@ -147,7 +144,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'stormlight/way-of-kings':
+        if key != 'shadows-for-silence':
             continue
 
         G = create_graph(key)
