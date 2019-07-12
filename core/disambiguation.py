@@ -3,7 +3,7 @@ from typing import Optional
 import colorama
 
 from core.characters import Character, characters, monikers
-from utils.input import ask, menu, yn_question
+from utils.input import ask, menu, yn_question, clear_screen
 from utils.logs import create_logger
 from utils.types import RunContext
 
@@ -92,6 +92,7 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
 
         char = clarify_list(key, name, monikers)
         save(pos, char, disambiguation)
+        clear_screen()
         return char
 
 
@@ -115,6 +116,8 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
         else:
             char = None
             save(pos, None, disambiguation)
+
         if char is not None:
             logger.debug(f'Matched ambiguous character from "{title}", identified manually as {repr(char)}.')
+        clear_screen()
         return char

@@ -1,3 +1,4 @@
+import os
 from typing import Callable
 
 
@@ -31,3 +32,7 @@ def yn_question(prompt: str):
     while not any(response.lower().startswith(s) for s in 'yn'):
         response = input("> ")
     return response.startswith('y')
+
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
