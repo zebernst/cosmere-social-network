@@ -29,7 +29,7 @@ cleansed_fields = {
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
 titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'Lady',
-          'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Captain')
+          'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Captain', 'Highprince')
 
 book_keys = ['arcanum',
              'elantris',
