@@ -31,6 +31,9 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
         exit(1)
 
     if isinstance(monikers[response], list):
+        for char in monikers[response]:
+            if char.name == response:
+                return char
         print(f"Multiple matches found for {response}. Please specify:")
         for c in monikers[response]:
             print(f"  {c.name} ({c.world}) -- {c.info}")
