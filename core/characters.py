@@ -264,6 +264,8 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == 'William Ann Montane':
         ch.common_name = 'William Ann'
+    elif ch.name == 'Sixth of the Dusk':
+        ch.common_name = 'Dusk'
 
 
 def _generate_characters() -> typing.Iterator[Character]:
