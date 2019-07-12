@@ -250,7 +250,15 @@ def explicit_modify(ch: Character):
     if ch.name == 'Waxillium Ladrian':
         ch.aliases.append('Wax')
     elif ch.name == 'Hoid':
+        # todo: manually specify locations where hoid appears but is unnamed (i.e. wb storyteller, mb beggar, etc)
         ch.aliases.remove('others')
+        ch.aliases.add('Roamer')
+        ch.aliases.add('Dust')
+        ch.aliases.add('Fool')
+        ch.aliases.add('Topaz')
+        ch.aliases.add('Drifter')
+        ch.aliases.add('Cephandrius')
+        ch.aliases.add("Lunu'anaki")
     elif ch.name == 'Gave Entrone':
         ch.common_name = ''
     elif ch.name == 'Wulfden the First':

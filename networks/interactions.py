@@ -119,7 +119,10 @@ def create_graph(book: str, min_weight: int = 3):
         with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
 
-    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight') if w < min_weight])
+    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight')
+                         if w < min_weight
+                         and 'Hoid' not in u.name
+                         and 'Hoid' not in v.name])
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
@@ -144,7 +147,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'sixth-of-the-dusk':
+        if key != 'emperors-soul':
             continue
 
         G = create_graph(key)
