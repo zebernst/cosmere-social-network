@@ -1,43 +1,63 @@
 graph [
   node [
     id 0
-    label "Hoid"
+    label "13"
+    name "Hoid"
+    world "Yolen"
   ]
   node [
     id 1
-    label "Wan ShaiLu"
+    label "2135"
+    name "Wan ShaiLu"
+    world "Sel"
   ]
   node [
     id 2
-    label "Gaotona"
+    label "2442"
+    name "Gaotona"
+    world "Sel"
   ]
   node [
     id 3
-    label "Zu"
+    label "2443"
+    name "Zu"
+    world "Sel"
   ]
   node [
     id 4
-    label "Frava"
+    label "2444"
+    name "Frava"
+    world "Sel"
   ]
   node [
     id 5
-    label "Ashravan"
+    label "2446"
+    name "Ashravan"
+    world "Sel"
   ]
   node [
     id 6
-    label "Han ShuXen"
+    label "2541"
+    name "Han ShuXen"
+    world "Sel"
   ]
   node [
     id 7
-    label "Hurli"
+    label "3075"
+    name "Hurli"
+    world "Sel"
   ]
   node [
     id 8
-    label "Yil"
+    label "3091"
+    name "Yil"
+    world "Sel"
   ]
   node [
     id 9
-    label "Ushnaka"
+    label "3900"
+    name "Ushnaka"
+    world "Sel"
   ]
   edge [
     source 0

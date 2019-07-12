@@ -1,19 +1,27 @@
 graph [
   node [
     id 0
-    label "Sixth of the Dusk"
+    label "5268"
+    name "Sixth of the Dusk"
+    world "First of the Sun"
   ]
   node [
     id 1
-    label "Kokerlii"
+    label "5434"
+    name "Kokerlii"
+    world "First of the Sun"
   ]
   node [
     id 2
-    label "Sak"
+    label "5435"
+    name "Sak"
+    world "First of the Sun"
   ]
   node [
     id 3
-    label "Vathi"
+    label "5438"
+    name "Vathi"
+    world "First of the Sun"
   ]
   edge [
     source 0

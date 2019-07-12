@@ -20,7 +20,7 @@ logger = create_logger('csn.networks.interactions')
 def create_graph(book: str, min_weight: int = 3):
     G = nx.Graph()
 
-    nodes = {c.name: {}
+    nodes = {c.id: dict(name=c.name, world=c.world)
              for c in characters}
     G.add_nodes_from(nodes.items())
 
@@ -109,10 +109,10 @@ def create_graph(book: str, min_weight: int = 3):
             chars = set(c for i, c in found)
             if len(chars) > 1:
                 for u, v in combinations(chars, r=2):
-                    if G.has_edge(u.name, v.name):
-                        G[u.name][v.name]['weight'] += 1
+                    if G.has_edge(u.id, v.id):
+                        G[u.id][v.id]['weight'] += 1
                     else:
-                        G.add_edge(u.name, v.name, weight=1)
+                        G.add_edge(u.id, v.id, weight=1)
 
                     logger.debug(f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{context.run}"')
 
@@ -121,8 +121,8 @@ def create_graph(book: str, min_weight: int = 3):
 
     G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight')
                          if w < min_weight
-                         and 'Hoid' not in u
-                         and 'Hoid' not in v])
+                         and u != 13  # Hoid
+                         and v != 13])
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
@@ -147,7 +147,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'emperors-soul':
+        if key != 'mistborn/era2/bands-of-mourning':
             continue
 
         G = create_graph(key)

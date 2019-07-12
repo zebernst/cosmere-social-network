@@ -1,151 +1,225 @@
 graph [
   node [
     id 0
-    label "Kelsier"
+    label "97"
+    name "Kelsier"
+    world "Scadrial"
   ]
   node [
     id 1
-    label "Vin"
+    label "100"
+    name "Vin"
+    world "Scadrial"
   ]
   node [
     id 2
-    label "Spook"
+    label "105"
+    name "Spook"
+    world "Scadrial"
   ]
   node [
     id 3
-    label "Sazed"
+    label "108"
+    name "Sazed"
+    world "Scadrial"
   ]
   node [
     id 4
-    label "Rashek"
+    label "111"
+    name "Rashek"
+    world "Scadrial"
   ]
   node [
     id 5
-    label "TenSoon"
+    label "122"
+    name "TenSoon"
+    world "Scadrial"
   ]
   node [
     id 6
-    label "Ati"
+    label "141"
+    name "Ati"
+    world "Scadrial"
   ]
   node [
     id 7
-    label "Waxillium Ladrian"
+    label "1212"
+    name "Waxillium Ladrian"
+    world "Scadrial"
   ]
   node [
     id 8
-    label "Wayne"
+    label "1213"
+    name "Wayne"
+    world "Scadrial"
   ]
   node [
     id 9
-    label "Edwarn Ladrian"
+    label "1302"
+    name "Edwarn Ladrian"
+    world "Scadrial"
   ]
   node [
     id 10
-    label "Ranette"
+    label "1631"
+    name "Ranette"
+    world "Scadrial"
   ]
   node [
     id 11
-    label "Marasi Colms"
+    label "1638"
+    name "Marasi Colms"
+    world "Scadrial"
   ]
   node [
     id 12
-    label "Steris Harms"
+    label "1640"
+    name "Steris Harms"
+    world "Scadrial"
   ]
   node [
     id 13
-    label "MeLaan"
+    label "2241"
+    name "MeLaan"
+    world "Scadrial"
   ]
   node [
     id 14
-    label "Telsin Ladrian"
+    label "2318"
+    name "Telsin Ladrian"
+    world "Scadrial"
   ]
   node [
     id 15
-    label "Harrisel Hard"
+    label "3822"
+    name "Harrisel Hard"
+    world "Scadrial"
   ]
   node [
     id 16
-    label "Copper Strangler"
+    label "6401"
+    name "Copper Strangler"
+    world "Scadrial"
   ]
   node [
     id 17
-    label "Claude Aradel"
+    label "6483"
+    name "Claude Aradel"
+    world "Scadrial"
   ]
   node [
     id 18
-    label "Paalm"
+    label "6491"
+    name "Paalm"
+    world "Scadrial"
   ]
   node [
     id 19
-    label "Idashwy"
+    label "6508"
+    name "Idashwy"
+    world "Scadrial"
   ]
   node [
     id 20
-    label "VenDell"
+    label "6509"
+    name "VenDell"
+    world "Scadrial"
   ]
   node [
     id 21
-    label "Ape Manton"
+    label "6552"
+    name "Ape Manton"
+    world "Scadrial"
   ]
   node [
     id 22
-    label "Forch"
+    label "6695"
+    name "Forch"
+    world "Scadrial"
   ]
   node [
     id 23
-    label "Kwashim"
+    label "6735"
+    name "Kwashim"
+    world "Scadrial"
   ]
   node [
     id 24
-    label "Gave Entrone"
+    label "6844"
+    name "Gave Entrone"
+    world "Scadrial"
   ]
   node [
     id 25
-    label "Kelesina Shores"
+    label "6845"
+    name "Kelesina Shores"
+    world "Scadrial"
   ]
   node [
     id 26
-    label "ReLuur"
+    label "6846"
+    name "ReLuur"
+    world "Scadrial"
   ]
   node [
     id 27
-    label "Allik Neverfar"
+    label "6889"
+    name "Allik Neverfar"
+    world "Scadrial"
   ]
   node [
     id 28
-    label "Drewton"
+    label "6897"
+    name "Drewton"
+    world "Scadrial"
   ]
   node [
     id 29
-    label "Tellingdwar"
+    label "8370"
+    name "Tellingdwar"
+    world "Scadrial"
   ]
   node [
     id 30
-    label "Dechamp"
+    label "8371"
+    name "Dechamp"
+    world "Scadrial"
   ]
   node [
     id 31
-    label "Jordis"
+    label "8372"
+    name "Jordis"
+    world "Scadrial"
   ]
   node [
     id 32
-    label "Petrine"
+    label "8373"
+    name "Petrine"
+    world "Scadrial"
   ]
   node [
     id 33
-    label "Devlin Airs"
+    label "8410"
+    name "Devlin Airs"
+    world "Scadrial"
   ]
   node [
     id 34
-    label "Eriola"
+    label "8835"
+    name "Eriola"
+    world "Scadrial"
   ]
   node [
     id 35
-    label "Matieu"
+    label "8905"
+    name "Matieu"
+    world "Scadrial"
   ]
   node [
     id 36
-    label "Cob"
+    label "9976"
+    name "Cob"
+    world "Scadrial"
   ]
   edge [
     source 0
