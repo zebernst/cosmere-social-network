@@ -293,6 +293,8 @@ def _generate_characters() -> typing.Iterator[Character]:
 characters_ = _generate_characters()
 
 characters = list(_generate_characters())
+
+# todo: replace monikers with trie structure to enable partial searching
 monikers = {}
 for c in characters:
     for name in c.monikers:
