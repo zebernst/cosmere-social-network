@@ -5,7 +5,7 @@ import colorama
 from core.characters import Character, characters, monikers
 from utils.input import ask, menu, yn_question, clear_screen
 from utils.logs import create_logger
-from utils.types import RunContext
+from utils.simpletypes import RunContext
 
 
 colorama.init(autoreset=True)

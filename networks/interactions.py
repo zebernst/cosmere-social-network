@@ -11,7 +11,7 @@ from core.disambiguation import disambiguate_name, disambiguate_title, verify_pr
 from utils.epub import chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
-from utils.types import RunContext
+from utils.simpletypes import RunContext
 
 
 logger = create_logger('csn.networks.interactions')
