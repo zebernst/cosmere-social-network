@@ -147,7 +147,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'mistborn/era2/bands-of-mourning':
+        if key != 'elantris':
             continue
 
         G = create_graph(key)
