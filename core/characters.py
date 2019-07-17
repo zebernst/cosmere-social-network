@@ -6,6 +6,7 @@ from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
 from core.constants import books, cleansed_fields, info_fields, nationalities, titles
+from utils.datastructures import CharacterTrie
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
 from utils.wiki import coppermind_query, extract_relevant_info
@@ -293,18 +294,13 @@ def _generate_characters() -> typing.Iterator[Character]:
 characters_ = _generate_characters()
 
 characters = list(_generate_characters())
-monikers = {}
+
+monikers = CharacterTrie()
 for c in characters:
     for name in c.monikers:
         name = re.sub(possession, '', name)
         name = re.sub(punctuation, '', name)
-        if name in monikers:
-            if isinstance(monikers[name], Character):
-                monikers[name] = [monikers[name], c]
-            elif isinstance(monikers[name], list):
-                monikers[name].append(c)
-        else:
-            monikers[name] = c
+        monikers[name] = c
 
 if __name__ == '__main__':
     print('debugging!')
