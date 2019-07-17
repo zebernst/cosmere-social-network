@@ -24,7 +24,7 @@ def _recall(pos: int, disambiguation: dict) -> Optional[Character]:
 
 def char_search(prompt: Optional[str]) -> Optional[Character]:
     response = ask(prompt=prompt,
-                   validator=lambda r: len(monikers[r:]) > 0,
+                   validator=lambda r: slice(r, None) in monikers,
                    error="Character not found.")
 
     if response is None:

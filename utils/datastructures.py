@@ -1,39 +1,40 @@
 from collections.abc import Iterable, MutableMapping
-from typing import Any, Iterator, Set
+from typing import Iterator, List, Tuple, Union, Any, Dict, Set
+
+from core.characters import Character
 
 
 class _TrieNode:
     def __init__(self, key):
-        self.key = key
-        self.children = {}
-        self.data = set()
+        self.key: Any = key
+        self.children: Dict[Any, _TrieNode] = {}
+        self.data: Set[Any] = set()
 
     @property
-    def has_data(self):
+    def has_data(self) -> bool:
         return bool(self.data)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"_TrieNode({self.key})"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.key
 
 
 class CharacterTrie(MutableMapping):
-    # todo: implement slicing (w/ start only) a la pygtrie
     def __init__(self):
         self.root = _TrieNode(None)
 
     @staticmethod
-    def _process_key(key):
+    def _process_key(key: Union[slice, str]) -> Tuple[str, bool]:
         if isinstance(key, slice):
-            if key.stop is not None or key.step is not None:
+            if key.stop is not None or key.step is not None or not isinstance(key.start, str):
                 raise KeyError(key)
             return key.start, True
         else:
             return key, False
 
-    def __getitem__(self, key: str):
+    def __getitem__(self, key: str) -> List[Character]:
         if not key:
             raise KeyError(key)
 
@@ -61,7 +62,7 @@ class CharacterTrie(MutableMapping):
 
         return sorted(items, key=str)
 
-    def __setitem__(self, key: str, value) -> None:
+    def __setitem__(self, key: str, value: Union[Iterable[Character], Character]) -> None:
         if not key:
             raise KeyError(key)
 
@@ -97,20 +98,29 @@ class CharacterTrie(MutableMapping):
         node.children.clear()
         node.data.clear()
 
-    def __contains__(self, key: str):
+    def __contains__(self, key: str) -> bool:
         if not key:
             return False
 
         key, subtrie = self._process_key(key)
-        if subtrie:
-            raise KeyError(key)
 
         node = self.root
         for char in key:
             if char not in node.children:
                 return False
             node = node.children[char]
-        return node.has_data
+
+        if subtrie:
+            stack = [node]
+            while stack:
+                node = stack.pop()
+                if node.has_data:
+                    return True
+                for _, child in sorted(node.children.items(), reverse=True):
+                    stack.append(child)
+            return False
+        else:
+            return node.has_data
 
     def __len__(self) -> int:
         size = 0
