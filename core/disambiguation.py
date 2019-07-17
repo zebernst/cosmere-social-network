@@ -24,22 +24,23 @@ def _recall(pos: int, disambiguation: dict) -> Optional[Character]:
 
 def char_search(prompt: Optional[str]) -> Optional[Character]:
     response = ask(prompt=prompt,
-                   validator=lambda r: r in monikers,
+                   validator=lambda r: len(monikers[r:]) > 0,
                    error="Character not found.")
 
     if response is None:
         exit(1)
 
-    if isinstance(monikers[response], list):
-        for char in monikers[response]:
+    matches = monikers[response:]
+    if len(matches) > 1:
+        for char in matches:
             if char.name == response:
                 return char
         print(f"Multiple matches found for {response}. Please specify:")
-        for c in monikers[response]:
+        for c in matches:
             print(f"  {c.name} ({c.world}) -- {c.info}")
         return char_search(prompt=None)
     else:
-        return monikers[response]
+        return matches[0]
 
 
 def clarify_list(name: str, matches: list):

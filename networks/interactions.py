@@ -58,19 +58,20 @@ def create_graph(book: str, min_weight: int = 3):
                 three_tokens = two_tokens + ' ' + third_token
 
                 if three_tokens in monikers:
-                    if isinstance(monikers[three_tokens], list):
+                    matches = monikers[three_tokens]
+                    if len(matches) > 1:
                         char = disambiguate_name(book, three_tokens, disambiguation[chapter], pos, context)
                     else:
-                        char = monikers[three_tokens] if verify_presence(book, monikers[three_tokens],
-                                                                         three_tokens) else None
+                        char = matches[0] if verify_presence(book, matches[0], three_tokens) else None
 
                     i += 3
 
                 elif two_tokens in monikers:
-                    if isinstance(monikers[two_tokens], list):
+                    matches = monikers[two_tokens]
+                    if len(matches) > 1:
                         char = disambiguate_name(book, two_tokens, disambiguation[chapter], pos, context)
                     else:
-                        char = monikers[two_tokens] if verify_presence(book, monikers[two_tokens], two_tokens) else None
+                        char = matches[0] if verify_presence(book, matches[0], two_tokens) else None
 
                     i += 2
 
@@ -80,10 +81,11 @@ def create_graph(book: str, min_weight: int = 3):
                     i += 1
 
                 elif this_token in monikers:
-                    if isinstance(monikers[this_token], list):
+                    matches = monikers[this_token]
+                    if len(matches) > 1:
                         char = disambiguate_name(book, this_token, disambiguation[chapter], pos, context)
                     else:
-                        char = monikers[this_token] if verify_presence(book, monikers[this_token], this_token) else None
+                        char = matches[0] if verify_presence(book, matches[0], this_token) else None
 
                     i += 1
 
@@ -147,7 +149,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'mistborn/era2/bands-of-mourning':
+        if key != 'elantris':
             continue
 
         G = create_graph(key)
