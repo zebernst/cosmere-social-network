@@ -37,7 +37,7 @@ def create_graph(book: str, min_weight: int = 3):
             disambiguation[chapter] = {}
 
         while idx < len(tokens):
-            local_tokens = tokens[idx:idx + run_size]
+            found = []
             context = RunContext(prev=[' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
                                        for i in range(4, 0, -1)],
                                  run=' '.join(tokens[idx:idx + run_size]),
@@ -45,13 +45,14 @@ def create_graph(book: str, min_weight: int = 3):
                                        for i in range(1, 3)])
 
             i = 0
-            while i < len(local_tokens):
+            tokens_remaining = len(tokens) - idx
+            while i < min(run_size, tokens_remaining):
                 char: Character = None
                 pos = idx + i
 
-                this_token = local_tokens[i]
-                next_token = local_tokens[i + 1] if i + 1 < len(local_tokens) else ''
-                third_token = local_tokens[i + 2] if i + 2 < len(local_tokens) else ''
+                this_token = tokens[pos]
+                next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ''
+                third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ''
                 two_tokens = this_token + ' ' + next_token
                 next_two_tokens = next_token + ' ' + third_token
                 three_tokens = two_tokens + ' ' + third_token
