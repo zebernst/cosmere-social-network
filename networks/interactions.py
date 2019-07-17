@@ -11,7 +11,7 @@ from core.disambiguation import disambiguate_name, disambiguate_title, verify_pr
 from utils.epub import chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
-from utils.simpletypes import RunContext
+from utils.simpletypes import RunContext, CharacterOccurrence
 
 
 logger = create_logger('csn.networks.interactions')
@@ -37,22 +37,22 @@ def create_graph(book: str, min_weight: int = 3):
             disambiguation[chapter] = {}
 
         while idx < len(tokens):
-            local_tokens = tokens[idx:idx + run_size]
+            found = []
             context = RunContext(prev=[' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
                                        for i in range(4, 0, -1)],
                                  run=' '.join(tokens[idx:idx + run_size]),
                                  next=[' '.join(tokens[idx + (i*run_size):idx + ((i+1)*run_size)]).strip()
                                        for i in range(1, 3)])
 
-            found = []
             i = 0
-            while i < len(local_tokens):
+            tokens_remaining = len(tokens) - idx
+            while i < min(run_size, tokens_remaining):
                 char: Character = None
                 pos = idx + i
 
-                this_token = local_tokens[i]
-                next_token = local_tokens[i + 1] if i + 1 < len(local_tokens) else ''
-                third_token = local_tokens[i + 2] if i + 2 < len(local_tokens) else ''
+                this_token = tokens[pos]
+                next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ''
+                third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ''
                 two_tokens = this_token + ' ' + next_token
                 next_two_tokens = next_token + ' ' + third_token
                 three_tokens = two_tokens + ' ' + third_token
@@ -94,21 +94,21 @@ def create_graph(book: str, min_weight: int = 3):
                     continue
 
                 if char is not None:
-                    found.append((i, char))
+                    found.append(CharacterOccurrence(i, char))
 
             # advance past first found character
             if len(found) >= 2:
-                idx += found[0][0] + 1
+                idx += found[0].pos + 1
 
             # advance until only character is at beginning of run (max threshold)
             elif len(found) == 1:
-                idx += found[0][0] if found[0][0] > 0 else 1
+                idx += found[0].pos if found[0].pos > 0 else 1
 
             # skip run if no chars found
             else:
                 idx += run_size - 1
 
-            chars = set(c for i, c in found)
+            chars = set(co.char for co in found)
             if len(chars) > 1:
                 for u, v in combinations(chars, r=2):
                     if G.has_edge(u.id, v.id):
