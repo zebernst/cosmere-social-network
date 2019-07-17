@@ -142,3 +142,9 @@ class CharacterTrie(MutableMapping):
                 yield name
             for key, child in sorted(node.children.items(), reverse=True):
                 stack.append((name + key, child))
+
+    def __repr__(self):
+        return f"<Trie: {len(self)}>"
+
+    def __str__(self):
+        return "Trie"
