@@ -6,7 +6,7 @@ from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
 from core.constants import books, cleansed_fields, info_fields, nationalities, titles
-from utils.datastructures import CharacterTrie
+from utils.datastructures import CharacterLookup
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
 from utils.wiki import coppermind_query, extract_relevant_info
@@ -24,7 +24,7 @@ class Character:
 
         self._keep = True
         self._pageid = info['pageid']
-        self._infobox_template = ""
+        self._wiki_template = ""
 
         self.name = info['title']
         self.info = self._parse_infobox(info['content'])
@@ -48,7 +48,7 @@ class Character:
         if self._keep:
             logger.debug(f"Created  {self.name} ({self.world if self.world else 'Unknown'}).")
         else:
-            logger.debug(f"Ignoring {self.name} ({self.world if self.world else 'Unknown'}).")
+            logger.debug(f"Ignored {self.name} ({self.world if self.world else 'Unknown'}).")
 
     def __eq__(self, other):
         """return self == value."""
@@ -153,9 +153,9 @@ class Character:
         # parse infobox
         if content:
             # select outermost wiki template
-            self._infobox_template = mwp.parse(content).filter_templates()
-            if self._infobox_template:
-                infobox = next((t for t in self._infobox_template if t.name.strip().lower() == 'character'), None)
+            self._wiki_template = mwp.parse(content).filter_templates()
+            if self._wiki_template:
+                infobox = next((t for t in self._wiki_template if t.name.strip().lower() == 'character'), None)
 
                 # ignore non-character pages
                 if infobox is None:
@@ -163,7 +163,7 @@ class Character:
                     return char_info
 
                 # ignore deleted characters (i.e. from early drafts)
-                if any('deleted' in t.name.lower() for t in self._infobox_template):
+                if any('deleted' in t.name.lower() for t in self._wiki_template):
                     self._keep = False
                     return char_info
 
@@ -295,12 +295,12 @@ characters_ = _generate_characters()
 
 characters = list(_generate_characters())
 
-monikers = CharacterTrie()
+lookup = CharacterLookup()
 for c in characters:
     for name in c.monikers:
         name = re.sub(possession, '', name)
         name = re.sub(punctuation, '', name)
-        monikers[name] = c
+        lookup[name] = c
 
 if __name__ == '__main__':
     print('debugging!')

@@ -2,26 +2,26 @@ from collections.abc import MutableMapping
 from typing import Any, Dict, Iterable, Iterator, List, Set, Tuple, Union
 
 
-class _TrieNode:
-    def __init__(self, key):
-        self.key: Any = key
-        self.children: Dict[Any, _TrieNode] = {}
-        self.data: Set[Any] = set()
+class CharacterLookup(MutableMapping):
 
-    @property
-    def has_data(self) -> bool:
-        return bool(self.data)
+    class _Node:
+        def __init__(self, key: str):
+            self.key: str = key
+            self.children: Dict[str, CharacterLookup._Node] = {}
+            self.data: Set[Any] = set()
 
-    def __repr__(self) -> str:
-        return f"_TrieNode({self.key})"
+        @property
+        def has_data(self) -> bool:
+            return bool(self.data)
 
-    def __str__(self) -> str:
-        return self.key
+        def __repr__(self) -> str:
+            return f"CharacterLookup._Node({self.key})"
 
+        def __str__(self) -> str:
+            return self.key
 
-class CharacterTrie(MutableMapping):
     def __init__(self):
-        self.root = _TrieNode(None)
+        self.root = self._Node('')
         self.map = {}
 
     @staticmethod
@@ -73,7 +73,7 @@ class CharacterTrie(MutableMapping):
         node = self.root
         for char in key:
             if char not in node.children:
-                node.children[char] = _TrieNode(char)
+                node.children[char] = self._Node(char)
             node = node.children[char]
 
         if clear_subtrie:
@@ -143,8 +143,8 @@ class CharacterTrie(MutableMapping):
             for key, child in sorted(node.children.items(), reverse=True):
                 stack.append((name + key, child))
 
-    def __repr__(self):
-        return f"<Trie: {len(self)}>"
+    def __repr__(self) -> str:
+        return f"<CharacterLookup: {len(self)} entries>"
 
-    def __str__(self):
-        return "Trie"
+    def __str__(self) -> str:
+        return "CharacterLookup"

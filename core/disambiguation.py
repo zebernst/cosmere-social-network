@@ -2,8 +2,8 @@ from typing import Optional
 
 import colorama
 
-from core.characters import Character, characters, monikers
-from utils.input import ask, menu, yn_question, clear_screen
+from core.characters import Character, characters, lookup
+from utils.input import ask, clear_screen, menu, yn_question
 from utils.logs import create_logger
 from utils.simpletypes import RunContext
 
@@ -24,13 +24,13 @@ def _recall(pos: int, disambiguation: dict) -> Optional[Character]:
 
 def char_search(prompt: Optional[str]) -> Optional[Character]:
     response = ask(prompt=prompt,
-                   validator=lambda r: slice(r, None) in monikers,
+                   validator=lambda r: slice(r, None) in lookup,
                    error="Character not found.")
 
     if response is None:
         exit(1)
 
-    matches = monikers[response:]
+    matches = lookup[response:]
     if len(matches) > 1:
         for char in matches:
             if char.name == response:
@@ -56,24 +56,24 @@ def clarify_list(name: str, matches: list):
         return None
     elif response.startswith('o'):
         ch = char_search("Type the name of the character the keyword is referring to: ")
-        logger.debug(f'Matched ambiguous character from "{name}", identified manually as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous reference from "{name}", identified manually as {repr(ch)}.')
         return ch
     else:
         ch = matches[int(response) - 1]
-        logger.debug(f'Matched ambiguous character from "{name}", identified from list as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous reference from "{name}", identified from list as {repr(ch)}.')
         return ch
 
 
 def verify_presence(key: str, ch: Character, word: str):
     in_book = any(b == key.split('/')[0] for b in ch.books)
     if not in_book:
-        logger.debug(f'Rejected ambiguous character from "{word}", identified automatically as '
+        logger.debug(f'Rejected ambiguous reference from "{word}", identified automatically as '
                      f'{repr(ch)} who does not appear in {key}.')
     return in_book
 
 
 def filter_present(key: str, name: str):
-    local_chars = [c for c in monikers[name] if verify_presence(key, c, name)]
+    local_chars = [c for c in lookup[name] if verify_presence(key, c, name)]
     return local_chars if local_chars is not None else None
 
 
@@ -81,14 +81,14 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous character from disambiguation, identified automatically as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference using disambiguation, identified automatically as {repr(char)}.')
         return char
 
     else:
         local = filter_present(key, name)
         if len(local) == 1:
             char = local[0]
-            logger.debug(f'Matched ambiguous character from "{name}", identified automatically as '
+            logger.debug(f'Matched ambiguous reference from "{name}", identified automatically as '
                          f'{repr(char)} with presence in {key}.')
         else:
             print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.prev))
@@ -105,7 +105,7 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous character from disambiguation, identified automatically as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference using disambiguation, identified automatically as {repr(char)}.')
 
         return char
 
@@ -122,7 +122,7 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
 
         clear_screen()
         if char is not None:
-            logger.debug(f'Matched ambiguous character from "{title}", identified manually as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference from "{title}", identified manually as {repr(char)}.')
 
         _save(pos, char, disambiguation)
         return char

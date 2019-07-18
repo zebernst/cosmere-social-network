@@ -5,13 +5,13 @@ from typing import Union
 import networkx as nx
 import yaml
 
-from core.characters import Character, characters, monikers
+from core.characters import characters, lookup
 from core.constants import book_keys, titles
 from core.disambiguation import disambiguate_name, disambiguate_title, verify_presence
 from utils.epub import chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
-from utils.simpletypes import RunContext, CharacterOccurrence
+from utils.simpletypes import CharacterOccurrence, RunContext
 
 
 logger = create_logger('csn.networks.interactions')
@@ -47,7 +47,7 @@ def create_graph(book: str, min_weight: int = 3):
             i = 0
             tokens_remaining = len(tokens) - idx
             while i < min(run_size, tokens_remaining):
-                char: Character = None
+                char = None
                 pos = idx + i
 
                 this_token = tokens[pos]
@@ -57,8 +57,8 @@ def create_graph(book: str, min_weight: int = 3):
                 next_two_tokens = next_token + ' ' + third_token
                 three_tokens = two_tokens + ' ' + third_token
 
-                if three_tokens in monikers:
-                    matches = monikers[three_tokens]
+                if three_tokens in lookup:
+                    matches = lookup[three_tokens]
                     if len(matches) > 1:
                         char = disambiguate_name(book, three_tokens, disambiguation[chapter], pos, context)
                     else:
@@ -66,8 +66,8 @@ def create_graph(book: str, min_weight: int = 3):
 
                     i += 3
 
-                elif two_tokens in monikers:
-                    matches = monikers[two_tokens]
+                elif two_tokens in lookup:
+                    matches = lookup[two_tokens]
                     if len(matches) > 1:
                         char = disambiguate_name(book, two_tokens, disambiguation[chapter], pos, context)
                     else:
@@ -76,12 +76,12 @@ def create_graph(book: str, min_weight: int = 3):
                     i += 2
 
                 elif this_token in titles:
-                    if next_token not in monikers and next_two_tokens not in monikers:
+                    if next_token not in lookup and next_two_tokens not in lookup:
                         char = disambiguate_title(this_token, disambiguation[chapter], pos, context)
                     i += 1
 
-                elif this_token in monikers:
-                    matches = monikers[this_token]
+                elif this_token in lookup:
+                    matches = lookup[this_token]
                     if len(matches) > 1:
                         char = disambiguate_name(book, this_token, disambiguation[chapter], pos, context)
                     else:
