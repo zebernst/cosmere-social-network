@@ -5,7 +5,7 @@ import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from core.constants import books, cleansed_fields, info_fields, demonyms, titles, species
+from core.constants import books, cleansed_fields, info_fields, demonyms, titles, species, nations
 from utils.datastructures import CharacterLookup
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
@@ -100,7 +100,7 @@ class Character:
         return self.name
 
     @property
-    def id(self):
+    def id(self) -> int:
         return self._pageid
 
     @property
@@ -112,6 +112,33 @@ class Character:
     def coppermind_url(self) -> str:
         """return the url of the character's page on coppermind.net"""
         return f"https://coppermind.net/wiki?curid={self._pageid}"
+
+    @property
+    def details(self) -> str:
+        location_info = []
+        if self.residence is not None:
+            location_info.append(self.residence)
+        if self.nationality is not None:
+            nation = nations.get(self.nationality)
+            if nation is not None:
+                location_info.append(nation)
+            else:
+                print(self.nationality)
+        location_info.append(self.world if self.world is not None else 'Unknown')
+
+        physical_info = []
+        if self.ethnicity is not None:
+            physical_info.append(self.ethnicity)
+        if self.species is not None:
+            if self.subspecies is not None:
+                physical_info.append(self.subspecies)
+            else:
+                physical_info.append(self.species)
+
+        return (
+            f"{self.name} -- {', '.join(location_info)}"
+            f"{f' (' + ' '.join(physical_info) + ')' if physical_info else ''}"
+        )
 
     def _parse_infobox(self, result: dict) -> dict:
         """parse the wikitext infobox for character attributes"""

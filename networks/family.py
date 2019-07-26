@@ -22,14 +22,14 @@ def create_graph() -> nx.OrderedGraph:
     G = nx.OrderedGraph()
 
     # resolve generator
-    relevant_chars = set(c for c in characters if any(x in c.info for x in fields))
+    relevant_chars = set(c for c in characters if any(f in c.relatives for f in fields))
 
     # restructure character list into efficient data structures to reduce complexity
     names = {c.name: c for c in relevant_chars}
     monikers = {alias: c for c in relevant_chars for alias in c.monikers}
 
     # filter on characters who have family info and add nodes to graph
-    nodes = {c.id: dict(world=c.world, name=c.name) for c in relevant_chars}
+    nodes = {c.id: dict(world=c.world, name=c.name) for c in relevant_chars if c.world is not None}
     G.add_nodes_from(nodes.items())
     logger.debug("Added character nodes to graph.")
 
@@ -40,7 +40,7 @@ def create_graph() -> nx.OrderedGraph:
             continue
 
         # loop through character's family connections
-        for cxns in (char.info[k] for k in fields if k in char.info):
+        for cxns in (char.relatives[k] for k in fields if k in char.relatives):
             for link in mwp.parse(cxns).filter_wikilinks():
                 # sanitize
                 relation = link.title.strip_code()
@@ -114,8 +114,9 @@ def extract_network_scopes(G: Union[nx.Graph, nx.OrderedGraph]) -> Dict[str, Uni
     for world, grp in groupby(sorted_nodes, key=node_attr_world):
         sg = nx.OrderedGraph()
         sg.add_nodes_from(grp)
-        sg.add_edges_from((src, dest) for src, dest in G.edges() if src in G and dest in G)
-        scopes[world] = filter_graph(sg, min_component_size=3)
+        sg.add_edges_from((src, dest) for src, dest in G.edges() if src in sg and dest in sg)
+        if sg.size():
+            scopes[world] = filter_graph(sg, min_component_size=3)
 
     return scopes
 

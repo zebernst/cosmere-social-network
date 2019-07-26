@@ -41,7 +41,7 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
                 return char
         print(f"Multiple matches found for {response}. Please specify:")
         for c in matches:
-            print(f"  {c.name} ({c.world}) -- {c.info}")
+            print(f"  {c.details}")
         return char_search(prompt=None)
     else:
         return matches[0]
@@ -49,7 +49,7 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
 
 def clarify_list(name: str, matches: list):
     response = menu(prompt=f'Ambiguous reference found for "{name}"! Please choose the correct character.',
-                    options=[f"  {i+1}: {c.name} ({c.world}) -- {c.info}" for i, c in enumerate(matches)]
+                    options=[f"  {i+1}: {c.details}" for i, c in enumerate(matches)]
                           + [f"  o: The correct character is not listed.",
                              f"  x: This is not a character."],
                     validator=lambda r: (r.isdigit() and int(r) <= len(matches))
