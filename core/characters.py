@@ -30,6 +30,7 @@ class Character:
         self.common_name = infobox.pop('common_name', '')
         self.surname = infobox.pop('surname', '')
         self.unnamed = True if 'unnamed' in infobox else False
+        self.alive = True if 'died' not in infobox else False
 
         self.aliases = infobox.pop('aliases', [])
         self.titles = infobox.pop('titles', [])
@@ -115,29 +116,36 @@ class Character:
 
     @property
     def details(self) -> str:
-        location_info = []
+
+        location = []
         if self.residence is not None:
-            location_info.append(self.residence)
+            location.append(self.residence)
         if self.nationality is not None:
             nation = nations.get(self.nationality)
             if nation is not None:
-                location_info.append(nation)
-            else:
-                print(self.nationality)
-        location_info.append(self.world if self.world is not None else 'Unknown')
+                location.append(nation)
+        location.append(self.world if self.world is not None else 'Unknown')
+        location = ', '.join(location)
 
-        physical_info = []
+        species_ethnicity = []
         if self.ethnicity is not None:
-            physical_info.append(self.ethnicity)
+            species_ethnicity.append(self.ethnicity)
         if self.species is not None:
             if self.subspecies is not None:
-                physical_info.append(self.subspecies)
+                species_ethnicity.append(self.subspecies)
             else:
-                physical_info.append(self.species)
+                species_ethnicity.append(self.species)
+        species_ethnicity = ' '.join(species_ethnicity) if species_ethnicity else ''
+
+        physical_info = []
+        if species_ethnicity:
+            physical_info.append(species_ethnicity)
+        if not self.alive:
+            physical_info.append("deceased")
 
         return (
-            f"{self.name} -- {', '.join(location_info)}"
-            f"{f' (' + ' '.join(physical_info) + ')' if physical_info else ''}"
+            f"{self.name} -- {location}"
+            f"{f' (' + ', '.join(physical_info) + ')' if physical_info else ''}"
         )
 
     def _parse_infobox(self, result: dict) -> dict:
@@ -341,7 +349,8 @@ class Character:
                     key = cleansed_fields.get(key, key)
 
                     if key not in info_fields:
-                        continue
+                        pass
+                        # continue
 
                     # sanitize and process specific fields
                     elif key == 'books':
@@ -382,6 +391,9 @@ class Character:
 
                     elif key == 'unnamed':
                         val = True if val.strip_code().lower().startswith('y') else False
+
+                    elif key == 'died':
+                        val = True
 
                     else:
                         print("unknown key/value pair found!", key, ": ", val)
@@ -448,6 +460,8 @@ def explicit_modify(ch: Character):
         ch.common_name = 'Dusk'
     elif ch.name == 'Wan ShaiLu':
         ch.common_name = 'Shai'
+    elif ch.name == 'Rock':
+        ch.name = 'Rock, Jr.'
 
 
 def _generate_characters() -> Iterator[Character]:

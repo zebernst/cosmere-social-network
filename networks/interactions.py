@@ -30,7 +30,9 @@ def create_graph(book: str, min_weight: int = 3):
             disambiguation = {}
 
     for chapter, tokens in chapters(book):
-        run_size = 25
+        RUN_SIZE = 25
+        PREV_LINES = 4
+        NEXT_LINES = 3
         idx = 0
 
         if chapter not in disambiguation:
@@ -38,15 +40,15 @@ def create_graph(book: str, min_weight: int = 3):
 
         while idx < len(tokens):
             found = []
-            context = RunContext(prev=[' '.join(tokens[idx - (i*run_size):idx - ((i-1)*run_size)]).strip()
-                                       for i in range(4, 0, -1)],
-                                 run=' '.join(tokens[idx:idx + run_size]),
-                                 next=[' '.join(tokens[idx + (i*run_size):idx + ((i+1)*run_size)]).strip()
-                                       for i in range(1, 3)])
+            context = RunContext(prev=[' '.join(tokens[idx - (i*RUN_SIZE):idx - ((i-1)*RUN_SIZE)]).strip()
+                                       for i in range(PREV_LINES, 0, -1)],
+                                 run=' '.join(tokens[idx:idx + RUN_SIZE]),
+                                 next=[' '.join(tokens[idx + (i*RUN_SIZE):idx + ((i+1)*RUN_SIZE)]).strip()
+                                       for i in range(1, NEXT_LINES+1)])
 
             i = 0
             tokens_remaining = len(tokens) - idx
-            while i < min(run_size, tokens_remaining):
+            while i < min(RUN_SIZE, tokens_remaining):
                 char = None
                 pos = idx + i
 
@@ -106,7 +108,7 @@ def create_graph(book: str, min_weight: int = 3):
 
             # skip run if no chars found
             else:
-                idx += run_size - 1
+                idx += RUN_SIZE - 1
 
             chars = set(co.char for co in found)
             if len(chars) > 1:

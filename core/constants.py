@@ -23,7 +23,9 @@ cleansed_fields = {
     'nickname':   'aliases',
     'powers':     'abilities',
     'title':      'titles',
-    'occupation': 'profession'
+    'occupation': 'profession',
+    'dead':       'died',
+    'death':      'died'
 }
 
 # list of world on which cosmere novels take place
@@ -119,13 +121,13 @@ demonyms = {
     'rose empire':        'Grand',
     'grand':              'Grand',
     'grands':             'Grand',
-    'hrovell':            'Hrovell',
+    'hrovell':            'Hroven',
     'jindo':              'JinDo',
     'jindoeese':          'JinDo',
     'maipon':             'MaiPon',
     'seon':               'Seon',
     'seons':              'Seon',
-    'mulla\'dil':        'Striker',
+    'mulla\'dil':         'Striker',
     'striker':            'Striker',
     'strikers':           'Striker',
     'svorden':            'Svordish',
@@ -271,11 +273,12 @@ demonyms = {
 nations = {
     'Aimian':        'Aimia',
     'Alethi':        'Alethkar',
-    'Arelish':       'Arelon',
+    'Arelene':       'Arelon',
     'Azish':         'Azir',
     'Elisian':       'Elis',
     'Emuli':         'Emul',
     'Fjordell':      'Fjorden',
+    'Grand':         'Rose Empire',
     'Hallandren':    'Hallandren',
     'Herdazian':     'Herdaz',
     'Hroven':        'Hrovell',
@@ -297,9 +300,10 @@ nations = {
     'Riran':         'Rira',
     'Rose Empire':   'Rose Empire',
     'Shin':          'Shinovar',
+    'Striker':       "Mulla'dil",
     'Svordish':      'Svorden',
     'Tashikki':      'Tashikk',
-    'Teoish':        'Teod',
+    'Teo':           'Teod',
     'Terris':        'Terris',
     'Thaylen':       'Thaylenah',
     'Unkalaki':      'Horneater Peaks',  # todo: do horneaters have an official nation?
