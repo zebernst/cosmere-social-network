@@ -5,7 +5,7 @@ import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from core.constants import books, cleansed_fields, info_fields, nationalities, titles
+from core.constants import books, cleansed_fields, info_fields, demonyms, titles, species
 from utils.datastructures import CharacterLookup
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
@@ -20,21 +20,47 @@ class Character:
 
     def __init__(self, query_result: dict):
         """construct character from coppermind.net api query results."""
-        info = extract_relevant_info(query_result)
+        page = extract_relevant_info(query_result)
 
         self._keep = True
-        self._pageid = info['pageid']
-        self._wiki_template = ""
+        self._pageid = page['pageid']
+        infobox = self._parse_infobox(page)
 
-        self.name = info['title']
-        self.info = self._parse_infobox(info['content'])
-        self.common_name = self.info.pop('common_name', '')
-        self.surname = self.info.pop('surname', '')
-        self.aliases = self.info.pop('aliases', [])
-        self.titles = self.info.pop('titles', [])
-        self.world = self.info.pop('world', None)
-        self.books = self.info.pop('books', [])
-        self.abilities = self.info.pop('abilities', [])
+        self.name = page['title']
+        self.common_name = infobox.pop('common_name', '')
+        self.surname = infobox.pop('surname', '')
+        self.unnamed = True if 'unnamed' in infobox else False
+
+        self.aliases = infobox.pop('aliases', [])
+        self.titles = infobox.pop('titles', [])
+
+        self.world = infobox.pop('world', None)
+        self.books = infobox.pop('books', [])
+        self.abilities = infobox.pop('abilities', [])
+
+        self.residence = infobox.pop('residence', None)
+        self.nationality = infobox.pop('nationality', None)
+        self.ethnicity = infobox.pop('ethnicity', None)
+        self.species = infobox.pop('species', None)
+        self.subspecies = infobox.pop('subspecies', None)
+
+        self.family = infobox.pop('family', None)
+        self.relatives = {
+            'bonded': infobox.pop('bonded', []),
+            'spouse': infobox.pop('spouse', []),
+            'parents': infobox.pop('parents', []),
+            'children': infobox.pop('children', []),
+            'siblings': infobox.pop('siblings', []),
+            'ancestors': infobox.pop('ancestors', []),
+            'descendants': infobox.pop('descendants', []),
+            'others': infobox.pop('relatives', [])
+        }
+
+        self.misc = {
+            # todo: fully parse these fields
+            'profession': infobox.pop('profession', None),
+            'groups': infobox.pop('groups', '')
+        }
 
         # discard unofficial character pages
         if 'User:' in self.name:
@@ -42,7 +68,7 @@ class Character:
 
         # sanitize name
         if '(' in self.name:
-            self.info['original_name'] = self.name
+            self.misc['original_name'] = self.name
             self.name = re.sub(r"\s\([\w\s]+\)", '', self.name)
 
         if self._keep:
@@ -87,8 +113,11 @@ class Character:
         """return the url of the character's page on coppermind.net"""
         return f"https://coppermind.net/wiki?curid={self._pageid}"
 
-    def _parse_infobox(self, content: str) -> dict:
+    def _parse_infobox(self, result: dict) -> dict:
         """parse the wikitext infobox for character attributes"""
+
+        content = result['content']
+        char_name = result['title']
 
         # set defaults
         char_info = {}
@@ -120,7 +149,13 @@ class Character:
                     elif 'army' in t.params[0].lower():
                         wikicode.replace(t, "{1} {0}".format(*t.params))
 
-            return wikicode.strip_code().split(',')
+            return [n for n in (n.strip() for n in wikicode.strip_code().split(',')) if n]
+
+        def parse_books(wikicode: mwp.wikicode.Wikicode):
+            return [b for b in (books.get(b.text.strip_code() if b.text else b.title.strip_code())
+                                for b in wikicode.nodes
+                                if isinstance(b, mwp.wikicode.Wikilink))
+                    if b is not None]
 
         def parse_abilities(wikicode: mwp.wikicode.Wikicode):
             wikicode = parse_markup(wikicode)
@@ -150,74 +185,183 @@ class Character:
 
             return abilities
 
+        def parse_profession(wikicode: mwp.wikicode.Wikicode):
+            # todo: parse with simple NLP
+            return str(wikicode.strip_code().lower().strip())
+
+        def parse_groups(wikicode: mwp.wikicode.Wikicode):
+            # todo: parse in same manner as parse_names
+            return wikicode
+
+        def parse_nation(wikicode: mwp.wikicode.Wikicode):
+            return demonyms.get(wikicode.strip_code().lower().strip(), None)
+
+        def parse_residence(wikicode: mwp.wikicode.Wikicode):
+            wikicode = parse_markup(wikicode)
+            wikicode_elements = wikicode.filter(forcetype=(Template, Wikilink))
+            if "<br>" in wikicode:
+                wikicode.replace("<br>", ", ")
+            if not wikicode_elements:
+                residence = wikicode.strip_code().strip()
+            else:
+                for wc in wikicode_elements:
+                    if isinstance(wc, Wikilink):
+                        wikicode.replace(wc, wc.title.strip_code().strip().title())
+                    elif isinstance(wc, Template):
+                        params = tuple(p
+                                       for p in (p.name.strip_code()
+                                                 if p.showkey is True
+                                                 else p.value.strip_code()
+                                                 for p in wc.params)
+                                       if p != 'cat')
+                        if len(params) == 1:
+                            wikicode.replace(wc, params[0])
+                        else:
+                            wikicode.replace(wc, params)
+                residence = wikicode.strip_code().strip()
+
+            residence = re.sub(r"\s?\([\w\s]+\)", '', residence)
+            # special cases
+            if residence.startswith("15 Stranat Place"):
+                residence = "Elendel"
+            return residence
+
+        def parse_ethnicity(wikicode: mwp.wikicode.Wikicode):
+            wikicode = parse_markup(wikicode)
+            wikicode_elements = wikicode.filter(forcetype=(Template, Wikilink))
+            if ' and ' in wikicode:
+                wikicode.replace(' and ', ', ')
+
+            if not wikicode_elements:
+                ethnicity = wikicode.strip_code().strip().title()
+            else:
+                for wc in wikicode_elements:
+                    if isinstance(wc, Wikilink):
+                        wikicode.replace(wc, wc.title.strip_code().strip())
+                    elif isinstance(wc, Template):
+                        params = tuple(p
+                                       for p in (p.name.strip_code()
+                                                 if p.showkey is True
+                                                 else p.value.strip_code()
+                                                 for p in wc.params)
+                                       if p != 'cat')
+                        if len(params) == 1:
+                            wikicode.replace(wc, params[0])
+                        elif 'Noble' in params or 'noble' in params:
+                            wikicode.replace(wc, 'Noble')
+                        else:
+                            wikicode.replace(wc, params)
+                ethnicity = wikicode.strip_code().strip().title()
+
+            if ethnicity == 'Skaa, Noble':
+                ethnicity = 'Half-Skaa'
+            return ethnicity
+
+        def parse_species(wikicode: mwp.wikicode.Wikicode):
+            spec = species.get(wikicode.strip_code().lower().strip(), None)
+            if spec is not None and any(s in val.lower() for s in ('spren', 'cryptic')):
+                char_info['subspecies'] = spec
+                spec = 'Spren'
+            return spec
+
+        def parse_family(wikicode: mwp.wikicode.Wikicode):
+            wikicode = parse_markup(wikicode)
+
+            links = [l for l in wikicode.filter_wikilinks() if 'category' not in l.lower()]
+            if not links:
+                print('unable to find family', wikicode)
+                return None
+            elif len(links) == 1:
+                family = links[0].title.strip_code().strip()
+            else:
+                print('unexpected number of wikilinks', wikicode)
+                for wc in links:
+                    wikicode.replace(wc, wc.title.strip_code().strip())
+                family = wikicode.strip_code().strip()
+
+            return family
+
+        def parse_relatives(wikicode: mwp.wikicode.Wikicode):
+            # todo: strip wikicode, keep name (use logic from networks/family.py)
+            return wikicode
+
         # parse infobox
         if content:
             # select outermost wiki template
-            self._wiki_template = mwp.parse(content).filter_templates()
-            if self._wiki_template:
-                infobox = next((t for t in self._wiki_template if t.name.strip().lower() == 'character'), None)
+            wiki_template = mwp.parse(content).filter_templates()
+            if wiki_template:
+                infobox = next((t for t in wiki_template if t.name.strip().lower() == 'character'), None)
 
                 # ignore non-character pages
                 if infobox is None:
                     self._keep = False
-                    return char_info
+                    return {}
 
                 # ignore deleted characters (i.e. from early drafts)
-                if any('deleted' in t.name.lower() for t in self._wiki_template):
+                if any('deleted' in t.name.lower() for t in wiki_template):
                     self._keep = False
-                    return char_info
+                    return {}
 
                 # split into key/value pairs
                 for entry in infobox.params:
-                    k, v = re.sub(r'[^a-z\-]', '', str(entry.name).lower()), entry.value
+                    key, val = re.sub(r'[^a-z\-]', '', str(entry.name).lower()), entry.value
 
                     # normalize non-linking field names
-                    if k.endswith('-raw'):
-                        k = k[:-4]
+                    if key.endswith('-raw'):
+                        key = key[:-4]
 
                     # clean field names and correct typos
-                    k = cleansed_fields.get(k, k)
+                    key = cleansed_fields.get(key, key)
 
-                    if k not in info_fields:
+                    if key not in info_fields:
                         continue
 
                     # sanitize and process specific fields
-                    # books
-                    if k == 'books':
-                        v = [b for b in (books.get(b.text.strip_code() if b.text else b.title.strip_code())
-                                         for b in v.nodes
-                                         if isinstance(b, mwp.wikicode.Wikilink))
-                             if b is not None]
+                    elif key == 'books':
+                        val = parse_books(val)
 
-                    # normalize nation/nationality
-                    elif k == 'nationality' or k == 'nation':
-                        v = nationalities.get(v.strip_code().lower(), None)
-                        k = 'nationality'
+                    elif key == 'nationality':
+                        val = parse_nation(val)
 
-                    # titles and aliases and names
-                    elif k == 'titles' or k == 'aliases' or k == 'name':
-                        v = [n
-                             for n in (n.strip()
-                                       for n in parse_names(v))
-                             if n]
+                    elif key == 'residence':
+                        val = parse_residence(val)
 
-                    # world
-                    elif k == 'world' or k == 'universe':
-                        v = v.strip_code()
+                    elif key == 'abilities':
+                        val = parse_abilities(val)
 
-                    # parse wiki tags into human-readable text
+                    elif key == 'profession':
+                        val = parse_profession(val)
+
+                    elif key == 'groups':
+                        val = parse_groups(val)
+
+                    elif key == 'ethnicity':
+                        val = parse_ethnicity(val)
+
+                    elif key == 'species':
+                        val = parse_species(val)
+
+                    elif key == 'family':
+                        val = parse_family(val)
+
+                    elif key in ('bonded', 'spouse', 'parents', 'children', 'siblings', 'ancestors', 'descendants', 'relatives'):
+                        val = parse_relatives(val)
+
+                    elif key in ('titles', 'aliases', 'name'):
+                        val = parse_names(val)
+
+                    elif key in ('world', 'universe'):
+                        val = val.strip_code()
+
+                    elif key == 'unnamed':
+                        val = True if val.strip_code().lower().startswith('y') else False
+
                     else:
-                        # v = parse_markup(v)
-                        pass
+                        print("unknown key/value pair found!", key, ": ", val)
 
-                    # add to dict (null-guarded)
-                    char_info[k] = v
+                    char_info[key] = val
 
-                # sanitize abilities
-                if 'abilities' in char_info:
-                    char_info['abilities'] = parse_abilities(char_info['abilities'])
-
-                # combine name and aliases
+                # combine nickname with aliases
                 if char_info.get('name'):
                     if char_info.get('aliases'):
                         char_info['aliases'].extend(char_info.pop('name'))
@@ -225,12 +369,12 @@ class Character:
                         char_info['aliases'] = char_info.pop('name')
 
                 # isolate common name and surname
-                names = self.name.split()
+                names = char_name.split()
                 if names[0] in titles:
                     char_info['common_name'] = ''
                     char_info['surname'] = names[-1]
-                elif "'s" in self.name:
-                    char_info['common_name'] = self.name
+                elif "'s" in char_name:
+                    char_info['common_name'] = char_name
                     char_info['surname'] = ''
                 else:
                     char_info['common_name'] = names[0]
