@@ -37,23 +37,23 @@ class CharacterLookup(MutableMapping):
         if not key:
             raise KeyError(key)
 
-        key, get_subtrie = self._process_key(key)
+        key, traverse = self._process_key(key)
 
-        if get_subtrie:
+        if traverse:
             node = self.root
             for char in key:
                 if char not in node.children:
                     raise KeyError(key)
                 node = node.children[char]
-            if not node.has_data:
+            if not node.children:
                 raise KeyError(key)
 
-            items = []
+            items = set()
             stack = [node]
             while stack:
                 n = stack.pop()
                 if n.has_data:
-                    items.extend(n.data)
+                    items.update(n.data)
                 for _, child in sorted(n.children.items(), reverse=True):
                     stack.append(child)
         else:

@@ -30,7 +30,11 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
     if response is None:
         exit(1)
 
-    matches = lookup[response:]
+    if response in lookup:
+        matches = lookup[response]
+    else:
+        matches = lookup[response:]
+
     if len(matches) > 1:
         for char in matches:
             if char.name == response:
