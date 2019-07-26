@@ -33,6 +33,7 @@ def create_graph() -> nx.OrderedGraph:
     G.add_nodes_from(nodes.items())
     logger.debug("Added character nodes to graph.")
 
+    # todo: utilize Lookup for fuzzy matching
     # add edges between relevant nodes
     for char in characters:
         # ignore characters with no family info
@@ -40,16 +41,10 @@ def create_graph() -> nx.OrderedGraph:
             continue
 
         # loop through character's family connections
-        for cxns in (char.relatives[k] for k in fields if k in char.relatives):
-            for link in mwp.parse(cxns).filter_wikilinks():
-                # sanitize
-                relation = link.title.strip_code()
-                if "_" in relation:
-                    relation = relation.replace('_', ' ')
-
+        for relations in (char.relatives[k] for k in fields if k in char.relatives):
+            for relation in relations:
                 # get potential full name
                 relation_forename = relation.split(' ')[0]
-                char_surname = char.name.split(' ')[-1]
 
                 target = None
 
@@ -59,8 +54,8 @@ def create_graph() -> nx.OrderedGraph:
                     logger.debug(f'Identified exact target of edge ({char.name}, {relation}).')
 
                 # check if characters share a surname
-                elif f"{relation_forename} {char_surname}" in names:
-                    target = names[f"{relation_forename} {char_surname}"]
+                elif f"{relation_forename} {char.surname}" in names:
+                    target = names[f"{relation_forename} {char.surname}"]
                     logger.debug(f'Identified likely target of edge ({char.name}, {relation}) '
                                  f'to be {target.name} via surname.')
 

@@ -317,8 +317,13 @@ class Character:
             return family
 
         def parse_relatives(wikicode: mwp.wikicode.Wikicode):
-            # todo: strip wikicode, keep name (use logic from networks/family.py)
-            return wikicode
+            relatives = []
+            for link in mwp.parse(wikicode).filter_wikilinks():
+                relation = link.title.strip_code()
+                if "_" in relation:
+                    relation = relation.replace('_', ' ')
+                relatives.append(relation)
+            return relatives
 
         # parse infobox
         if content:
