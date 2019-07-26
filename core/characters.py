@@ -1,5 +1,5 @@
 import re
-import typing
+from typing import Iterator, Set
 
 import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
@@ -33,7 +33,7 @@ class Character:
         self.aliases = self.info.pop('aliases', [])
         self.titles = self.info.pop('titles', [])
         self.world = self.info.pop('world', None)
-        self.books = self.info.pop('books', None)
+        self.books = self.info.pop('books', [])
         self.abilities = self.info.pop('abilities', [])
 
         # discard unofficial character pages
@@ -78,7 +78,7 @@ class Character:
         return self._pageid
 
     @property
-    def monikers(self) -> typing.Set[str]:
+    def monikers(self) -> Set[str]:
         """return a set of monikers that the character is known by."""
         return set(n for n in [self.name, self.common_name, self.surname] + self.aliases + self.titles if n)
 
@@ -279,7 +279,7 @@ def explicit_modify(ch: Character):
         ch.common_name = 'Shai'
 
 
-def _generate_characters() -> typing.Iterator[Character]:
+def _generate_characters() -> Iterator[Character]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
 
