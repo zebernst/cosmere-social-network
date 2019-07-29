@@ -1,11 +1,11 @@
 import re
-from typing import Iterator, Set
+from typing import Generator, Set
 
 import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from core.constants import books, cleansed_fields, info_fields, demonyms, titles, species, nations
+from core.constants import books, cleansed_fields, demonyms, info_fields, nations, species, titles
 from utils.datastructures import CharacterLookup
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
@@ -467,9 +467,10 @@ def explicit_modify(ch: Character):
         ch.common_name = 'Shai'
     elif ch.name == 'Rock':
         ch.name = 'Rock, Jr.'
+        ch.common_name = "Rock, Jr."
 
 
-def _generate_characters() -> Iterator[Character]:
+def _generate_characters() -> Generator[Character, None, None]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
 

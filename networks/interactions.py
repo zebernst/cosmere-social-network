@@ -38,13 +38,17 @@ def create_graph(book: str, min_weight: int = 3):
         if chapter not in disambiguation:
             disambiguation[chapter] = {}
 
+        print(f"==== CHAPTER: {chapter} ====")
+
         while idx < len(tokens):
             found = []
-            context = RunContext(prev=[' '.join(tokens[idx - (i*RUN_SIZE):idx - ((i-1)*RUN_SIZE)]).strip()
-                                       for i in range(PREV_LINES, 0, -1)],
-                                 run=' '.join(tokens[idx:idx + RUN_SIZE]),
-                                 next=[' '.join(tokens[idx + (i*RUN_SIZE):idx + ((i+1)*RUN_SIZE)]).strip()
-                                       for i in range(1, NEXT_LINES+1)])
+            context = RunContext(
+                prev=[s for s in (' '.join(tokens[max(0, idx - (i*RUN_SIZE)):max(0, idx - ((i-1)*RUN_SIZE))]).strip()
+                      for i in range(PREV_LINES, 0, -1)) if s],
+                run=' '.join(tokens[idx:min(len(tokens), idx + RUN_SIZE)]),
+                next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i*RUN_SIZE)):min(len(tokens), idx + ((i+1)*RUN_SIZE))]).strip()
+                      for i in range(1, NEXT_LINES+1)) if s]
+            )
 
             i = 0
             tokens_remaining = len(tokens) - idx
