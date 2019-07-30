@@ -18,7 +18,7 @@ const data = d3.json(dataUrl)
             {color: "#9467bd", world: "Threnody"},
             {color: "#8c564b", world: "First of the Sun"},
             {color: "#e377c2", world: "Taldain"}
-            ];
+        ];
 
         // create graph
         graph = forceDirectedGraph()

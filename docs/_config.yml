@@ -98,7 +98,7 @@ analytics: # todo : setup
 author:
   name             : "Zach Bernstein"
   avatar           : "/assets/images/profile-photo.jpg"
-  bio              : "Data science undergraduate student and A/V technician at the University of Vermont."
+  bio              : "Undergraduate data science student and A/V technician at the University of Vermont."
   location         : "Chicago, IL"
   email            : # todo : setup
   links:
