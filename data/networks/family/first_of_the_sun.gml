@@ -2,28 +2,58 @@ graph [
   node [
     id 0
     label "5268"
-    world "First of the Sun"
     name "Sixth of the Dusk"
-    family ""
+    nickname "Dusk"
+      aliases "Sixth of the Dusk"
       monikers "(character)"
-      monikers "Dusk"
       monikers "Sixth of the Dusk"
+      monikers "Dusk"
+    alive 1
+    family "null"
+    world "First of the Sun"
+      books "sixth-of-the-dusk"
+    abilities "null"
+    residence "null"
+    nationality "null"
+    ethnicity "Eelakin"
+    species "null"
+    subspecies "null"
   ]
   node [
     id 1
     label "5434"
-    world "First of the Sun"
     name "Kokerlii"
-    family ""
+    nickname "null"
+    aliases "null"
       monikers "Kokerlii"
+    alive 1
+    family "null"
+    world "First of the Sun"
+      books "sixth-of-the-dusk"
+    abilities "null"
+    residence "null"
+    nationality "null"
+    ethnicity "null"
+    species "Aviar"
+    subspecies "null"
   ]
   node [
     id 2
     label "5435"
-    world "First of the Sun"
     name "Sak"
-    family ""
+    nickname "null"
+    aliases "null"
       monikers "Sak"
+    alive 1
+    family "null"
+    world "First of the Sun"
+      books "sixth-of-the-dusk"
+    abilities "null"
+    residence "null"
+    nationality "null"
+    ethnicity "null"
+    species "Aviar"
+    subspecies "null"
   ]
   edge [
     source 0
