@@ -1,5 +1,5 @@
 import re
-from typing import Generator, Set
+from typing import Generator, Set, Optional, List, Dict
 
 import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
@@ -22,31 +22,31 @@ class Character:
         """construct character from coppermind.net api query results."""
         page = extract_relevant_info(query_result)
 
-        self._keep = True
-        self._pageid = page['pageid']
+        self._keep: bool = True
+        self._pageid: int = page['pageid']
+
         infobox = self._parse_infobox(page)
+        self.name: str = page['title']
+        self.common_name: str = infobox.pop('common_name', '')
+        self.surname: str = infobox.pop('surname', '')
+        self.unnamed: bool = True if 'unnamed' in infobox else False
+        self.alive: bool = True if 'died' not in infobox else False
 
-        self.name = page['title']
-        self.common_name = infobox.pop('common_name', '')
-        self.surname = infobox.pop('surname', '')
-        self.unnamed = True if 'unnamed' in infobox else False
-        self.alive = True if 'died' not in infobox else False
+        self.aliases: Optional[List[str]] = infobox.pop('aliases', [])
+        self.titles: Optional[List[str]] = infobox.pop('titles', [])
 
-        self.aliases = infobox.pop('aliases', [])
-        self.titles = infobox.pop('titles', [])
+        self.world: Optional[str] = infobox.pop('world', None)
+        self.books: Optional[List[str]] = infobox.pop('books', [])
+        self.abilities: Optional[List[str]] = infobox.pop('abilities', [])
 
-        self.world = infobox.pop('world', None)
-        self.books = infobox.pop('books', [])
-        self.abilities = infobox.pop('abilities', [])
+        self.residence: Optional[str] = infobox.pop('residence', None)
+        self.nationality: Optional[str] = infobox.pop('nationality', None)
+        self.ethnicity: Optional[str] = infobox.pop('ethnicity', None)
+        self.species: Optional[str] = infobox.pop('species', None)
+        self.subspecies: Optional[str] = infobox.pop('subspecies', None)
 
-        self.residence = infobox.pop('residence', None)
-        self.nationality = infobox.pop('nationality', None)
-        self.ethnicity = infobox.pop('ethnicity', None)
-        self.species = infobox.pop('species', None)
-        self.subspecies = infobox.pop('subspecies', None)
-
-        self.family = infobox.pop('family', None)
-        self.relatives = {
+        self.family: Optional[str] = infobox.pop('family', None)
+        self.relatives: Dict[str, List[str]] = {
             'bonded': infobox.pop('bonded', []),
             'spouse': infobox.pop('spouse', []),
             'parents': infobox.pop('parents', []),
