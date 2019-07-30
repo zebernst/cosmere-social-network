@@ -5,6 +5,13 @@ graph [
     world "Nalthis"
     name "Vasher"
     family ""
+      monikers "Talaxin"
+      monikers "Peacegiver the Blessed"
+      monikers "Warbreaker the Peaceful"
+      monikers "Strifelover"
+      monikers "Kalad the Usurper"
+      monikers "Zahel"
+      monikers "Vasher"
   ]
   node [
     id 1
@@ -12,6 +19,11 @@ graph [
     world "Nalthis"
     name "Sisirinah"
     family ""
+      monikers "Sisirinah"
+      monikers "Vessel"
+      monikers "Princess of Idris"
+      monikers "Queen of Hallandren"
+      monikers "Siri"
   ]
   node [
     id 2
@@ -19,6 +31,11 @@ graph [
     world "Nalthis"
     name "Vivenna"
     family ""
+      monikers "Commander of the Kholinar Wall Guard"
+      monikers "Highmarshal"
+      monikers "Vivenna"
+      monikers "Princess of Idris"
+      monikers "Azure"
   ]
   node [
     id 3
@@ -26,6 +43,12 @@ graph [
     world "Nalthis"
     name "Lightsong"
     family ""
+      monikers "God of Bravery"
+      monikers "Stennimar"
+      monikers "Lightsong the Brave"
+      monikers "Lord of Heroes"
+      monikers "Lightsong"
+      monikers "Lightsong the Bold"
   ]
   node [
     id 4
@@ -33,6 +56,8 @@ graph [
     world "Nalthis"
     name "Denth"
     family ""
+      monikers "VaraTreledees"
+      monikers "Denth"
   ]
   node [
     id 5
@@ -40,6 +65,12 @@ graph [
     world "Nalthis"
     name "Susebron"
     family ""
+      monikers "Susebron the Grand"
+      monikers "Seb"
+      monikers "Susebron"
+      monikers "God King of Hallandren"
+      monikers "Immortal Majesty"
+      monikers "His Excellent Grace"
   ]
   node [
     id 6
@@ -47,6 +78,8 @@ graph [
     world "Nalthis"
     name "Llarimar"
     family ""
+      monikers "Scoot"
+      monikers "Llarimar"
   ]
   node [
     id 7
@@ -54,6 +87,8 @@ graph [
     world "Nalthis"
     name "Dedelin"
     family ""
+      monikers "King of Idris"
+      monikers "Dedelin"
   ]
   node [
     id 8
@@ -61,6 +96,8 @@ graph [
     world "Nalthis"
     name "Fafen"
     family ""
+      monikers "Fafen"
+      monikers "Princess of Idris"
   ]
   node [
     id 9
@@ -68,6 +105,8 @@ graph [
     world "Nalthis"
     name "Shashara"
     family ""
+      monikers "Glorysinger"
+      monikers "Shashara"
   ]
   node [
     id 10
@@ -75,6 +114,8 @@ graph [
     world "Nalthis"
     name "Ridger"
     family ""
+      monikers "Ridger"
+      monikers "Heir to the throne of Idris"
   ]
   node [
     id 11
@@ -82,6 +123,7 @@ graph [
     world "Nalthis"
     name "Tatara"
     family ""
+      monikers "Tatara"
   ]
   node [
     id 12
@@ -89,6 +131,7 @@ graph [
     world "Nalthis"
     name "Susebron's mother"
     family ""
+      monikers "Susebron's mother"
   ]
   node [
     id 13
@@ -96,6 +139,8 @@ graph [
     world "Nalthis"
     name "Vivenna's mother"
     family ""
+      monikers "Vivenna's mother"
+      monikers "Queen of Idris"
   ]
   edge [
     source 0

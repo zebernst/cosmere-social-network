@@ -5,6 +5,9 @@ graph [
     world "First of the Sun"
     name "Sixth of the Dusk"
     family ""
+      monikers "(character)"
+      monikers "Dusk"
+      monikers "Sixth of the Dusk"
   ]
   node [
     id 1
@@ -12,6 +15,7 @@ graph [
     world "First of the Sun"
     name "Kokerlii"
     family ""
+      monikers "Kokerlii"
   ]
   node [
     id 2
@@ -19,6 +23,7 @@ graph [
     world "First of the Sun"
     name "Sak"
     family ""
+      monikers "Sak"
   ]
   edge [
     source 0

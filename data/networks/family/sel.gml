@@ -5,6 +5,11 @@ graph [
     world "Sel"
     name "Raoden"
     family ""
+      monikers "King of Elantris"
+      monikers "Raoden"
+      monikers "King of Arelon"
+      monikers "Spirit"
+      monikers "Kaloo"
   ]
   node [
     id 1
@@ -12,6 +17,12 @@ graph [
     world "Sel"
     name "Sarene"
     family "Teoish Royal Family"
+      monikers "Princess of Teod"
+      monikers "'Ene"
+      monikers "Leky Stick"
+      monikers "Queen of Elantris"
+      monikers "Sarene"
+      monikers "Queen of Arelon"
   ]
   node [
     id 2
@@ -19,6 +30,8 @@ graph [
     world "Sel"
     name "Iadon"
     family ""
+      monikers "Iadon"
+      monikers "King of Arelon"
   ]
   node [
     id 3
@@ -26,6 +39,8 @@ graph [
     world "Sel"
     name "Eshen"
     family ""
+      monikers "Eshen"
+      monikers "Queen of Arelon"
   ]
   node [
     id 4
@@ -33,6 +48,8 @@ graph [
     world "Sel"
     name "Eventeo"
     family "Teoish Royal Family"
+      monikers "Eventeo"
+      monikers "King of Teod"
   ]
   node [
     id 5
@@ -40,6 +57,8 @@ graph [
     world "Sel"
     name "Kiin"
     family "Teoish Royal Family"
+      monikers "Dreok Crushthroat"
+      monikers "Kiin"
   ]
   node [
     id 6
@@ -47,6 +66,7 @@ graph [
     world "Sel"
     name "Daora"
     family "Teoish Royal Family"
+      monikers "Daora"
   ]
   node [
     id 7
@@ -54,6 +74,7 @@ graph [
     world "Sel"
     name "Daorn"
     family "Teoish Royal Family"
+      monikers "Daorn"
   ]
   node [
     id 8
@@ -61,6 +82,7 @@ graph [
     world "Sel"
     name "Kaise"
     family "Teoish Royal Family"
+      monikers "Kaise"
   ]
   node [
     id 9
@@ -68,6 +90,7 @@ graph [
     world "Sel"
     name "Lukel"
     family "Teoish Royal Family"
+      monikers "Lukel"
   ]
   node [
     id 10
@@ -75,6 +98,7 @@ graph [
     world "Sel"
     name "Jalla"
     family "Teoish Royal Family"
+      monikers "Jalla"
   ]
   node [
     id 11
@@ -82,6 +106,7 @@ graph [
     world "Sel"
     name "Adien"
     family "Teoish Royal Family"
+      monikers "Adien"
   ]
   node [
     id 12
@@ -89,6 +114,9 @@ graph [
     world "Sel"
     name "Telrii"
     family ""
+      monikers "Telrii"
+      monikers "Duke"
+      monikers "King of Arelon"
   ]
   node [
     id 13
@@ -96,6 +124,8 @@ graph [
     world "Sel"
     name "Roial"
     family ""
+      monikers "Roial"
+      monikers "Duke of Ial Plantation"
   ]
   node [
     id 14
@@ -103,6 +133,8 @@ graph [
     world "Sel"
     name "Ahan"
     family ""
+      monikers "Count"
+      monikers "Ahan"
   ]
   node [
     id 15
@@ -110,6 +142,7 @@ graph [
     world "Sel"
     name "Ashe"
     family ""
+      monikers "Ashe"
   ]
   node [
     id 16
@@ -117,6 +150,8 @@ graph [
     world "Sel"
     name "Atara"
     family ""
+      monikers "Atara"
+      monikers "Queen of Arelon"
   ]
   node [
     id 17
@@ -124,6 +159,7 @@ graph [
     world "Sel"
     name "Opa"
     family ""
+      monikers "Opa"
   ]
   node [
     id 18
@@ -131,6 +167,7 @@ graph [
     world "Sel"
     name "Ien"
     family ""
+      monikers "Ien"
   ]
   node [
     id 19
@@ -138,6 +175,7 @@ graph [
     world "Sel"
     name "Dio"
     family ""
+      monikers "Dio"
   ]
   node [
     id 20
@@ -145,6 +183,8 @@ graph [
     world "Sel"
     name "Shaor"
     family ""
+      monikers "Soine"
+      monikers "Shaor"
   ]
   node [
     id 21
@@ -152,6 +192,7 @@ graph [
     world "Sel"
     name "Dashe"
     family ""
+      monikers "Dashe"
   ]
   node [
     id 22
@@ -159,6 +200,7 @@ graph [
     world "Sel"
     name "Matisse"
     family ""
+      monikers "Matisse"
   ]
   node [
     id 23
@@ -166,6 +208,7 @@ graph [
     world "Sel"
     name "Eoldess"
     family ""
+      monikers "Eoldess"
   ]
   node [
     id 24
@@ -173,6 +216,8 @@ graph [
     world "Sel"
     name "Sarene's mother"
     family "Teoish Royal Family"
+      monikers "Sarene's mother"
+      monikers "Queen of Teod"
   ]
   node [
     id 25
@@ -180,6 +225,8 @@ graph [
     world "Sel"
     name "Teorn"
     family "Teoish Royal Family"
+      monikers "Crown Prince of Teod"
+      monikers "Teorn"
   ]
   node [
     id 26
@@ -187,6 +234,7 @@ graph [
     world "Sel"
     name "Seaden"
     family ""
+      monikers "Seaden"
   ]
   node [
     id 27
@@ -194,6 +242,7 @@ graph [
     world "Sel"
     name "Aeo"
     family ""
+      monikers "Aeo"
   ]
   node [
     id 28
@@ -201,6 +250,7 @@ graph [
     world "Sel"
     name "Torena"
     family ""
+      monikers "Torena"
   ]
   node [
     id 29
@@ -208,6 +258,7 @@ graph [
     world "Sel"
     name "Raoden's mother"
     family ""
+      monikers "Raoden's mother"
   ]
   edge [
     source 0

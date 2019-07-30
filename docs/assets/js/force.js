@@ -151,8 +151,8 @@ function forceDirectedGraph() {
     function component(data, keyNode, nodes=undefined, base=true) {
         nodes = nodes || new Set();
 
-        if (_.isString(keyNode))
-            keyNode = data.nodes.find(n => n.id.toLowerCase() === keyNode.toLowerCase());
+        if (_.isInteger(keyNode))
+            keyNode = data.nodes.find(n => n.id === keyNode);
 
         // don't try to iterate over neighbors of invalid node
         if (keyNode) {

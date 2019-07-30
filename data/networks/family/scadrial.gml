@@ -5,6 +5,13 @@ graph [
     world "Scadrial"
     name "Kelsier"
     family ""
+      monikers "Survivor of Hathsin"
+      monikers "Survivor of Death"
+      monikers "Lord of the Mists"
+      monikers "Sovereign"
+      monikers "Survivor of Mists"
+      monikers "Survivor"
+      monikers "Kelsier"
   ]
   node [
     id 1
@@ -12,6 +19,9 @@ graph [
     world "Scadrial"
     name "Marsh"
     family ""
+      monikers "Ironeyes"
+      monikers "Marsh"
+      monikers "Death"
   ]
   node [
     id 2
@@ -19,6 +29,7 @@ graph [
     world "Scadrial"
     name "Mare"
     family ""
+      monikers "Mare"
   ]
   node [
     id 3
@@ -26,6 +37,14 @@ graph [
     world "Scadrial"
     name "Vin"
     family "House Tekiel"
+      monikers "Valette Renoux"
+      monikers "Empress of the New Empire"
+      monikers "Preservation"
+      monikers "Vin"
+      monikers "Ascendant Warrior"
+      monikers "Mother"
+      monikers "Lady Mistborn"
+      monikers "Heir to the Survivor"
   ]
   node [
     id 4
@@ -33,6 +52,11 @@ graph [
     world "Scadrial"
     name "Edgard Ladrian"
     family "House Ladrian"
+      monikers "Counselor of Gods"
+      monikers "Breeze"
+      monikers "Ladrian"
+      monikers "Edgard"
+      monikers "Edgard Ladrian"
   ]
   node [
     id 5
@@ -40,6 +64,11 @@ graph [
     world "Scadrial"
     name "Spook"
     family ""
+      monikers "Survivor of the Flames"
+      monikers "Jedal"
+      monikers "Lestibournes"
+      monikers "Spook"
+      monikers "Lord Mistborn"
   ]
   node [
     id 6
@@ -47,6 +76,8 @@ graph [
     world "Scadrial"
     name "Clubs"
     family ""
+      monikers "Cladent"
+      monikers "Clubs"
   ]
   node [
     id 7
@@ -54,6 +85,7 @@ graph [
     world "Scadrial"
     name "Reen"
     family ""
+      monikers "Reen"
   ]
   node [
     id 8
@@ -61,6 +93,10 @@ graph [
     world "Scadrial"
     name "Elend Venture"
     family "House Venture"
+      monikers "Elend Venture"
+      monikers "Venture"
+      monikers "Elend"
+      monikers "Last Emperor"
   ]
   node [
     id 9
@@ -68,6 +104,9 @@ graph [
     world "Scadrial"
     name "Straff Venture"
     family "House Venture"
+      monikers "Straff"
+      monikers "Straff Venture"
+      monikers "Venture"
   ]
   node [
     id 10
@@ -75,6 +114,9 @@ graph [
     world "Scadrial"
     name "Ashweather Cett"
     family "House Cett"
+      monikers "Cett"
+      monikers "Ashweather"
+      monikers "Ashweather Cett"
   ]
   node [
     id 11
@@ -82,6 +124,9 @@ graph [
     world "Scadrial"
     name "Allrianne Cett"
     family "House Cett"
+      monikers "Cett"
+      monikers "Allrianne"
+      monikers "Allrianne Cett"
   ]
   node [
     id 12
@@ -89,6 +134,10 @@ graph [
     world "Scadrial"
     name "Zane Venture"
     family "House Venture"
+      monikers "The Watcher"
+      monikers "Zane"
+      monikers "Venture"
+      monikers "Zane Venture"
   ]
   node [
     id 13
@@ -96,6 +145,9 @@ graph [
     world "Scadrial"
     name "Tevidian Tekiel"
     family "House Tekiel"
+      monikers "Tevidian Tekiel"
+      monikers "Tevidian"
+      monikers "Tekiel"
   ]
   node [
     id 14
@@ -103,6 +155,7 @@ graph [
     world "Scadrial"
     name "Jedal"
     family ""
+      monikers "Jedal"
   ]
   node [
     id 15
@@ -110,6 +163,12 @@ graph [
     world "Scadrial"
     name "Waxillium Ladrian"
     family "House Ladrian"
+      monikers "Waxillium"
+      monikers "Wax"
+      monikers "Dawnshot"
+      monikers "Ladrian"
+      monikers "Waxillium Ladrian"
+      monikers "Asinthew"
   ]
   node [
     id 16
@@ -117,6 +176,9 @@ graph [
     world "Scadrial"
     name "Marasi Colms"
     family ""
+      monikers "Colms"
+      monikers "Marasi"
+      monikers "Marasi Colms"
   ]
   node [
     id 17
@@ -124,6 +186,9 @@ graph [
     world "Scadrial"
     name "Steris Harms"
     family ""
+      monikers "Steris"
+      monikers "Harms"
+      monikers "Steris Harms"
   ]
   node [
     id 18
@@ -131,6 +196,7 @@ graph [
     world "Scadrial"
     name "Vin's sister"
     family "House Tekiel"
+      monikers "Vin's sister"
   ]
   node [
     id 19
@@ -138,6 +204,7 @@ graph [
     world "Scadrial"
     name "Vin's mother"
     family ""
+      monikers "Vin's mother"
   ]
   node [
     id 20
@@ -145,6 +212,10 @@ graph [
     world "Scadrial"
     name "Telsin Ladrian"
     family "House Ladrian"
+      monikers "Sequence"
+      monikers "Telsin Ladrian"
+      monikers "Telsin"
+      monikers "Ladrian"
   ]
   node [
     id 21
@@ -152,6 +223,9 @@ graph [
     world "Scadrial"
     name "Gneorndin Cett"
     family "House Cett"
+      monikers "Cett"
+      monikers "Gneorndin Cett"
+      monikers "Gneorndin"
   ]
   node [
     id 22
@@ -159,6 +233,7 @@ graph [
     world "Scadrial"
     name "Margel"
     family ""
+      monikers "Margel"
   ]
   node [
     id 23
@@ -166,6 +241,7 @@ graph [
     world "Scadrial"
     name "Kelsier's mother"
     family ""
+      monikers "Kelsier's mother"
   ]
   node [
     id 24
@@ -173,6 +249,7 @@ graph [
     world "Scadrial"
     name "Elend's mother"
     family "House Venture"
+      monikers "Elend's mother"
   ]
   node [
     id 25
@@ -180,6 +257,7 @@ graph [
     world "Scadrial"
     name "Allrianne's mother"
     family "House Cett"
+      monikers "Allrianne's mother"
   ]
   node [
     id 26
@@ -187,6 +265,10 @@ graph [
     world "Scadrial"
     name "Jackstom Harms"
     family ""
+      monikers "Jackstom"
+      monikers "Lord"
+      monikers "Jackstom Harms"
+      monikers "Harms"
   ]
   node [
     id 27
@@ -194,6 +276,10 @@ graph [
     world "Scadrial"
     name "Paalm"
     family ""
+      monikers "Replar Innate"
+      monikers "Paalm"
+      monikers "Bleeder"
+      monikers "Lessie"
   ]
   node [
     id 28
@@ -201,6 +287,9 @@ graph [
     world "Scadrial"
     name "Winsting Innate"
     family "House Innate"
+      monikers "Winsting Innate"
+      monikers "Winsting"
+      monikers "Innate"
   ]
   node [
     id 29
@@ -208,6 +297,9 @@ graph [
     world "Scadrial"
     name "Allri Innate"
     family "House Innate"
+      monikers "Allri Innate"
+      monikers "Allri"
+      monikers "Innate"
   ]
   node [
     id 30
@@ -215,6 +307,9 @@ graph [
     world "Scadrial"
     name "Replar Innate"
     family "House Innate"
+      monikers "Replar"
+      monikers "Replar Innate"
+      monikers "Innate"
   ]
   edge [
     source 0

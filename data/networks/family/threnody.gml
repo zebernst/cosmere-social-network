@@ -5,6 +5,10 @@ graph [
     world "Threnody"
     name "Silence Montane"
     family "Forescout"
+      monikers "White Fox"
+      monikers "Silence"
+      monikers "Silence Montane"
+      monikers "Montane"
   ]
   node [
     id 1
@@ -12,6 +16,7 @@ graph [
     world "Threnody"
     name "Sebruki"
     family "Forescout"
+      monikers "Sebruki"
   ]
   node [
     id 2
@@ -19,6 +24,9 @@ graph [
     world "Threnody"
     name "William Ann Montane"
     family ""
+      monikers "William Ann Montane"
+      monikers "William Ann"
+      monikers "Montane"
   ]
   node [
     id 3
@@ -26,6 +34,9 @@ graph [
     world "Threnody"
     name "William Montane"
     family ""
+      monikers "Montane"
+      monikers "William"
+      monikers "William Montane"
   ]
   edge [
     source 0

@@ -5,6 +5,8 @@ graph [
     world "Taldain"
     name "Kenton"
     family ""
+      monikers "Kenton"
+      monikers "Lord Mastrell"
   ]
   node [
     id 1
@@ -12,6 +14,8 @@ graph [
     world "Taldain"
     name "Praxton"
     family ""
+      monikers "Lord Mastrell"
+      monikers "Praxton"
   ]
   node [
     id 2
@@ -19,6 +23,7 @@ graph [
     world "Taldain"
     name "Ais"
     family ""
+      monikers "Ais"
   ]
   node [
     id 3
@@ -26,6 +31,7 @@ graph [
     world "Taldain"
     name "Mellis"
     family ""
+      monikers "Mellis"
   ]
   node [
     id 4
@@ -33,6 +39,7 @@ graph [
     world "Taldain"
     name "Melloni"
     family ""
+      monikers "Melloni"
   ]
   node [
     id 5
@@ -40,6 +47,7 @@ graph [
     world "Taldain"
     name "Kenton's mother"
     family ""
+      monikers "Kenton's mother"
   ]
   edge [
     source 0

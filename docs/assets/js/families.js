@@ -49,9 +49,9 @@ const data = d3.json(dataUrl)
                    }
 
                    let matches = _(data.nodes)
-                       .filter(node => _(node.names)
+                       .filter(node => _(node.monikers)
                                .some(s => _.includes(s.toLowerCase(), request.term.toLowerCase())))
-                       .map(n => ({name: n.id, aliases: _.difference(n.names, [n.id]), value: n.id}))
+                       .map(n => ({name: n.name, aliases: _.difference(n.monikers, [n.name]), value: n.id}))
                        .value();
 
                    response(matches)
@@ -70,7 +70,6 @@ const data = d3.json(dataUrl)
         searchbar
             .data("ui-autocomplete")
                 ._renderItem = function (ul, item) {
-                    console.log(item);
                     return $( "<li>" )
                         .append("<a>" + item.name
                             + `<span style='font-size: 60%; padding-left: 1em'>${item.aliases.join(", ")}</span>`

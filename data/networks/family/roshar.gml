@@ -5,6 +5,9 @@ graph [
     world "Roshar"
     name "Wikim Davar"
     family "House Davar"
+      monikers "Davar"
+      monikers "Wikim Davar"
+      monikers "Wikim"
   ]
   node [
     id 1
@@ -12,6 +15,9 @@ graph [
     world "Roshar"
     name "Jushu Davar"
     family "House Davar"
+      monikers "Jushu"
+      monikers "Jushu Davar"
+      monikers "Davar"
   ]
   node [
     id 2
@@ -19,6 +25,9 @@ graph [
     world "Roshar"
     name "Balat Davar"
     family "House Davar"
+      monikers "Balat"
+      monikers "Davar"
+      monikers "Balat Davar"
   ]
   node [
     id 3
@@ -26,6 +35,9 @@ graph [
     world "Roshar"
     name "Evi Kholin"
     family "House Kholin"
+      monikers "Evi Kholin"
+      monikers "Evi"
+      monikers "Kholin"
   ]
   node [
     id 4
@@ -33,6 +45,12 @@ graph [
     world "Roshar"
     name "Kaladin"
     family ""
+      monikers "Kaladin Stormblessed"
+      monikers "Kaladin"
+      monikers "Bridgeboy"
+      monikers "Captain of the Bridgemen"
+      monikers "Knight Radiant"
+      monikers "Lordship"
   ]
   node [
     id 5
@@ -40,6 +58,12 @@ graph [
     world "Roshar"
     name "Shallan Davar"
     family "House Davar"
+      monikers "Shallan"
+      monikers "Veil"
+      monikers "Davar"
+      monikers "Shallan Davar"
+      monikers "Swiftspren"
+      monikers "Radiant"
   ]
   node [
     id 6
@@ -47,6 +71,10 @@ graph [
     world "Roshar"
     name "Jasnah Kholin"
     family "House Kholin"
+      monikers "Queen of Alethkar"
+      monikers "Jasnah Kholin"
+      monikers "Kholin"
+      monikers "Jasnah"
   ]
   node [
     id 7
@@ -54,6 +82,9 @@ graph [
     world "Roshar"
     name "Sylphrena"
     family ""
+      monikers "Ancient Daughter"
+      monikers "Syl"
+      monikers "Sylphrena"
   ]
   node [
     id 8
@@ -61,6 +92,10 @@ graph [
     world "Roshar"
     name "Adolin Kholin"
     family "House Kholin"
+      monikers "Adolin"
+      monikers "Kholin"
+      monikers "Highprince of Alethkar"
+      monikers "Adolin Kholin"
   ]
   node [
     id 9
@@ -68,6 +103,9 @@ graph [
     world "Roshar"
     name "Renarin Kholin"
     family "House Kholin"
+      monikers "Renarin"
+      monikers "Renarin Kholin"
+      monikers "Kholin"
   ]
   node [
     id 10
@@ -75,6 +113,10 @@ graph [
     world "Roshar"
     name "Gavilar Kholin"
     family "House Kholin"
+      monikers "Gavilar"
+      monikers "Gavilar Kholin"
+      monikers "Kholin"
+      monikers "King of Alethkar"
   ]
   node [
     id 11
@@ -82,6 +124,7 @@ graph [
     world "Roshar"
     name "Tien"
     family ""
+      monikers "Tien"
   ]
   node [
     id 12
@@ -89,6 +132,7 @@ graph [
     world "Roshar"
     name "Lirin"
     family ""
+      monikers "Lirin"
   ]
   node [
     id 13
@@ -96,6 +140,7 @@ graph [
     world "Roshar"
     name "Hesina"
     family ""
+      monikers "Hesina"
   ]
   node [
     id 14
@@ -103,6 +148,7 @@ graph [
     world "Roshar"
     name "Roshone"
     family ""
+      monikers "Roshone"
   ]
   node [
     id 15
@@ -110,6 +156,9 @@ graph [
     world "Roshar"
     name "Navani Kholin"
     family "House Kholin"
+      monikers "Navani Kholin"
+      monikers "Kholin"
+      monikers "Navani"
   ]
   node [
     id 16
@@ -117,6 +166,10 @@ graph [
     world "Roshar"
     name "Elhokar Kholin"
     family "House Kholin"
+      monikers "Elhokar"
+      monikers "Elhokar Kholin"
+      monikers "Kholin"
+      monikers "King of Alethkar"
   ]
   node [
     id 17
@@ -124,6 +177,12 @@ graph [
     world "Roshar"
     name "Dalinar Kholin"
     family "House Kholin"
+      monikers "Kholin"
+      monikers "Highprince of War"
+      monikers "Dalinar Kholin"
+      monikers "The Blackthorn"
+      monikers "Dalinar"
+      monikers "Highprince of Alethkar (formerly)"
   ]
   node [
     id 18
@@ -131,6 +190,9 @@ graph [
     world "Roshar"
     name "Helaran Davar"
     family "House Davar"
+      monikers "Helaran"
+      monikers "Davar"
+      monikers "Helaran Davar"
   ]
   node [
     id 19
@@ -138,6 +200,9 @@ graph [
     world "Roshar"
     name "Lunamor"
     family "Lunamor's family"
+      monikers "Numuhukumakiaki'aialunamor"
+      monikers "Rock"
+      monikers "Lunamor"
   ]
   node [
     id 20
@@ -145,6 +210,9 @@ graph [
     world "Roshar"
     name "Aratin Khal"
     family ""
+      monikers "Aratin Khal"
+      monikers "Khal"
+      monikers "Aratin"
   ]
   node [
     id 21
@@ -152,6 +220,9 @@ graph [
     world "Roshar"
     name "Meleran Khal"
     family ""
+      monikers "Meleran"
+      monikers "Meleran Khal"
+      monikers "Khal"
   ]
   node [
     id 22
@@ -159,6 +230,10 @@ graph [
     world "Roshar"
     name "Fen Rnamdi"
     family ""
+      monikers "Queen"
+      monikers "Rnamdi"
+      monikers "Fen Rnamdi"
+      monikers "Fen"
   ]
   node [
     id 23
@@ -166,6 +241,7 @@ graph [
     world "Roshar"
     name "Lopen"
     family ""
+      monikers "Lopen"
   ]
   node [
     id 24
@@ -173,6 +249,7 @@ graph [
     world "Roshar"
     name "Cord"
     family "Lunamor's family"
+      monikers "Cord"
   ]
   node [
     id 25
@@ -180,6 +257,7 @@ graph [
     world "Roshar"
     name "Oroden"
     family ""
+      monikers "Oroden"
   ]
   node [
     id 26
@@ -187,6 +265,7 @@ graph [
     world "Roshar"
     name "Toh"
     family ""
+      monikers "Toh"
   ]
   node [
     id 27
@@ -194,6 +273,8 @@ graph [
     world "Roshar"
     name "Rua"
     family ""
+      monikers "Rua"
+      monikers "Naco"
   ]
   node [
     id 28
@@ -201,6 +282,9 @@ graph [
     world "Roshar"
     name "Beautiful Song"
     family "Lunamor's family"
+      monikers "Beautiful"
+      monikers "Beautiful Song"
+      monikers "Song"
   ]
   node [
     id 29
@@ -208,6 +292,7 @@ graph [
     world "Roshar"
     name "Gift"
     family "Lunamor's family"
+      monikers "Gift"
   ]
   node [
     id 30
@@ -215,6 +300,7 @@ graph [
     world "Roshar"
     name "Kdralk"
     family ""
+      monikers "Kdralk"
   ]
   node [
     id 31
@@ -222,6 +308,8 @@ graph [
     world "Roshar"
     name "Kmakl"
     family ""
+      monikers "Kmakl"
+      monikers "Prince consort of Thaylenah"
   ]
   node [
     id 32
@@ -229,6 +317,7 @@ graph [
     world "Roshar"
     name "Kmakra"
     family ""
+      monikers "Kmakra"
   ]
   node [
     id 33
@@ -236,6 +325,7 @@ graph [
     world "Roshar"
     name "Kuma'tiki"
     family "Lunamor's family"
+      monikers "Kuma'tiki"
   ]
   node [
     id 34
@@ -243,6 +333,7 @@ graph [
     world "Roshar"
     name "Molinar"
     family ""
+      monikers "Molinar"
   ]
   node [
     id 35
@@ -250,6 +341,9 @@ graph [
     world "Roshar"
     name "Tuaka'li'na'calmi'nor"
     family "Lunamor's family"
+      monikers "Tuaka'li'na'calmi'nor"
+      monikers "Tuaka"
+      monikers "Song"
   ]
   node [
     id 36
@@ -257,6 +351,7 @@ graph [
     world "Roshar"
     name "Timbre"
     family ""
+      monikers "Timbre"
   ]
   node [
     id 37
@@ -264,6 +359,7 @@ graph [
     world "Roshar"
     name "Tanalan"
     family ""
+      monikers "Tanalan"
   ]
   node [
     id 38
@@ -271,6 +367,7 @@ graph [
     world "Roshar"
     name "Star"
     family "Lunamor's family"
+      monikers "Star"
   ]
   node [
     id 39
@@ -278,6 +375,7 @@ graph [
     world "Roshar"
     name "Wzmal"
     family ""
+      monikers "Wzmal"
   ]
   node [
     id 40
@@ -285,6 +383,7 @@ graph [
     world "Roshar"
     name "Tanalan's mother"
     family ""
+      monikers "Tanalan's mother"
   ]
   node [
     id 41
@@ -292,6 +391,8 @@ graph [
     world "Roshar"
     name "Tanalan's father"
     family ""
+      monikers "Tanalan"
+      monikers "Tanalan's father"
   ]
   node [
     id 42
@@ -299,6 +400,8 @@ graph [
     world "Roshar"
     name "Ruthar"
     family ""
+      monikers "Ruthar"
+      monikers "Highprince of Alethkar"
   ]
   node [
     id 43
@@ -306,6 +409,9 @@ graph [
     world "Roshar"
     name "Laral Roshone"
     family ""
+      monikers "Laral"
+      monikers "Roshone"
+      monikers "Laral Roshone"
   ]
   node [
     id 44
@@ -313,6 +419,9 @@ graph [
     world "Roshar"
     name "Malise Gevelmar"
     family "House Davar"
+      monikers "Gevelmar"
+      monikers "Malise Gevelmar"
+      monikers "Malise"
   ]
   node [
     id 45
@@ -320,6 +429,9 @@ graph [
     world "Roshar"
     name "Lin Davar"
     family "House Davar"
+      monikers "Davar"
+      monikers "Lin Davar"
+      monikers "Lin"
   ]
   node [
     id 46
@@ -327,6 +439,7 @@ graph [
     world "Roshar"
     name "Shallan's mother"
     family "House Davar"
+      monikers "Shallan's mother"
   ]
   node [
     id 47
@@ -334,6 +447,8 @@ graph [
     world "Roshar"
     name "Rock, Jr."
     family "Lunamor's family"
+      monikers "(junior)"
+      monikers "Rock, Jr."
   ]
   node [
     id 48
@@ -341,6 +456,13 @@ graph [
     world "Roshar"
     name "Stormfather"
     family ""
+      monikers "Rider of Storms"
+      monikers "Jezerezeh"
+      monikers "Spren of Storms"
+      monikers "God of Storms"
+      monikers "Stormfather"
+      monikers "Storm Rider"
+      monikers "Kelek"
   ]
   node [
     id 49
@@ -348,6 +470,8 @@ graph [
     world "Roshar"
     name "Wistiow"
     family ""
+      monikers "Wistiow"
+      monikers "Citylord"
   ]
   node [
     id 50
@@ -355,6 +479,9 @@ graph [
     world "Roshar"
     name "Rillir Roshone"
     family ""
+      monikers "Rillir"
+      monikers "Rillir Roshone"
+      monikers "Roshone"
   ]
   node [
     id 51
@@ -362,6 +489,7 @@ graph [
     world "Roshar"
     name "Eshonai"
     family ""
+      monikers "Eshonai"
   ]
   node [
     id 52
@@ -369,6 +497,9 @@ graph [
     world "Roshar"
     name "Valam"
     family ""
+      monikers "King of Jah Keved"
+      monikers "Valam"
+      monikers "Highprince of Jah Keved"
   ]
   node [
     id 53
@@ -376,6 +507,7 @@ graph [
     world "Roshar"
     name "Seeli"
     family ""
+      monikers "Seeli"
   ]
   node [
     id 54
@@ -383,6 +515,7 @@ graph [
     world "Roshar"
     name "Heb"
     family ""
+      monikers "Heb"
   ]
   node [
     id 55
@@ -390,6 +523,7 @@ graph [
     world "Roshar"
     name "Taffa"
     family ""
+      monikers "Taffa"
   ]
   node [
     id 56
@@ -397,6 +531,9 @@ graph [
     world "Roshar"
     name "Teshav Khal"
     family ""
+      monikers "Teshav Khal"
+      monikers "Khal"
+      monikers "Teshav"
   ]
   node [
     id 57
@@ -404,6 +541,7 @@ graph [
     world "Roshar"
     name "Caull"
     family ""
+      monikers "Caull"
   ]
   node [
     id 58
@@ -411,6 +549,7 @@ graph [
     world "Roshar"
     name "Taleb"
     family ""
+      monikers "Taleb"
   ]
   node [
     id 59
@@ -418,6 +557,7 @@ graph [
     world "Roshar"
     name "Waber"
     family ""
+      monikers "Waber"
   ]
   node [
     id 60
@@ -425,6 +565,10 @@ graph [
     world "Roshar"
     name "Aesudan Kholin"
     family "House Kholin"
+      monikers "Aesudan"
+      monikers "Queen of Alethkar"
+      monikers "Kholin"
+      monikers "Aesudan Kholin"
   ]
   node [
     id 61
@@ -432,6 +576,7 @@ graph [
     world "Roshar"
     name "Pattern"
     family ""
+      monikers "Pattern"
   ]
   node [
     id 62
@@ -439,6 +584,7 @@ graph [
     world "Roshar"
     name "Demid"
     family ""
+      monikers "Demid"
   ]
   node [
     id 63
@@ -446,6 +592,7 @@ graph [
     world "Roshar"
     name "Venli"
     family ""
+      monikers "Venli"
   ]
   node [
     id 64
@@ -453,6 +600,9 @@ graph [
     world "Roshar"
     name "Relis Ruthar"
     family ""
+      monikers "Relis Ruthar"
+      monikers "Ruthar"
+      monikers "Relis"
   ]
   node [
     id 65
@@ -460,6 +610,7 @@ graph [
     world "Roshar"
     name "Gevelmar"
     family ""
+      monikers "Gevelmar"
   ]
   node [
     id 66
@@ -467,6 +618,7 @@ graph [
     world "Roshar"
     name "Glys"
     family ""
+      monikers "Glys"
   ]
   node [
     id 67
@@ -474,6 +626,9 @@ graph [
     world "Roshar"
     name "Jayla Ruthar"
     family ""
+      monikers "Ruthar"
+      monikers "Jayla"
+      monikers "Jayla Ruthar"
   ]
   node [
     id 68
@@ -481,6 +636,7 @@ graph [
     world "Roshar"
     name "Redin"
     family ""
+      monikers "Redin"
   ]
   node [
     id 69
@@ -488,6 +644,9 @@ graph [
     world "Roshar"
     name "Sudi Valam"
     family ""
+      monikers "Sudi Valam"
+      monikers "Sudi"
+      monikers "Valam"
   ]
   node [
     id 70
@@ -495,6 +654,7 @@ graph [
     world "Roshar"
     name "Ivory"
     family ""
+      monikers "Ivory"
   ]
   node [
     id 71
@@ -502,6 +662,7 @@ graph [
     world "Roshar"
     name "Eshonai's mother"
     family ""
+      monikers "Eshonai's mother"
   ]
   node [
     id 72
@@ -509,6 +670,7 @@ graph [
     world "Roshar"
     name "Lopen's mother"
     family ""
+      monikers "Lopen's mother"
   ]
   node [
     id 73
@@ -516,6 +678,9 @@ graph [
     world "Roshar"
     name "Gavinor Kholin"
     family "House Kholin"
+      monikers "Gavinor Kholin"
+      monikers "Gavinor"
+      monikers "Kholin"
   ]
   node [
     id 74
@@ -523,6 +688,9 @@ graph [
     world "Roshar"
     name "General Khal"
     family ""
+      monikers "General"
+      monikers "Khal"
+      monikers "General Khal"
   ]
   node [
     id 75
@@ -530,6 +698,9 @@ graph [
     world "Roshar"
     name "Halam Khal"
     family ""
+      monikers "Halam"
+      monikers "Khal"
+      monikers "Halam Khal"
   ]
   edge [
     source 0
