@@ -468,6 +468,10 @@ def explicit_modify(ch: Character):
     elif ch.name == 'Rock':
         ch.name = 'Rock, Jr.'
         ch.common_name = "Rock, Jr."
+    elif ch.name == 'Sylphrena':
+        ch.common_name = 'Syl'
+    elif ch.name == 'Ten':
+        ch._keep = False
 
 
 def _generate_characters() -> Generator[Character, None, None]:
