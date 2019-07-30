@@ -2,10 +2,10 @@ import json
 from itertools import groupby
 from typing import Dict, Union
 
-import mwparserfromhell as mwp
 import networkx as nx
 
 from core.characters import characters
+from core.config import FamilyNetworkConfig
 from utils.logs import create_logger
 from utils.paths import gml_dir, json_dir
 
@@ -15,14 +15,13 @@ logger = create_logger('csn.networks.family')
 
 def create_graph() -> nx.OrderedGraph:
     # define relevant fields for analysis
-    fields = ('parents', 'siblings', 'spouse', 'children', 'bonded')  # currently: nuclear family only
-    unused_fields = ('descendants', 'ancestors', 'family', 'relatives')
+    FIELDS = FamilyNetworkConfig.relation_fields
 
     # create graph
     G = nx.OrderedGraph()
 
-    # resolve generator
-    relevant_chars = set(c for c in characters if any(f in c.relatives for f in fields))
+    # narrow down selection of characters
+    relevant_chars = set(c for c in characters if any(f in c.relatives for f in FIELDS))
 
     # restructure character list into efficient data structures to reduce complexity
     names = {c.name: c for c in relevant_chars}
@@ -43,7 +42,7 @@ def create_graph() -> nx.OrderedGraph:
             continue
 
         # loop through character's family connections
-        for relations in (char.relatives[k] for k in fields if k in char.relatives):
+        for relations in (char.relatives[k] for k in FIELDS if k in char.relatives):
             for relation in relations:
                 # get potential full name
                 relation_forename = relation.split(' ')[0]
@@ -87,7 +86,7 @@ def create_graph() -> nx.OrderedGraph:
     return G
 
 
-def filter_graph(G: nx.Graph, min_component_size: int = 1) -> nx.Graph:
+def filter_graph(G: nx.Graph, min_component_size: int = FamilyNetworkConfig.default_min_component_size) -> nx.Graph:
     # create copy of input graph
     G = G.copy()
 

@@ -6,6 +6,7 @@ import networkx as nx
 import yaml
 
 from core.characters import characters, lookup
+from core.config import InteractionNetworkConfig
 from core.constants import book_keys, titles
 from core.disambiguation import disambiguate_name, disambiguate_title, verify_presence
 from utils.epub import chapters
@@ -17,12 +18,10 @@ from utils.simpletypes import CharacterOccurrence, RunContext
 logger = create_logger('csn.networks.interactions')
 
 
-def create_graph(book: str, min_weight: int = 3):
+def create_graph(book: str, min_weight: int = InteractionNetworkConfig.default_min_weight):
     G = nx.Graph()
 
-    nodes = {c.id: dict(name=c.name, world=c.world)
-             for c in characters}
-    G.add_nodes_from(nodes.items())
+    G.add_nodes_from({c.id: dict(name=c.name, world=c.world) for c in characters})
 
     with (disambiguation_dir / book).with_suffix('.yml').open(mode='r') as f:
         disambiguation = yaml.load(f, yaml.Loader)
@@ -30,9 +29,10 @@ def create_graph(book: str, min_weight: int = 3):
             disambiguation = {}
 
     for chapter, tokens in chapters(book):
-        RUN_SIZE = 25
-        PREV_LINES = 4
-        NEXT_LINES = 3
+        RUN_SIZE = InteractionNetworkConfig.run_size
+        PREV_LINES = InteractionNetworkConfig.prev_cxt_lines
+        NEXT_LINES = InteractionNetworkConfig.next_cxt_lines
+
         idx = 0
 
         if chapter not in disambiguation:
@@ -43,10 +43,12 @@ def create_graph(book: str, min_weight: int = 3):
         while idx < len(tokens):
             found = []
             context = RunContext(
-                prev=[s for s in (' '.join(tokens[max(0, idx - (i*RUN_SIZE)):max(0, idx - ((i-1)*RUN_SIZE))]).strip()
+                prev=[s for s in (' '.join(tokens[max(0, idx - (i*RUN_SIZE)):
+                                                  max(0, idx - ((i-1)*RUN_SIZE))]).strip()
                       for i in range(PREV_LINES, 0, -1)) if s],
                 run=' '.join(tokens[idx:min(len(tokens), idx + RUN_SIZE)]),
-                next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i*RUN_SIZE)):min(len(tokens), idx + ((i+1)*RUN_SIZE))]).strip()
+                next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i*RUN_SIZE)):
+                                                  min(len(tokens), idx + ((i+1)*RUN_SIZE))]).strip()
                       for i in range(1, NEXT_LINES+1)) if s]
             )
 
