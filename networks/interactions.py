@@ -158,7 +158,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key not in ('mistborn/era2/bands-of-mourning', 'emperors-soul', 'shadows-for-silence', 'sixth-of-the-dusk'):
+        if key not in ('stormlight/way-of-kings',):
             continue
 
         G = create_graph(key)
