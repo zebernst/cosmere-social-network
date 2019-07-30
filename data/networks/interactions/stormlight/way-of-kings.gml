@@ -991,26 +991,14 @@ graph [
   ]
   node [
     id 165
-    label "9512"
-    name "Drummer brothers"
-    world "Roshar"
-  ]
-  node [
-    id 166
     label "10041"
     name "Laral Roshone"
     world "Roshar"
   ]
   node [
-    id 167
+    id 166
     label "10604"
     name "Ral"
-    world "Roshar"
-  ]
-  node [
-    id 168
-    label "12940"
-    name "Herdazian general"
     world "Roshar"
   ]
   edge [
@@ -1139,11 +1127,6 @@ graph [
     weight 3
   ]
   edge [
-    source 3
-    target 165
-    weight 3
-  ]
-  edge [
     source 4
     target 9
     weight 3
@@ -1216,7 +1199,7 @@ graph [
   edge [
     source 7
     target 17
-    weight 81
+    weight 82
   ]
   edge [
     source 7
@@ -1241,7 +1224,7 @@ graph [
   edge [
     source 7
     target 23
-    weight 31
+    weight 32
   ]
   edge [
     source 7
@@ -1251,7 +1234,7 @@ graph [
   edge [
     source 7
     target 33
-    weight 158
+    weight 157
   ]
   edge [
     source 7
@@ -1276,7 +1259,7 @@ graph [
   edge [
     source 7
     target 18
-    weight 255
+    weight 256
   ]
   edge [
     source 7
@@ -1305,11 +1288,6 @@ graph [
   ]
   edge [
     source 7
-    target 165
-    weight 3
-  ]
-  edge [
-    source 7
     target 147
     weight 5
   ]
@@ -1320,7 +1298,7 @@ graph [
   ]
   edge [
     source 7
-    target 166
+    target 165
     weight 8
   ]
   edge [
@@ -1332,11 +1310,6 @@ graph [
     source 7
     target 76
     weight 5
-  ]
-  edge [
-    source 7
-    target 168
-    weight 12
   ]
   edge [
     source 7
@@ -1421,7 +1394,7 @@ graph [
   edge [
     source 7
     target 22
-    weight 8
+    weight 9
   ]
   edge [
     source 7
@@ -1435,7 +1408,7 @@ graph [
   ]
   edge [
     source 7
-    target 167
+    target 166
     weight 4
   ]
   edge [
@@ -1541,12 +1514,7 @@ graph [
   edge [
     source 8
     target 9
-    weight 310
-  ]
-  edge [
-    source 8
-    target 165
-    weight 4
+    weight 308
   ]
   edge [
     source 8
@@ -1607,11 +1575,6 @@ graph [
     source 8
     target 18
     weight 6
-  ]
-  edge [
-    source 9
-    target 165
-    weight 3
   ]
   edge [
     source 9
@@ -1751,7 +1714,7 @@ graph [
   edge [
     source 12
     target 30
-    weight 286
+    weight 287
   ]
   edge [
     source 12
@@ -1782,11 +1745,6 @@ graph [
     source 12
     target 15
     weight 13
-  ]
-  edge [
-    source 12
-    target 168
-    weight 3
   ]
   edge [
     source 12
@@ -2070,7 +2028,7 @@ graph [
   ]
   edge [
     source 16
-    target 166
+    target 165
     weight 5
   ]
   edge [
@@ -2080,18 +2038,18 @@ graph [
   ]
   edge [
     source 16
-    target 167
+    target 166
     weight 6
   ]
   edge [
     source 16
     target 23
-    weight 8
+    weight 9
   ]
   edge [
     source 16
     target 22
-    weight 7
+    weight 8
   ]
   edge [
     source 16
@@ -2121,7 +2079,7 @@ graph [
   edge [
     source 16
     target 17
-    weight 8
+    weight 9
   ]
   edge [
     source 16
@@ -2166,7 +2124,7 @@ graph [
   edge [
     source 17
     target 22
-    weight 4
+    weight 5
   ]
   edge [
     source 17
@@ -2280,7 +2238,7 @@ graph [
   ]
   edge [
     source 21
-    target 166
+    target 165
     weight 4
   ]
   edge [
@@ -2316,7 +2274,7 @@ graph [
   edge [
     source 22
     target 23
-    weight 3
+    weight 4
   ]
   edge [
     source 23
@@ -2325,7 +2283,7 @@ graph [
   ]
   edge [
     source 23
-    target 166
+    target 165
     weight 5
   ]
   edge [
@@ -2446,7 +2404,7 @@ graph [
   edge [
     source 27
     target 47
-    weight 8
+    weight 9
   ]
   edge [
     source 28
@@ -2700,11 +2658,6 @@ graph [
   ]
   edge [
     source 46
-    target 168
-    weight 6
-  ]
-  edge [
-    source 46
     target 164
     weight 30
   ]
@@ -2756,7 +2709,7 @@ graph [
   edge [
     source 57
     target 58
-    weight 4
+    weight 3
   ]
   edge [
     source 59
@@ -2800,7 +2753,7 @@ graph [
   ]
   edge [
     source 65
-    target 166
+    target 165
     weight 8
   ]
   edge [
@@ -3015,7 +2968,7 @@ graph [
   ]
   edge [
     source 129
-    target 166
+    target 165
     weight 3
   ]
   edge [

@@ -474,6 +474,10 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == 'Meridas Amaram':
         ch.titles.append('Highmarshal')
+    elif ch.name == 'Drummer brothers':
+        ch._keep = False
+    elif ch.name == 'Herdazian general':
+        ch._keep = False
 
 
 def _generate_characters() -> Generator[Character, None, None]:
