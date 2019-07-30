@@ -32,12 +32,12 @@ class Character:
         self.unnamed: bool = True if 'unnamed' in infobox else False
         self.alive: bool = True if 'died' not in infobox else False
 
-        self.aliases: Optional[List[str]] = infobox.pop('aliases', [])
-        self.titles: Optional[List[str]] = infobox.pop('titles', [])
+        self.aliases: List[str] = infobox.pop('aliases', [])
+        self.titles: List[str] = infobox.pop('titles', [])
 
         self.world: Optional[str] = infobox.pop('world', None)
-        self.books: Optional[List[str]] = infobox.pop('books', [])
-        self.abilities: Optional[List[str]] = infobox.pop('abilities', [])
+        self.books: List[str] = infobox.pop('books', [])
+        self.abilities: List[str] = infobox.pop('abilities', [])
 
         self.residence: Optional[str] = infobox.pop('residence', None)
         self.nationality: Optional[str] = infobox.pop('nationality', None)
@@ -147,6 +147,25 @@ class Character:
             f"{self.name} -- {location}"
             f"{f' (' + ', '.join(physical_info) + ')' if physical_info else ''}"
         )
+
+    @property
+    def properties(self):
+        return {
+            'name': self.name,
+            'nickname': self.common_name if self.common_name != self.name else '',
+            'aliases': self.aliases,
+            'monikers': list(self.monikers),
+            'alive': self.alive,
+            'family': self.family,
+            'world': self.world,
+            'books': self.books,
+            'abilities': self.abilities,
+            'residence': self.residence,
+            'nationality': self.nationality,
+            'ethnicity': self.ethnicity,
+            'species': self.species,
+            'subspecies': self.subspecies
+        }
 
     def _parse_infobox(self, result: dict) -> dict:
         """parse the wikitext infobox for character attributes"""

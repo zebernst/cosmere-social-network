@@ -21,7 +21,8 @@ logger = create_logger('csn.networks.interactions')
 def create_graph(book: str, min_weight: int = InteractionNetworkConfig.default_min_weight):
     G = nx.Graph()
 
-    G.add_nodes_from({c.id: dict(name=c.name, world=c.world) for c in characters})
+    nodes = {c.id: c.properties for c in characters}
+    G.add_nodes_from(nodes.items())
 
     with (disambiguation_dir / book).with_suffix('.yml').open(mode='r') as f:
         disambiguation = yaml.load(f, yaml.Loader)
@@ -141,7 +142,7 @@ def save_network_gml(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
     filename = gml_dir / 'interactions' / f'{key}.gml'
     filename.parent.mkdir(parents=True, exist_ok=True)
 
-    nx.write_gml(G, str(filename))
+    nx.write_gml(G, str(filename), stringizer=lambda p: str(p) if p else "null")
     logger.info(f"GML  graph data for {key} characters written to {filename}")
 
 
@@ -157,7 +158,7 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 if __name__ == '__main__':
 
     for key in book_keys:
-        if key != 'stormlight/way-of-kings':
+        if key not in ('mistborn/era2/bands-of-mourning', 'emperors-soul', 'shadows-for-silence', 'sixth-of-the-dusk'):
             continue
 
         G = create_graph(key)

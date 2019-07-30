@@ -28,9 +28,7 @@ def create_graph() -> nx.OrderedGraph:
     monikers = {alias: c for c in relevant_chars for alias in c.monikers}
 
     # filter on characters who have family info and add nodes to graph
-    nodes = {c.id: dict(world=c.world, name=c.name, family=c.family if c.family else '', monikers=list(c.monikers))
-             for c in relevant_chars
-             if c.world is not None}
+    nodes = {c.id: c.properties for c in relevant_chars if c.world is not None}
     G.add_nodes_from(nodes.items())
     logger.debug("Added character nodes to graph.")
 
@@ -121,7 +119,7 @@ def save_network_gml(scope: str, G: Union[nx.Graph, nx.OrderedGraph]):
     filename = gml_dir / 'family' / f'{scope.replace(" ", "_").lower()}.gml'
     filename.parent.mkdir(parents=True, exist_ok=True)
 
-    nx.write_gml(G, str(filename))
+    nx.write_gml(G, str(filename), stringizer=lambda p: str(p) if p else "null")
     logger.info(f" GML graph data for {scope} characters written to {filename}")
 
 
