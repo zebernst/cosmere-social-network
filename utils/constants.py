@@ -35,6 +35,41 @@ titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'L
           'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Brightlady', 'Captain', 'Highprince',
           'Highmarshal', 'Prime')
 
+# all keys (series, era, individual books)
+all_keys = [
+    'arcanum',
+    'elantris',
+    'emperors-soul',
+    'mistborn',
+    'mistborn/era1',
+    'mistborn/era1/final-empire',
+    'mistborn/era1/well-of-ascension',
+    'mistborn/era1/hero-of-ages',
+    'mistborn/era1/secret-history',
+    'mistborn/era2',
+    'mistborn/era2/alloy-of-law',
+    'mistborn/era2/shadows-of-self',
+    'mistborn/era2/bands-of-mourning',
+    'shadows-for-silence',
+    'sixth-of-the-dusk',
+    'stormlight',
+    'stormlight/way-of-kings',
+    'stormlight/words-of-radiance',
+    'stormlight/edgedancer',
+    'stormlight/oathbringer',
+    'warbreaker',
+    'white-sand'
+]
+
+# keys for multiple books
+series_keys = [
+    'mistborn',
+    'mistborn/era1',
+    'mistborn/era2',
+    'stormlight'
+]
+
+# keys for individual books
 book_keys = [
     'arcanum',
     'elantris',
@@ -56,12 +91,6 @@ book_keys = [
     'white-sand'
 ]
 
-composite_keys = [
-    'stormlight',
-    'mistborn',
-    'mistborn/era1',
-    'mistborn/era2'
-]
 worlds = {
     'arcanum':                         None,
     'dragonsteel':                     'yolen',
