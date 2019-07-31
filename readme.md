@@ -38,11 +38,7 @@ a new terminal window, but the virtual environment will persist in the same work
 - [`csn.py`](csn.py) is the main script to manage data acquisition and network analysis, meant to be run
   via the command line.
 - [`core/characters.py`](core/characters.py) gets character data from the [wiki](https://coppermind.net).
-- [`core/constants.py`](core/constants.py) contains certain constants relating to the Cosmere and to metadata about 
-  the analysis (e.g. the list of planets in the Cosmere).
 - [`core/config.py`](core/config.py) is the file where parameters used for the analysis can be tweaked.
-- [`core/disambiguation.py`](core/disambiguation.py) is home to functions used to specify exactly which character an
-  ambiguous name or title is referring to in the text.
 - [`networks/family.py`](networks/family.py) generates a network graph with links representing 
   direct nuclear family relationships.
 - [`networks/interactions.py`](networks/interactions.py) generates a network graph with weighted links representing

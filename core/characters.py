@@ -5,7 +5,7 @@ import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from core.constants import books, cleansed_fields, demonyms, info_fields, nations, species, titles
+from utils.constants import books, cleansed_fields, demonyms, info_fields, nations, species, titles
 from utils.datastructures import CharacterLookup
 from utils.logs import create_logger
 from utils.regex import possession, punctuation
@@ -497,6 +497,8 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == 'Herdazian general':
         ch._keep = False
+    elif ch.name == 'Talenel':
+        ch.aliases.append('Talenelat')
 
 
 def _generate_characters() -> Generator[Character, None, None]:
@@ -510,9 +512,6 @@ def _generate_characters() -> Generator[Character, None, None]:
             yield char
 
 
-# provide direct access to character generator
-characters_ = _generate_characters()
-
 characters = list(_generate_characters())
 
 lookup = CharacterLookup()
@@ -522,5 +521,3 @@ for c in characters:
         name = re.sub(punctuation, '', name)
         lookup[name] = c
 
-if __name__ == '__main__':
-    print('debugging!')

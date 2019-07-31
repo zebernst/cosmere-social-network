@@ -7,8 +7,8 @@ import yaml
 
 from core.characters import characters, lookup
 from core.config import InteractionNetworkConfig
-from core.constants import book_keys, titles
-from core.disambiguation import disambiguate_name, disambiguate_title, verify_presence
+from utils.constants import book_keys, titles
+from utils.disambiguation import disambiguate_name, disambiguate_title, verify_presence
 from utils.epub import tokenize_chapters
 from utils.logs import create_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir

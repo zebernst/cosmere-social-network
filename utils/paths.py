@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from core.constants import book_keys
+from utils.constants import book_keys
 
 
 # key paths in project
