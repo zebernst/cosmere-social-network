@@ -31,7 +31,7 @@ content_map = {
 }
 
 
-def chapters(key: str):
+def tokenize_chapters(key: str):
     chapter_dir = book_dir / key / 'mobi8' / 'OEBPS'
 
     content_opf = ElementTree.parse(chapter_dir / 'content.opf').getroot()
