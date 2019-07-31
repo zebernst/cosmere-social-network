@@ -7,12 +7,12 @@ from mwparserfromhell.nodes.wikilink import Wikilink
 
 from utils.constants import books, cleansed_fields, demonyms, info_fields, nations, species, titles
 from utils.datastructures import CharacterLookup
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.regex import possession, punctuation
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
-logger = create_logger('csn.core.characters')
+logger = get_logger('csn.core.characters')
 
 
 class Character:

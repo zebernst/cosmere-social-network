@@ -6,11 +6,11 @@ import requests
 from tqdm import tqdm
 
 from utils.caching import cache
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.paths import coppermind_cache_path
 
 
-logger = create_logger('csn.utils.wiki')
+logger = get_logger('csn.utils.wiki')
 
 
 @cache(coppermind_cache_path)

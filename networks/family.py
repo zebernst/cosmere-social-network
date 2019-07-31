@@ -6,11 +6,11 @@ import networkx as nx
 
 from core.characters import characters
 from core.config import FamilyNetworkConfig
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.paths import gml_dir, json_dir
 
 
-logger = create_logger('csn.networks.family')
+logger = get_logger('csn.networks.family')
 
 
 def create_graph() -> nx.OrderedGraph:

@@ -5,10 +5,10 @@ from enum import auto, Enum
 from pathlib import Path
 from typing import Any, Union
 
-from utils.logs import create_logger
+from utils.logs import get_logger
 
 
-logger = create_logger('csn.utils.caching')
+logger = get_logger('csn.utils.caching')
 
 
 class CacheProtocol(Enum):

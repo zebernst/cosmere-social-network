@@ -3,12 +3,12 @@ from xml.etree import ElementTree
 
 from bs4 import BeautifulSoup
 
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.paths import book_dir
 from utils.regex import possession, punctuation
 
 
-logger = create_logger('csn.utils.epub')
+logger = get_logger('csn.utils.epub')
 
 content_map = {
     'arcanum':                         None,

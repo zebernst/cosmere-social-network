@@ -10,12 +10,12 @@ from core.config import InteractionNetworkConfig
 from utils.constants import book_keys, titles
 from utils.disambiguation import disambiguate_name, disambiguate_title, verify_presence
 from utils.epub import tokenize_chapters
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
 from utils.simpletypes import CharacterOccurrence, RunContext
 
 
-logger = create_logger('csn.networks.interactions')
+logger = get_logger('csn.networks.interactions')
 
 RUN_SIZE = InteractionNetworkConfig.run_size
 PREV_LINES = InteractionNetworkConfig.prev_cxt_lines

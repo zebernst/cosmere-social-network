@@ -4,12 +4,12 @@ import colorama
 
 from core.characters import Character, characters, lookup
 from utils.input import ask, clear_screen, menu, yn_question
-from utils.logs import create_logger
+from utils.logs import get_logger
 from utils.simpletypes import RunContext
 
 
 colorama.init(autoreset=True)
-logger = create_logger('csn.core.disambiguation')
+logger = get_logger('csn.core.disambiguation')
 
 _char_ids = {c.id: c for c in characters}
 
