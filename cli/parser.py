@@ -7,6 +7,9 @@ from utils.constants import all_keys
 from utils.logs import get_logger
 
 
+__all__ = ['CommandLineInterface']
+
+
 logger = get_logger('csn.cli')
 colorama.init()
 

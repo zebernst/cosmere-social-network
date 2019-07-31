@@ -1,7 +1,9 @@
 import logging
 
-from utils.paths import log_dir
+from .paths import log_dir
 
+
+__all__ = ['get_logger', 'get_active_project_loggers', 'close_file_handlers']
 
 # create shared handler
 _composite_file_hdlr = logging.FileHandler(log_dir / "csn.log", mode='w')

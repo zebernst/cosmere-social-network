@@ -3,9 +3,11 @@ from xml.etree import ElementTree
 
 from bs4 import BeautifulSoup
 
-from utils.logs import get_logger
-from utils.paths import book_dir
-from utils.regex import possession, punctuation
+from .logs import get_logger
+from .paths import book_dir
+from .regex import possession, punctuation
+
+__all__ = ['tokenize_chapters']
 
 
 logger = get_logger('csn.utils.epub')

@@ -12,6 +12,9 @@ from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
+__all__ = ['refresh', 'show', 'cleanup']
+
+
 logger = get_logger('csn.cli')
 
 

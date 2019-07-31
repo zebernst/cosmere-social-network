@@ -12,6 +12,9 @@ from utils.regex import possession, punctuation
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
+__all__ = ['Character', 'characters', 'lookup']
+
+
 logger = get_logger('csn.core.characters')
 
 
@@ -501,7 +504,7 @@ def explicit_modify(ch: Character):
         ch.aliases.append('Talenelat')
 
 
-def _generate_characters() -> Generator[Character, None, None]:
+def generate_characters() -> Generator[Character, None, None]:
     """generator wrapped over coppermind_query() in order to delay execution of http query"""
     logger.debug('Character generator initialized.')
 
@@ -512,7 +515,7 @@ def _generate_characters() -> Generator[Character, None, None]:
             yield char
 
 
-characters = list(_generate_characters())
+characters = list(generate_characters())
 
 lookup = CharacterLookup()
 for c in characters:

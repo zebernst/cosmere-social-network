@@ -2,6 +2,9 @@ from collections.abc import MutableMapping
 from typing import Any, Dict, Iterable, Iterator, List, Set, Tuple, Union
 
 
+__all__ = ['CharacterLookup']
+
+
 class CharacterLookup(MutableMapping):
 
     class _Node:

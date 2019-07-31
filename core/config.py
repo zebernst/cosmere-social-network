@@ -1,3 +1,5 @@
+__all__ = ['InteractionNetworkConfig', 'FamilyNetworkConfig']
+
 
 class InteractionNetworkConfig:
     run_size = 25  # tokens

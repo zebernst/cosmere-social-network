@@ -15,6 +15,10 @@ from utils.paths import disambiguation_dir, gml_dir, json_dir
 from utils.simpletypes import CharacterOccurrence, RunContext
 
 
+__all__ = ['book_graph', 'series_graph', 'book_progression', 'series_progression',
+           'save_network_gml', 'save_network_json']
+
+
 logger = get_logger('csn.networks.interactions')
 
 RUN_SIZE = InteractionNetworkConfig.run_size

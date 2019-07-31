@@ -3,9 +3,12 @@ from typing import Optional
 import colorama
 
 from core.characters import Character, characters, lookup
-from utils.input import ask, clear_screen, menu, yn_question
-from utils.logs import get_logger
-from utils.simpletypes import RunContext
+from .input import ask, clear_screen, menu, yn_question
+from .logs import get_logger
+from .simpletypes import RunContext
+
+
+__all__ = ['verify_presence', 'disambiguate_name', 'disambiguate_title']
 
 
 colorama.init(autoreset=True)

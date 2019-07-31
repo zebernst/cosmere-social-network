@@ -5,9 +5,12 @@ from datetime import datetime
 import requests
 from tqdm import tqdm
 
-from utils.caching import cache
-from utils.logs import get_logger
-from utils.paths import coppermind_cache_path
+from .caching import cache
+from .logs import get_logger
+from .paths import coppermind_cache_path
+
+
+__all__ = ['coppermind_query', 'extract_relevant_info']
 
 
 logger = get_logger('csn.utils.wiki')

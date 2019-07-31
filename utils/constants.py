@@ -31,6 +31,7 @@ cleansed_fields = {
 # list of world on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
+# list of titles used in the cosmere
 titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'Lady',
           'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Brightlady', 'Captain', 'Highprince',
           'Highmarshal', 'Prime')
@@ -91,6 +92,7 @@ book_keys = [
     'white-sand'
 ]
 
+# mapping of book key to world
 worlds = {
     'arcanum':                         None,
     'dragonsteel':                     'yolen',
@@ -112,6 +114,8 @@ worlds = {
     'warbreaker':                      'nalthis',
     'white-sand':                      'taldain',
 }
+
+# mapping of book title to series
 books = {
     'Arcanum Unbounded':                          'arcanum',
     'Elantris':                                   'elantris',
@@ -135,7 +139,6 @@ books = {
 }
 
 # case-insensitive mapping of demonyms for nations in the cosmere
-# todo: replace with demonym mapping from coppermind
 demonyms = {
     # Sel
     'sel':                'Selish',
@@ -307,7 +310,6 @@ demonyms = {
     'lossandin':          'Lossandin',
     'lossandins':         'Lossandin',
 }
-
 nations = {
     'Aimian':        'Aimia',
     'Alethi':        'Alethkar',
@@ -348,7 +350,6 @@ nations = {
     'Uvara':         None,
     'Veden':         'Jah Keved'
 }
-
 species = {
     # Sel
     'seon':              'Seon',

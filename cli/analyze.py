@@ -4,6 +4,9 @@ import networks.interactions
 from utils.constants import all_keys, book_keys, series_keys
 
 
+__all__ = ['relatives', 'interactions']
+
+
 def relatives(args: Namespace):
     print(args)
 
