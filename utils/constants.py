@@ -35,25 +35,33 @@ titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'L
           'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Brightlady', 'Captain', 'Highprince',
           'Highmarshal', 'Prime')
 
-book_keys = ['arcanum',
-             'elantris',
-             'emperors-soul',
-             'mistborn/era1/final-empire',
-             'mistborn/era1/well-of-ascension',
-             'mistborn/era1/hero-of-ages',
-             'mistborn/era2/alloy-of-law',
-             'mistborn/era2/shadows-of-self',
-             'mistborn/era2/bands-of-mourning',
-             'mistborn/secret-history',
-             'shadows-for-silence',
-             'sixth-of-the-dusk',
-             'stormlight/way-of-kings',
-             'stormlight/words-of-radiance',
-             'stormlight/edgedancer',
-             'stormlight/oathbringer',
-             'warbreaker',
-             'white-sand'
-             ]
+book_keys = [
+    'arcanum',
+    'elantris',
+    'emperors-soul',
+    'mistborn/era1/final-empire',
+    'mistborn/era1/well-of-ascension',
+    'mistborn/era1/hero-of-ages',
+    'mistborn/era1/secret-history',
+    'mistborn/era2/alloy-of-law',
+    'mistborn/era2/shadows-of-self',
+    'mistborn/era2/bands-of-mourning',
+    'shadows-for-silence',
+    'sixth-of-the-dusk',
+    'stormlight/way-of-kings',
+    'stormlight/words-of-radiance',
+    'stormlight/edgedancer',
+    'stormlight/oathbringer',
+    'warbreaker',
+    'white-sand'
+]
+
+composite_keys = [
+    'stormlight',
+    'mistborn',
+    'mistborn/era1',
+    'mistborn/era2'
+]
 worlds = {
     'arcanum':                         None,
     'dragonsteel':                     'yolen',
@@ -62,10 +70,10 @@ worlds = {
     'mistborn/era1/final-empire':      'scadrial',
     'mistborn/era1/well-of-ascension': 'scadrial',
     'mistborn/era1/hero-of-ages':      'scadrial',
+    'mistborn/era1/secret-history':    'scadrial',
     'mistborn/era2/alloy-of-law':      'scadrial',
     'mistborn/era2/shadows-of-self':   'scadrial',
     'mistborn/era2/bands-of-mourning': 'scadrial',
-    'mistborn/secret-history':         'scadrial',
     'shadows-for-silence':             'threnody',
     'sixth-of-the-dusk':               'first of the sun',
     'stormlight/way-of-kings':         'roshar',

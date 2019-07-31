@@ -17,10 +17,10 @@ content_map = {
     'mistborn/era1/final-empire':      None,  # currently still has DRM
     'mistborn/era1/well-of-ascension': None,  # currently still has DRM
     'mistborn/era1/hero-of-ages':      re.compile(r"^x_(frontmatter03|part\d+(chapter\d+)?|backmatter01)"),
+    'mistborn/era1/secret-history':    re.compile(r"^x_book([3-9]|[1-2][0-9]|[3][0-4])"),
     'mistborn/era2/alloy-of-law':      re.compile(r"^x_(chapter\d+|(pro|epi)logue)"),
     'mistborn/era2/shadows-of-self':   re.compile(r"^x_(chapter\d+|(pro|epi)logue)"),
     'mistborn/era2/bands-of-mourning': re.compile(r"^x_(chapter\d+|(pro|epi)logue)"),
-    'mistborn/secret-history':         re.compile(r"^x_book([3-9]|[1-2][0-9]|[3][0-4])"),
     'shadows-for-silence':             re.compile(r"^x_Shadows-for-Silence"),
     'sixth-of-the-dusk':               re.compile(r"^x_Sixth-of-the-Dusk"),
     'stormlight/way-of-kings':         re.compile(r"^x_([cp]\d+|pro|epi)"),
