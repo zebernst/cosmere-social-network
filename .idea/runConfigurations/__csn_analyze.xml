@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="&gt; csn network -t family" type="PythonConfigurationType" factoryName="Python" folderName="cli">
+  <configuration default="false" name="&gt; csn analyze" type="PythonConfigurationType" factoryName="Python" folderName="cli">
     <module name="Cosmere Social Network" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -13,7 +13,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/csn.py" />
-    <option name="PARAMETERS" value="network --type=family" />
+    <option name="PARAMETERS" value="analyze" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

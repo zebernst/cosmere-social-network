@@ -208,16 +208,3 @@ def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
     with filename.open(mode='w') as f:
         json.dump(nx.node_link_data(G), f)
     logger.info(f"JSON graph data for {key} characters written to {filename}")
-
-
-if __name__ == '__main__':
-
-    for key in book_keys:
-        if key not in ('stormlight/way-of-kings',):
-            continue
-
-        graph = book_graph(key)
-        save_network_gml(key, graph)
-        save_network_json(key, graph)
-        print('done!')
-
