@@ -10,7 +10,7 @@ from utils.caching import detect_protocol, load_cache
 from utils.constants import book_keys, series_keys
 from utils.disambiguation import disambiguate_book
 from utils.logs import close_file_handlers, get_active_project_loggers, get_logger
-from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
+import utils.paths as paths
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
@@ -29,9 +29,9 @@ def refresh(args: Namespace):
             logger.info("Refreshing coppermind.net character data.")
 
             # cache already exists
-            if coppermind_cache_path.is_file():
-                old_data = load_cache(coppermind_cache_path, protocol=detect_protocol(coppermind_cache_path))
-                coppermind_cache_path.unlink()
+            if paths.coppermind_cache_path.is_file():
+                old_data = load_cache(paths.coppermind_cache_path, protocol=detect_protocol(paths.coppermind_cache_path))
+                paths.coppermind_cache_path.unlink()
                 logger.debug("Cache removed.")
                 new_data = coppermind_query()
                 print("character data refreshed from coppermind.net.")
@@ -42,7 +42,7 @@ def refresh(args: Namespace):
                 if delta:
                     # TEMPORARY - cache wiki changes
                     time_str = datetime.now().isoformat(timespec="seconds")
-                    fp = (log_dir / 'deltas' / f'{time_str}.log').open('w')
+                    fp = (paths.log_dir / 'deltas' / f'{time_str}.log').open('w')
 
                     print()
                     print("wiki changes:", end="\n\n")
@@ -107,26 +107,42 @@ def refresh(args: Namespace):
 
 
 def show(args: Namespace):
-    if any(ds == args.path.lower() for ds in ('coppermind', 'characters')):
-        print("Cached coppermind.net is data located at", coppermind_cache_path)
+    if args.path.lower() == 'list':
+        for option in ('characters', 'graphs', 'gml', 'json', 'books', 'disambiguation', 'logs'):
+            print('    ' + option)
+    if args.path.lower() == 'characters':
+        print("Cached coppermind.net is data located at", paths.coppermind_cache_path)
+    elif args.path.lower() == 'gml':
+        print("Generated GML data is located at", paths.gml_dir)
+    elif args.path.lower() == 'json':
+        print("Generated JSON data is located at", paths.json_dir)
+    elif args.path.lower() == 'graphs':
+        print("Generated GML  data is located at", paths.gml_dir)
+        print("Generated JSON data is located at", paths.json_dir)
+    elif args.path.lower() == 'books':
+        print("Book files are located at", paths.book_dir)
+    elif args.path.lower() == 'disambiguation':
+        print("Disambiguation mappings are located at", paths.disambiguation_dir)
+    elif args.path.lower() == 'logs':
+        print("Logs are located at", paths.log_dir)
 
 
 def cleanup(args: Namespace):
     # remove cached data
     if 'caches' in args.action or 'all' in args.action:
-        if coppermind_cache_path.is_file():
-            coppermind_cache_path.unlink()
+        if paths.coppermind_cache_path.is_file():
+            paths.coppermind_cache_path.unlink()
         print('Removed cached coppermind.net data')
 
     # remove gml data
     if 'gml' in args.action or 'all' in args.action:
-        for file in gml_dir.glob('**/*.gml'):
+        for file in paths.gml_dir.glob('**/*.gml'):
             file.unlink()
         print('Removed generated GML network data.')
 
     # remove json data
     if 'json' in args.action or 'all' in args.action:
-        for file in json_dir.glob('**/*.json'):
+        for file in paths.json_dir.glob('**/*.json'):
             file.unlink()
         print('Removed generated JSON network data.')
 
@@ -134,7 +150,7 @@ def cleanup(args: Namespace):
     if 'logs' in args.action or 'all' in args.action:
         for l in get_active_project_loggers().values():
             close_file_handlers(l)
-        for file in log_dir.glob('**/*.log'):
+        for file in paths.log_dir.glob('**/*.log'):
             file.unlink()
         print('Removed log files.')
 

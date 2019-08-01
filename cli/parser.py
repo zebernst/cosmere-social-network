@@ -38,15 +38,16 @@ class CommandLineInterface:
         self.parser_refresh.add_argument('dataset',
                                          action='store',
                                          choices=('list', 'characters'),
-                                         metavar='dataset',
+                                         metavar='<dataset>',
                                          help="dataset to refresh ('list' for options)")
 
         self.parser_show = subparsers.add_parser(self.Command.SHOW, help='get path of specified data')
         self.parser_show.set_defaults(func=management.show)
         self.parser_show.add_argument('path',
                                       action='store',
-                                      choices=('list',),
-                                      metavar='data',
+                                      choices=('list', 'characters', 'graphs', 'gml', 'json',
+                                               'books', 'disambiguation', 'logs'),
+                                      metavar='<component>',
                                       help="desired component ('list' for options)")
 
         self.parser_cleanup = subparsers.add_parser(self.Command.CLEANUP, help='remove generated files and cached data')
@@ -54,7 +55,7 @@ class CommandLineInterface:
         self.parser_cleanup.add_argument('action',
                                          nargs='+',
                                          choices=('all', 'caches', 'gml', 'json', 'logs'),
-                                         metavar='component',
+                                         metavar='<component>',
                                          help="'all' or any combination of 'caches', 'logs', 'gml' and 'json'")
 
         self.parser_disambiguate = subparsers.add_parser(self.Command.DISAMBIGUATE,
