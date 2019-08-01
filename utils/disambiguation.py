@@ -15,7 +15,7 @@ from .logs import get_logger
 from .simpletypes import RunContext
 
 
-__all__ = ['verify_presence', 'disambiguate_name', 'disambiguate_title', 'get_character_at_position']
+__all__ = ['verify_presence', 'check_position', 'disambiguate_book']
 
 RUN_SIZE = InteractionNetworkConfig.run_size
 PREV_LINES = InteractionNetworkConfig.prev_cxt_lines
@@ -233,7 +233,7 @@ def disambiguate_book(key: str):
             yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
 
 
-def get_character_at_position(disambiguation, pos):  # todo: rename
+def check_position(disambiguation, pos):
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:

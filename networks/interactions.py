@@ -9,7 +9,7 @@ from tqdm import tqdm
 from core.characters import characters, lookup
 from core.config import InteractionNetworkConfig
 from utils.constants import book_keys, titles
-from utils.disambiguation import get_character_at_position, verify_presence
+from utils.disambiguation import check_position, verify_presence
 from utils.epub import tokenize_chapters
 from utils.exceptions import EmptyDisambiguationError, IncompleteDisambiguationError, InvalidDisambiguationError
 from utils.logs import get_logger
@@ -65,7 +65,7 @@ def chapter_graph(key: str, tokens: list, disambiguation: dict):
             if three_tokens in lookup:
                 matches = lookup[three_tokens]
                 if len(matches) > 1:
-                    char = get_character_at_position(disambiguation, pos)
+                    char = check_position(disambiguation, pos)
                 else:
                     char = matches[0] if verify_presence(key, matches[0], three_tokens) else None
                 i += 3
@@ -73,20 +73,20 @@ def chapter_graph(key: str, tokens: list, disambiguation: dict):
             elif two_tokens in lookup:
                 matches = lookup[two_tokens]
                 if len(matches) > 1:
-                    char = get_character_at_position(disambiguation, pos)
+                    char = check_position(disambiguation, pos)
                 else:
                     char = matches[0] if verify_presence(key, matches[0], two_tokens) else None
                 i += 2
 
             elif this_token in titles:
                 if next_token not in lookup and next_two_tokens not in lookup:
-                    char = get_character_at_position(disambiguation, pos)
+                    char = check_position(disambiguation, pos)
                 i += 1
 
             elif this_token in lookup:
                 matches = lookup[this_token]
                 if len(matches) > 1:
-                    char = get_character_at_position(disambiguation, pos)
+                    char = check_position(disambiguation, pos)
                 else:
                     char = matches[0] if verify_presence(key, matches[0], this_token) else None
                 i += 1
