@@ -2,13 +2,12 @@ import argparse
 
 import colorama
 
-from cli import analyze, manage
+from cli import analysis, management
 from utils.constants import all_keys
 from utils.logs import get_logger
 
 
 __all__ = ['CommandLineInterface']
-
 
 logger = get_logger('csn.cli')
 colorama.init()
@@ -20,6 +19,7 @@ class CommandLineInterface:
         REFRESH = 'refresh'
         SHOW = 'show'
         CLEANUP = 'cleanup'
+        DISAMBIGUATE = 'disambiguate'
 
         # analysis
         ANALYZE = 'analyze'
@@ -34,7 +34,7 @@ class CommandLineInterface:
 
         # management subparsers
         self.parser_refresh = subparsers.add_parser(self.Command.REFRESH, help='refresh cached data from source')
-        self.parser_refresh.set_defaults(func=manage.refresh)
+        self.parser_refresh.set_defaults(func=management.refresh)
         self.parser_refresh.add_argument('dataset',
                                          action='store',
                                          choices=('list', 'characters'),
@@ -42,7 +42,7 @@ class CommandLineInterface:
                                          help="dataset to refresh ('list' for options)")
 
         self.parser_show = subparsers.add_parser(self.Command.SHOW, help='get path of specified data')
-        self.parser_show.set_defaults(func=manage.show)
+        self.parser_show.set_defaults(func=management.show)
         self.parser_show.add_argument('path',
                                       action='store',
                                       choices=('list',),
@@ -50,12 +50,21 @@ class CommandLineInterface:
                                       help="desired component ('list' for options)")
 
         self.parser_cleanup = subparsers.add_parser(self.Command.CLEANUP, help='remove generated files and cached data')
-        self.parser_cleanup.set_defaults(func=manage.cleanup)
+        self.parser_cleanup.set_defaults(func=management.cleanup)
         self.parser_cleanup.add_argument('action',
                                          nargs='+',
                                          choices=('all', 'caches', 'gml', 'json', 'logs'),
                                          metavar='component',
                                          help="'all' or any combination of 'caches', 'logs', 'gml' and 'json'")
+
+        self.parser_disambiguate = subparsers.add_parser(self.Command.DISAMBIGUATE,
+                                                         help='preprocess books and resolve ambiguous character '
+                                                              'references prior to analysis')
+        self.parser_disambiguate.set_defaults(func=management.disambiguate)
+        self.parser_disambiguate.add_argument('key',
+                                              choices=['list'] + all_keys,
+                                              metavar='text',
+                                              help="book or series to disambiguate ('list' for options)")
 
         # analysis subparsers
         self.parse_analyze = subparsers.add_parser(self.Command.ANALYZE, help='run network analyses')
@@ -64,8 +73,9 @@ class CommandLineInterface:
                                                                 metavar='<analysis>')
 
         self.parser_analyze_relatives = analysis_subparsers.add_parser(self.Command.RELATIVES,
-                                                                       help='generate network graphs of related characters')
-        self.parser_analyze_relatives.set_defaults(func=analyze.relatives)
+                                                                       help='generate network graphs of related '
+                                                                            'characters')
+        self.parser_analyze_relatives.set_defaults(func=analysis.relatives)
         self.parser_analyze_relatives.add_argument('--format',
                                                    choices=('all', 'gml', 'json'),
                                                    default='all',
@@ -73,8 +83,9 @@ class CommandLineInterface:
                                                    help="network format ('gml', 'json', or 'all')")
 
         self.parser_analyze_interactions = analysis_subparsers.add_parser(self.Command.INTERACTIONS,
-                                                                          help='generate network graphs of character interactions')
-        self.parser_analyze_interactions.set_defaults(func=analyze.interactions)
+                                                                          help='generate network graphs of character '
+                                                                               'interactions')
+        self.parser_analyze_interactions.set_defaults(func=analysis.interactions)
         self.parser_analyze_interactions.add_argument('key',
                                                       choices=['list'] + all_keys,
                                                       metavar='text',

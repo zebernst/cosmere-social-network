@@ -19,13 +19,13 @@ def interactions(args: Namespace):
     else:
         if args.key in book_keys:
             if args.discretize:
-                graph = networks.interactions.book_progression(args.key)
+                graph = networks.interactions.discrete_book_graph(args.key)
             else:
                 graph = networks.interactions.book_graph(args.key)
 
         elif args.key in series_keys:
             if args.discretize:
-                graph = networks.interactions.series_progression(args.key)
+                graph = networks.interactions.discrete_series_graph(args.key)
             else:
                 graph = networks.interactions.series_graph(args.key)
         else:

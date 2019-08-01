@@ -7,12 +7,14 @@ from itertools import groupby
 import colorama
 
 from utils.caching import detect_protocol, load_cache
-from utils.logs import close_file_handlers, get_logger, get_active_project_loggers
+from utils.constants import book_keys, series_keys
+from utils.disambiguation import disambiguate_book
+from utils.logs import close_file_handlers, get_active_project_loggers, get_logger
 from utils.paths import coppermind_cache_path, gml_dir, json_dir, log_dir
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
-__all__ = ['refresh', 'show', 'cleanup']
+__all__ = ['refresh', 'show', 'cleanup', 'disambiguate']
 
 
 logger = get_logger('csn.cli')
@@ -135,3 +137,18 @@ def cleanup(args: Namespace):
         for file in log_dir.glob('**/*.log'):
             file.unlink()
         print('Removed log files.')
+
+
+def disambiguate(args: Namespace):
+    # ensure that disambiguation file exists
+    if args.key in series_keys:
+        keys = [k for k in book_keys if k.startswith(args.key)]
+    elif args.key in book_keys:
+        keys = [args.key]
+    else:
+        print('unknown key!')
+        return
+
+    for key in keys:
+        disambiguate_book(key)
+
