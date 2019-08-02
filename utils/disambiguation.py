@@ -60,7 +60,7 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
         return matches[0]
 
 
-def clarify_list(name: str, matches: list) -> Optional[Character]:
+def clarify_list(name: str, matches: list, context: RunContext, pos: int) -> Optional[Character]:
     response = menu(prompt=f'Ambiguous reference found for "{name}"! Please choose the correct character.',
                     options=[f"  {i + 1}: {c.details}" for i, c in enumerate(matches)]
                             + [f"  o: The correct character is not listed.",
@@ -73,11 +73,13 @@ def clarify_list(name: str, matches: list) -> Optional[Character]:
         return None
     elif response.startswith('o'):
         ch = char_search("Type the name of the character the keyword is referring to: ")
-        logger.debug(f'Matched ambiguous reference from "{name}", identified manually as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+                     f'identified manually as {repr(ch)}.')
         return ch
     else:
         ch = matches[int(response) - 1]
-        logger.debug(f'Matched ambiguous reference from "{name}", identified from list as {repr(ch)}.')
+        logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+                     f'identified from list as {repr(ch)}.')
         return ch
 
 
@@ -105,14 +107,14 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
         local = filter_present(key, name)
         if len(local) == 1:
             char = local[0]
-            logger.debug(f'Matched ambiguous reference from "{name}", identified automatically as '
-                         f'{repr(char)} with presence in {key}.')
+            logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+                         f'identified automatically as {repr(char)} with presence in {key}.')
         elif len(local) > 1:
             save = True
             print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.prev))
             print(colorama.Style.BRIGHT + context.run)
             print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.next))
-            char = clarify_list(name, local)
+            char = clarify_list(name, local, context, pos)
             clear_screen()
         else:
             char = None
@@ -142,7 +144,8 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
 
         clear_screen()
         if char is not None:
-            logger.debug(f'Matched ambiguous reference from "{title}", identified manually as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference from "{title}" at {context.chapter}:{pos}, '
+                         f'identified manually as {repr(char)}.')
 
         _save(pos, char, disambiguation)
         return char
@@ -168,7 +171,8 @@ def disambiguate_book(key: str):
         idx = 0
         while idx < len(tokens):
             found = []
-            context = RunContext(prev=[s for s in (' '.join(tokens[max(0, idx - (i * RUN_SIZE)):
+            context = RunContext(chapter=chapter,
+                                 prev=[s for s in (' '.join(tokens[max(0, idx - (i * RUN_SIZE)):
                                                                    max(0, idx - ((i - 1) * RUN_SIZE))]).strip()
                                                    for i in range(PREV_LINES, 0, -1)) if s],
                                  run=' '.join(tokens[idx:min(len(tokens), idx + RUN_SIZE)]),
