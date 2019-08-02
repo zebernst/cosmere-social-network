@@ -13,11 +13,17 @@ def interactions(args: Namespace):
     from utils.constants import all_keys, book_keys, series_keys
 
     if args.key.lower() == 'list':
+        print('    cosmere')
         for key in all_keys:
             print('    ' + key)
         print(args)
     else:
-        if args.key in book_keys:
+        if args.key == 'cosmere':
+            if args.discretize:
+                print("Chapter-by-chapter graphs cannot be produced across series!")
+            else:
+                graph = networks.interactions.cosmere_graph()
+        elif args.key in book_keys:
             if args.discretize:
                 graph = networks.interactions.discrete_book_graph(args.key)
             else:

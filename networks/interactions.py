@@ -17,7 +17,7 @@ from utils.paths import disambiguation_dir, gml_dir, json_dir
 from utils.simpletypes import CharacterOccurrence
 
 
-__all__ = ['book_graph', 'series_graph', 'discrete_book_graph', 'discrete_series_graph',
+__all__ = ['book_graph', 'series_graph', 'discrete_book_graph', 'discrete_series_graph', 'cosmere_graph',
            'save_network_gml', 'save_network_json']
 
 logger = get_logger('csn.networks.interactions')
@@ -162,6 +162,17 @@ def series_graph(series: str):
     G.add_nodes_from(nodes.items())
 
     for book in (b for b in book_keys if b.startswith(series)):
+        sG = book_graph(book, min_weight=0)
+        combine_edges(G, sG)
+
+    return G
+
+
+def cosmere_graph():
+    G = nx.Graph()
+    G.add_nodes_from(nodes.items())
+
+    for book in book_keys:
         sG = book_graph(book, min_weight=0)
         combine_edges(G, sG)
 

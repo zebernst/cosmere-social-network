@@ -104,7 +104,7 @@ class CommandLineInterface:
                                                                                'interactions')
         self.parser_analyze_interactions.set_defaults(func=analysis.interactions)
         self.parser_analyze_interactions.add_argument('key',
-                                                      choices=['list'] + all_keys,
+                                                      choices=['list', 'cosmere'] + all_keys,
                                                       metavar='text',
                                                       help="book or series to analyze ('list' for options)")
         self.parser_analyze_interactions.add_argument('--format',
