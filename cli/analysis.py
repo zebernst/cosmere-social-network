@@ -1,8 +1,5 @@
 from argparse import Namespace
 
-import networks.interactions
-from utils.constants import all_keys, book_keys, series_keys
-
 
 __all__ = ['relatives', 'interactions']
 
@@ -12,6 +9,9 @@ def relatives(args: Namespace):
 
 
 def interactions(args: Namespace):
+    import networks.interactions
+    from utils.constants import all_keys, book_keys, series_keys
+
     if args.key.lower() == 'list':
         for key in all_keys:
             print('    ' + key)

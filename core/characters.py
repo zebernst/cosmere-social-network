@@ -76,7 +76,7 @@ class Character:
             self.name = re.sub(r"\s\([\w\s]+\)", '', self.name)
 
         if self._keep:
-            logger.debug(f"Created  {self.name} ({self.world if self.world else 'Unknown'}).")
+            logger.debug(f"Created {self.name} ({self.world if self.world else 'Unknown'}).")
         else:
             logger.debug(f"Ignored {self.name} ({self.world if self.world else 'Unknown'}).")
 
@@ -192,7 +192,6 @@ class Character:
                 text = l.text if l.text else l.title
                 wikicode.replace(l, Wikilink(text))
 
-            # todo
             return wikicode
 
         def parse_names(wikicode: mwp.wikicode.Wikicode):

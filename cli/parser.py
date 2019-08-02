@@ -10,7 +10,7 @@ from utils.logs import get_logger
 __all__ = ['CommandLineInterface']
 
 logger = get_logger('csn.cli')
-colorama.init()
+colorama.init(autoreset=True)
 
 
 class CommandLineInterface:

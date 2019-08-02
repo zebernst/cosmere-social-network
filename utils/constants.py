@@ -346,7 +346,7 @@ nations = {
     'Teo':           'Teod',
     'Terris':        'Terris',
     'Thaylen':       'Thaylenah',
-    'Unkalaki':      'Horneater Peaks',  # todo: do horneaters have an official nation?
+    'Unkalaki':      'Horneater Peaks',
     'Uvara':         None,
     'Veden':         'Jah Keved'
 }

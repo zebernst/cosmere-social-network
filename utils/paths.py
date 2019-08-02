@@ -1,11 +1,8 @@
 from pathlib import Path
 
-from .constants import book_keys
-
 
 __all__ = ['root_dir', 'site_dir', 'log_dir', 'data_dir', 'cache_dir', 'book_dir', 'disambiguation_dir',
            'coppermind_cache_path', 'gml_dir', 'json_dir']
-
 
 # key paths in project
 root_dir: Path = Path(__file__).parent.parent

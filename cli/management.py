@@ -1,17 +1,8 @@
-import difflib
-import operator
 from argparse import Namespace
-from datetime import datetime
-from itertools import groupby
 
 import colorama
 
-from utils.caching import detect_protocol, load_cache
-from utils.constants import book_keys, series_keys
-from utils.disambiguation import disambiguate_book
-from utils.logs import close_file_handlers, get_active_project_loggers, get_logger
-import utils.paths as paths
-from utils.wiki import coppermind_query, extract_relevant_info
+from utils.logs import get_logger
 
 
 __all__ = ['refresh', 'show', 'cleanup', 'disambiguate']
@@ -21,6 +12,15 @@ logger = get_logger('csn.cli')
 
 
 def refresh(args: Namespace):
+    import difflib
+    import operator
+    from datetime import datetime
+    from itertools import groupby
+
+    from utils import paths
+    from utils.caching import detect_protocol, load_cache
+    from utils.wiki import coppermind_query, extract_relevant_info
+
     if args.dataset.lower() == 'list':
         print('    characters                   refreshes the character data from coppermind.net')
     else:
@@ -30,7 +30,8 @@ def refresh(args: Namespace):
 
             # cache already exists
             if paths.coppermind_cache_path.is_file():
-                old_data = load_cache(paths.coppermind_cache_path, protocol=detect_protocol(paths.coppermind_cache_path))
+                old_data = load_cache(paths.coppermind_cache_path,
+                                      protocol=detect_protocol(paths.coppermind_cache_path))
                 paths.coppermind_cache_path.unlink()
                 logger.debug("Cache removed.")
                 new_data = coppermind_query()
@@ -85,13 +86,13 @@ def refresh(args: Namespace):
                                 fp.writelines(f"{s}\n" for s in diff)
                                 for line in diff:
                                     if line.startswith('-') and not line.startswith('---'):
-                                        print(f"{colorama.Fore.RED}{line}{colorama.Fore.RESET}")
+                                        print(f"{colorama.Fore.RED}{line}")
                                     elif line.startswith('+') and not line.startswith('+++'):
-                                        print(f"{colorama.Fore.GREEN}{line}{colorama.Fore.RESET}")
+                                        print(f"{colorama.Fore.GREEN}{line}")
                                     elif line.startswith('@@'):
-                                        print(f"{colorama.Fore.CYAN}{line}{colorama.Fore.RESET}")
+                                        print(f"{colorama.Fore.CYAN}{line}")
                                     elif line.startswith(' '):
-                                        print(f"{colorama.Style.DIM}{line}{colorama.Style.NORMAL}")
+                                        print(f"{colorama.Style.DIM}{line}")
                                     else:
                                         print(line)
                                 print(end="\n\n")
@@ -107,10 +108,12 @@ def refresh(args: Namespace):
 
 
 def show(args: Namespace):
+    from utils import paths
+
     if args.path.lower() == 'list':
         for option in ('characters', 'graphs', 'gml', 'json', 'books', 'disambiguation', 'logs'):
             print('    ' + option)
-    if args.path.lower() == 'characters':
+    elif args.path.lower() == 'characters':
         print("Cached coppermind.net is data located at", paths.coppermind_cache_path)
     elif args.path.lower() == 'gml':
         print("Generated GML data is located at", paths.gml_dir)
@@ -128,6 +131,9 @@ def show(args: Namespace):
 
 
 def cleanup(args: Namespace):
+    from utils import paths
+    from utils.logs import get_active_project_loggers, close_file_handlers
+
     # remove cached data
     if 'caches' in args.action or 'all' in args.action:
         if paths.coppermind_cache_path.is_file():
@@ -156,6 +162,9 @@ def cleanup(args: Namespace):
 
 
 def disambiguate(args: Namespace):
+    from utils.constants import series_keys, book_keys
+    from utils.disambiguation import disambiguate_book
+
     # ensure that disambiguation file exists
     if args.key in series_keys:
         keys = [k for k in book_keys if k.startswith(args.key)]
