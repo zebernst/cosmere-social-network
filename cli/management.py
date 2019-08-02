@@ -42,8 +42,8 @@ def refresh(args: Namespace):
 
                 if delta:
                     # TEMPORARY - cache wiki changes
-                    time_str = datetime.now().isoformat(timespec="seconds")
-                    fp = (paths.log_dir / 'deltas' / f'{time_str}.log').open('w')
+                    time_str = datetime.now().isoformat(timespec="seconds").replace(':', '')
+                    fp = (paths.log_dir / 'deltas' / f'{time_str}.log').open('w', encoding='utf-8')
 
                     print()
                     print("wiki changes:", end="\n\n")

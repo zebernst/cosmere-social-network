@@ -12,7 +12,6 @@ from .paths import coppermind_cache_path
 
 __all__ = ['coppermind_query', 'extract_relevant_info']
 
-
 logger = get_logger('csn.utils.wiki')
 
 
@@ -38,6 +37,7 @@ def coppermind_query() -> typing.List[dict]:
             "prop":          "revisions",
             "generator":     "categorymembers",
             "rvprop":        "content|timestamp",
+            "rvslots":       "main",
             "rvsection":     "0",
             "gcmtitle":      "Category:Characters",
             "gcmprop":       "ids|title",
@@ -84,5 +84,8 @@ def extract_relevant_info(result: dict) -> dict:
         'pageid':    int(page_id) if page_id else None,
         'title':     result.get('title', ''),
         'timestamp': datetime.fromisoformat(timestamp.replace('Z', '+00:00')) if timestamp else None,
-        'content':   result.get('revisions', [{}])[0].get('content', '')
+        'content':   result.get('revisions', [{}])[0]
+                           .get('slots', {})
+                           .get('main', {})
+                           .get('content', '')
     }
