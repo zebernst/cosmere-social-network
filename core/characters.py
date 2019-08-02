@@ -5,7 +5,8 @@ import mwparserfromhell as mwp
 from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
-from utils.constants import books, cleansed_fields, demonyms, info_fields, nations, species, titles
+from .config import WikiConfig
+from utils.constants import books, cleansed_fields, demonyms, nations, species, titles
 from utils.datastructures import CharacterLookup
 from utils.logs import get_logger
 from utils.regex import possession, punctuation
@@ -374,7 +375,7 @@ class Character:
                     # clean field names and correct typos
                     key = cleansed_fields.get(key, key)
 
-                    if key not in info_fields:
+                    if key not in WikiConfig.info_fields:
                         pass
                         # continue
 

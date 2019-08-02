@@ -1,18 +1,3 @@
-# character groupings for networks
-network_scopes = ('*:all',  # all
-                  'w:roshar', 'w:nalthis', 'w:scadrial', 'w:first_of_the_sun',  # worlds
-                  'w:taldain', 'w:threnody', 'w:yolen', 'w:sel',  # worlds (continued)
-                  'b:mistborn', 'b:mistborn_1', 'b:mistborn_2', 'b:stormlight',  # book series
-                  'f:kholin',  # families
-                  )
-
-# relevant fields in the character info dictionary
-info_fields = ('name', 'aliases', 'titles',
-               'books', 'world', 'abilities', 'universe',
-               'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants', 'ancestors',
-               'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
-               'species', 'occupation', 'unnamed')
-
 # mapping of typos and alternate names of standard info fields in character dictionary
 cleansed_fields = {
     'residnece':  'residence',
@@ -38,7 +23,6 @@ titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'L
 
 # all keys (series, era, individual books)
 all_keys = [
-    'arcanum',
     'elantris',
     'emperors-soul',
     'mistborn',
@@ -72,7 +56,6 @@ series_keys = [
 
 # keys for individual books
 book_keys = [
-    'arcanum',
     'elantris',
     'emperors-soul',
     'mistborn/era1/final-empire',

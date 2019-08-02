@@ -1,4 +1,14 @@
-__all__ = ['InteractionNetworkConfig', 'FamilyNetworkConfig']
+__all__ = ['InteractionNetworkConfig', 'FamilyNetworkConfig', 'WikiConfig']
+
+
+class WikiConfig:
+    # relevant fields to parse in character info box on coppermind.net
+    info_fields = ('name', 'aliases', 'titles',
+                   'books', 'world', 'abilities', 'universe',
+                   'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants',
+                   'ancestors',
+                   'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
+                   'species', 'occupation', 'unnamed')
 
 
 class InteractionNetworkConfig:
