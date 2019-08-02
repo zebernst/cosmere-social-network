@@ -3,7 +3,7 @@ import argparse
 import colorama
 
 from cli import analysis, management
-from utils.constants import all_keys
+from utils.constants import all_keys, worlds
 from utils.logs import get_logger
 
 
@@ -64,7 +64,7 @@ class CommandLineInterface:
         self.parser_disambiguate.set_defaults(func=management.disambiguate)
         self.parser_disambiguate.add_argument('key',
                                               choices=['list'] + all_keys,
-                                              metavar='text',
+                                              metavar='<text>',
                                               help="book or series to disambiguate ('list' for options)")
 
         # analysis subparsers
@@ -82,6 +82,22 @@ class CommandLineInterface:
                                                    default='all',
                                                    metavar='fmt',
                                                    help="network format ('gml', 'json', or 'all')")
+        relative_scope = self.parser_analyze_relatives.add_mutually_exclusive_group()
+        relative_scope.add_argument('--world',
+                                    choices=['list'] + list(set(worlds.values())),
+                                    default=None,
+                                    metavar='<world>',
+                                    help="limit analysis to specified world ('list' for options)")
+        relative_scope.add_argument('--book',
+                                    choices=['list'] + all_keys,
+                                    default=None,
+                                    metavar='<text>',
+                                    help="limit analysis to specified book or series ('list' for options)")
+        relative_scope.add_argument('--family',
+                                    choices=['list', 'kholin', 'davar', 'teoish-royals', 'tekiel', 'venture'],
+                                    default=None,
+                                    metavar='<family>',
+                                    help="limit analysis to specified family or house ('list' for options)")
 
         self.parser_analyze_interactions = analysis_subparsers.add_parser(self.Command.INTERACTIONS,
                                                                           help='generate network graphs of character '
@@ -94,7 +110,7 @@ class CommandLineInterface:
         self.parser_analyze_interactions.add_argument('--format',
                                                       choices=('all', 'gml', 'json'),
                                                       default='all',
-                                                      metavar='fmt',
+                                                      metavar='<fmt>',
                                                       help="network format ('gml', 'json', or 'all', default 'all')")
         self.parser_analyze_interactions.add_argument('--discretize',
                                                       action='store_true',

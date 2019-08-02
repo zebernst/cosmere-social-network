@@ -14,3 +14,6 @@ permalink: /references
 - zoom and translate [bl.ock](https://bl.ocks.org/mbostock/3127661b6f13f9316be745e77fdfb084)
 - collision detection [bl.ock](https://bl.ocks.org/mbostock/31ce330646fa8bcb7289ff3b97aab3f5)
 - reusable d3 charts [article](https://www.toptal.com/d3-js/towards-reusable-d3-js-charts) // [pattern](https://bost.ocks.org/mike/chart)
+
+## python references
+- pygtrie
