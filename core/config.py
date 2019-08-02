@@ -8,7 +8,7 @@ class WikiConfig:
                    'family', 'parents', 'siblings', 'relatives', 'spouse', 'children', 'bonded', 'descendants',
                    'ancestors',
                    'residence', 'groups', 'nation', 'nationality', 'profession', 'ethnicity',
-                   'species', 'occupation', 'unnamed')
+                   'species', 'occupation', 'unnamed', 'died')
 
 
 class InteractionNetworkConfig:

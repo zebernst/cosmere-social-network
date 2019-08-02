@@ -6,7 +6,7 @@ from mwparserfromhell.nodes.template import Template
 from mwparserfromhell.nodes.wikilink import Wikilink
 
 from .config import WikiConfig
-from utils.constants import books, cleansed_fields, demonyms, nations, species, titles
+from utils.constants import books, demonyms, nations, species, titles
 from utils.datastructures import CharacterLookup
 from utils.logs import get_logger
 from utils.regex import possession, punctuation
@@ -14,7 +14,6 @@ from utils.wiki import coppermind_query, extract_relevant_info
 
 
 __all__ = ['Character', 'characters', 'lookup']
-
 
 logger = get_logger('csn.core.characters')
 
@@ -51,20 +50,20 @@ class Character:
 
         self.family: Optional[str] = infobox.pop('family', None)
         self.relatives: Dict[str, List[str]] = {
-            'bonded': infobox.pop('bonded', []),
-            'spouse': infobox.pop('spouse', []),
-            'parents': infobox.pop('parents', []),
-            'children': infobox.pop('children', []),
-            'siblings': infobox.pop('siblings', []),
-            'ancestors': infobox.pop('ancestors', []),
+            'bonded':      infobox.pop('bonded', []),
+            'spouse':      infobox.pop('spouse', []),
+            'parents':     infobox.pop('parents', []),
+            'children':    infobox.pop('children', []),
+            'siblings':    infobox.pop('siblings', []),
+            'ancestors':   infobox.pop('ancestors', []),
             'descendants': infobox.pop('descendants', []),
-            'others': infobox.pop('relatives', [])
+            'others':      infobox.pop('relatives', [])
         }
 
         self.misc = {
             # todo: fully parse these fields
             'profession': infobox.pop('profession', None),
-            'groups': infobox.pop('groups', '')
+            'groups':     infobox.pop('groups', '')
         }
 
         # discard unofficial character pages
@@ -155,20 +154,20 @@ class Character:
     @property
     def properties(self):
         return {
-            'name': self.name,
-            'nickname': self.common_name if self.common_name != self.name else '',
-            'aliases': self.aliases,
-            'monikers': list(self.monikers),
-            'alive': self.alive,
-            'family': self.family,
-            'world': self.world,
-            'books': self.books,
-            'abilities': self.abilities,
-            'residence': self.residence,
+            'name':        self.name,
+            'nickname':    self.common_name if self.common_name != self.name else '',
+            'aliases':     self.aliases,
+            'monikers':    list(self.monikers),
+            'alive':       self.alive,
+            'family':      self.family,
+            'world':       self.world,
+            'books':       self.books,
+            'abilities':   self.abilities,
+            'residence':   self.residence,
             'nationality': self.nationality,
-            'ethnicity': self.ethnicity,
-            'species': self.species,
-            'subspecies': self.subspecies
+            'ethnicity':   self.ethnicity,
+            'species':     self.species,
+            'subspecies':  self.subspecies
         }
 
     def _parse_infobox(self, result: dict) -> dict:
@@ -373,11 +372,22 @@ class Character:
                         key = key[:-4]
 
                     # clean field names and correct typos
-                    key = cleansed_fields.get(key, key)
+                    key = {
+                        'residnece':  'residence',
+                        'residency':  'residence',
+                        'nantion':    'nationality',
+                        'nation':     'nationality',
+                        'group':      'groups',
+                        'nickname':   'aliases',
+                        'powers':     'abilities',
+                        'title':      'titles',
+                        'occupation': 'profession',
+                        'dead':       'died',
+                        'death':      'died'
+                    }.get(key, key)
 
                     if key not in WikiConfig.info_fields:
-                        pass
-                        # continue
+                        continue
 
                     # sanitize and process specific fields
                     elif key == 'books':
@@ -407,7 +417,8 @@ class Character:
                     elif key == 'family':
                         val = parse_family(val)
 
-                    elif key in ('bonded', 'spouse', 'parents', 'children', 'siblings', 'ancestors', 'descendants', 'relatives'):
+                    elif key in ('bonded', 'spouse', 'parents', 'children', 'siblings',
+                                 'ancestors', 'descendants', 'relatives'):
                         val = parse_relatives(val)
 
                     elif key in ('titles', 'aliases', 'name'):
@@ -523,4 +534,3 @@ for c in characters:
         name = re.sub(possession, '', name)
         name = re.sub(punctuation, '', name)
         lookup[name] = c
-

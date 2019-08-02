@@ -1,19 +1,4 @@
-# mapping of typos and alternate names of standard info fields in character dictionary
-cleansed_fields = {
-    'residnece':  'residence',
-    'residency':  'residence',
-    'nantion':    'nationality',
-    'nation':     'nationality',
-    'group':      'groups',
-    'nickname':   'aliases',
-    'powers':     'abilities',
-    'title':      'titles',
-    'occupation': 'profession',
-    'dead':       'died',
-    'death':      'died'
-}
-
-# list of world on which cosmere novels take place
+# list of worlds on which cosmere novels take place
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
 # list of titles used in the cosmere
