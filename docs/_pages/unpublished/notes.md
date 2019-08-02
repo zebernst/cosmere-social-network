@@ -1,0 +1,3 @@
+- excluding using gods names as swears / referring to them without knowing them (stormfather, jezerezeh, kelek)
+- included possession as interaction
+- min weight
