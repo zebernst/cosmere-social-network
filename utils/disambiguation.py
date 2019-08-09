@@ -99,7 +99,8 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous reference using disambiguation, identified automatically as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, '
+                         f'identified automatically as {repr(char)}.')
         return char
 
     else:
@@ -128,7 +129,8 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous reference using disambiguation, identified automatically as {repr(char)}.')
+            logger.debug(f'Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, '
+                         f'identified automatically as {repr(char)}.')
 
         return char
 
@@ -239,11 +241,7 @@ def disambiguate_book(key: str):
 
 def check_position(disambiguation, pos):
     if pos in disambiguation:
-        char = _recall(pos, disambiguation)
-        if char is not None:
-            logger.debug(f'Matched ambiguous reference using disambiguation, identified automatically as {repr(char)}.')
-
-        return char
+        return _recall(pos, disambiguation)
     else:
         raise AmbiguousReferenceError(f"Reference at position {pos} not found in disambiguation. "
                                       f"Please run disambiguation again.")
