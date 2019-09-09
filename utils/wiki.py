@@ -38,11 +38,11 @@ def coppermind_query() -> typing.List[dict]:
             "generator":     "categorymembers",
             "rvprop":        "content|timestamp",
             "rvslots":       "main",
-            "rvsection":     "0",
+            "rvsection":     0,
             "gcmtitle":      "Category:Characters",
             "gcmprop":       "ids|title",
             "gcmtype":       "page",
-            "gcmlimit":      "50",
+            "gcmlimit":      50,
             "formatversion": 2
         }
         continue_data = {}
