@@ -20,7 +20,7 @@ def menu(prompt: str, options: list, validator: Callable[[str], bool], error: st
 
 def ask(prompt: str, validator: Callable[[str], bool], error: str = None):
     if prompt:
-        print(prompt + " ('#' to cancel)")
+        print(prompt + " ('#' if not a character)")
     response = input("> ")
     while not (validator(response) or response == '#'):
         if error:

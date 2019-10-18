@@ -112,9 +112,9 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
                          f'identified automatically as {repr(char)} with presence in {key}.')
         elif len(local) > 1:
             save = True
-            print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.prev))
-            print(colorama.Style.BRIGHT + context.run)
-            print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.next))
+            print(context.prev)
+            print(context.run)
+            print(context.next)
             char = clarify_list(name, local, context, pos)
             clear_screen()
         else:
@@ -135,14 +135,11 @@ def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunC
         return char
 
     else:
-        print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.prev))
-        print(colorama.Style.BRIGHT + context.run)
-        print(colorama.Fore.LIGHTBLACK_EX + '\n'.join(context.next))
+        print(context.prev)
+        print(context.run)
+        print(context.next)
 
-        if yn_question(f'Ambiguous reference found for "{title}". Does this refer to a character?'):
-            char = char_search(f"Who does this refer to?")
-        else:
-            char = None
+        char = char_search(f'Ambiguous reference found for "{title}". Who does this refer to?')
 
         clear_screen()
         if char is not None:
@@ -177,7 +174,7 @@ def disambiguate_book(key: str):
                                  prev=[s for s in (' '.join(tokens[max(0, idx - (i * RUN_SIZE)):
                                                                    max(0, idx - ((i - 1) * RUN_SIZE))]).strip()
                                                    for i in range(PREV_LINES, 0, -1)) if s],
-                                 run=' '.join(tokens[idx:min(len(tokens), idx + RUN_SIZE)]),
+                                 run=tokens[idx:min(len(tokens), idx + RUN_SIZE)],
                                  next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i * RUN_SIZE)):
                                                                    min(len(tokens),
                                                                        idx + ((i + 1) * RUN_SIZE))]).strip()
@@ -197,24 +194,28 @@ def disambiguate_book(key: str):
                 three_tokens = two_tokens + ' ' + third_token
 
                 if three_tokens in lookup:
+                    ctx = context.highlight(i, 3)
                     i += 3
-                    if disambiguate_name(key, three_tokens, disambiguation[chapter], pos, context) is not None:
+                    if disambiguate_name(key, three_tokens, disambiguation[chapter], pos, ctx) is not None:
                         found.append(i)
 
                 elif two_tokens in lookup:
+                    ctx = context.highlight(i, 2)
                     i += 2
-                    if disambiguate_name(key, two_tokens, disambiguation[chapter], pos, context) is not None:
+                    if disambiguate_name(key, two_tokens, disambiguation[chapter], pos, ctx) is not None:
                         found.append(i)
 
                 elif this_token in constants.titles:
+                    ctx = context.highlight(i, 1)
                     i += 1
                     if next_token not in lookup and next_two_tokens not in lookup:
-                        if disambiguate_title(this_token, disambiguation[chapter], pos, context) is not None:
+                        if disambiguate_title(this_token, disambiguation[chapter], pos, ctx) is not None:
                             found.append(i)
 
                 elif this_token in lookup:
+                    ctx = context.highlight(i, 1)
                     i += 1
-                    if disambiguate_name(key, this_token, disambiguation[chapter], pos, context) is not None:
+                    if disambiguate_name(key, this_token, disambiguation[chapter], pos, ctx) is not None:
                         found.append(i)
 
                 else:
