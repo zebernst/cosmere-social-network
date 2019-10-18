@@ -47,7 +47,7 @@ def tokenize_chapters(key: str):
     for chapter, path in files:
         with path.open(encoding='utf-8') as f:
             soup = BeautifulSoup(f.read(), 'lxml')
-            text = '\n'.join([e.text for e in soup.find_all('p', text=True)])
+            text = '\n'.join([e.text for e in soup.find_all('p')])
             text = re.sub(possession, '', text)
             text = re.sub(punctuation, '', text)
             tokens = [t for t in re.split(r'[\n\s—]+', text) if t]
