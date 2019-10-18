@@ -2,9 +2,10 @@
 cosmere_planets = ('roshar', 'nalthis', 'scadrial', 'first of the sun', 'taldain', 'threnody', 'yolen', 'sel')
 
 # list of titles used in the cosmere
-titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'Lady',
+titles = ('King', 'Queen', 'Prince', 'Princess', 'Baron', 'Baroness', 'Lord', 'Lady', 'Elder',
           'Master', 'Miss', 'Mister', 'Brightness', 'Brightlord', 'Brightlady', 'Captain', 'Highprince',
-          'Highmarshal', 'Prime')
+          'Highmarshal', 'Prime',
+          'Father', 'Mother', 'Uncle', 'Aunt', 'Grandfather', 'Grandmother', 'Cousin', 'Son', 'Daughter')
 
 # all keys (series, era, individual books)
 all_keys = [

@@ -33,7 +33,7 @@ class Character:
         self.common_name: str = infobox.pop('common_name', '')
         self.surname: str = infobox.pop('surname', '')
         self.unnamed: bool = True if 'unnamed' in infobox else False
-        self.alive: bool = True if 'died' not in infobox else False
+        self.living: bool = False if 'died' in infobox else True
 
         self.aliases: List[str] = infobox.pop('aliases', [])
         self.titles: List[str] = infobox.pop('titles', [])
@@ -143,7 +143,7 @@ class Character:
         physical_info = []
         if species_ethnicity:
             physical_info.append(species_ethnicity)
-        if not self.alive:
+        if not self.living:
             physical_info.append("deceased")
 
         return (
@@ -158,7 +158,7 @@ class Character:
             'nickname':    self.common_name if self.common_name != self.name else '',
             'aliases':     self.aliases,
             'monikers':    list(self.monikers),
-            'alive':       self.alive,
+            'living':      self.living,
             'family':      self.family,
             'world':       self.world,
             'books':       self.books,
