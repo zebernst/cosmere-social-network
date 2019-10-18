@@ -513,6 +513,8 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == 'Talenel':
         ch.aliases.append('Talenelat')
+    elif ch.name == 'Beautiful Song':
+        ch.common_name = ''
 
 
 def generate_characters() -> Generator[Character, None, None]:
@@ -531,6 +533,8 @@ characters = list(generate_characters())
 lookup = CharacterLookup()
 for c in characters:
     for name in c.monikers:
+        if re.search(possession, name):
+            lookup[name] = c
         name = re.sub(possession, '', name)
         name = re.sub(punctuation, '', name)
         lookup[name] = c

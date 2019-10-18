@@ -41,9 +41,8 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
                    error="Character not found.")
 
     if response is None:
-        exit(1)
-
-    if response in lookup:
+        return None
+    elif response in lookup:
         matches = lookup[response]
     else:
         matches = lookup[response:]
@@ -72,15 +71,15 @@ def clarify_list(name: str, matches: list, context: RunContext, pos: int) -> Opt
     if response.startswith('x'):
         return None
     elif response.startswith('o'):
-        ch = char_search("Type the name of the character the keyword is referring to: ")
+        char = char_search("Type the name of the character the keyword is referring to: ")
         logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
-                     f'identified manually as {repr(ch)}.')
-        return ch
+                     f'identified manually as {repr(char)}.')
+        return char
     else:
-        ch = matches[int(response) - 1]
+        char = matches[int(response) - 1]
         logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
-                     f'identified from list as {repr(ch)}.')
-        return ch
+                     f'identified from list as {repr(char)}.')
+        return char
 
 
 def verify_presence(key: str, ch: Character, word: str) -> bool:
