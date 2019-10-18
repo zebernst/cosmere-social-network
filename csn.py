@@ -4,5 +4,8 @@ from cli import CommandLineInterface
 
 
 if __name__ == '__main__':
-    cli = CommandLineInterface()
-    cli.run()
+    try:
+        cli = CommandLineInterface()
+        cli.run()
+    except KeyboardInterrupt:
+        exit(0)
