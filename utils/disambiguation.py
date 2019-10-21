@@ -63,12 +63,12 @@ def clarify_list(name: str, matches: list, context: RunContext, pos: int) -> Opt
     response = menu(prompt=f'Ambiguous reference found for "{name}"! Please choose the correct character.',
                     options=[f"  {i + 1}: {c.details}" for i, c in enumerate(matches)]
                             + [f"  o: The correct character is not listed.",
-                               f"  x: This is not a character."],
+                               f"  #: This is not a character."],
                     validator=lambda r: (r.isdigit() and int(r) <= len(matches))
-                                        or r.lower().startswith('x')
+                                        or r.lower().startswith('#')
                                         or r.lower().startswith('o'))
 
-    if response.startswith('x'):
+    if response.startswith('#'):
         return None
     elif response.startswith('o'):
         char = char_search("Type the name of the character the keyword is referring to: ")
