@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from .logs import get_logger
 from .paths import book_dir
-from .regex import possession, punctuation
+from .regex import possession, punctuation_infix, punctuation_interfix
 
 __all__ = ['tokenize_chapters']
 
@@ -49,6 +49,7 @@ def tokenize_chapters(key: str):
             soup = BeautifulSoup(f.read(), 'lxml')
             text = '\n'.join([e.text for e in soup.find_all('p')])
             text = re.sub(possession, '', text)
-            text = re.sub(punctuation, '', text)
-            tokens = [t for t in re.split(r'[\n\s—]+', text) if t]
+            text = re.sub(punctuation_infix, '', text)
+            text = re.sub(punctuation_interfix, ' ', text)
+            tokens = [t for t in re.split(r'[\n\s]+', text) if t]
             yield chapter, tokens

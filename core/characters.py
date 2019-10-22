@@ -9,7 +9,7 @@ from .config import WikiConfig
 from utils.constants import books, demonyms, nations, species, titles
 from utils.datastructures import CharacterLookup
 from utils.logs import get_logger
-from utils.regex import possession, punctuation
+from utils.regex import possession, punctuation_infix
 from utils.wiki import coppermind_query, extract_relevant_info
 
 
@@ -492,6 +492,8 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == 'Red' and ch.world == 'Scadrial':
         ch._keep = False
+    elif ch.name == 'New kid' and ch.world == 'Roshar':
+        ch._keep = False
     elif ch.name == 'William Ann Montane':
         ch.common_name = 'William Ann'
     elif ch.name == 'Sixth of the Dusk':
@@ -515,6 +517,8 @@ def explicit_modify(ch: Character):
         ch.aliases.append('Talenelat')
     elif ch.name == 'Beautiful Song':
         ch.common_name = ''
+    elif ch.name == 'Susebron':
+        ch.titles.append('God King')
 
 
 def generate_characters() -> Generator[Character, None, None]:
@@ -536,5 +540,5 @@ for c in characters:
         if re.search(possession, name):
             lookup[name] = c
         name = re.sub(possession, '', name)
-        name = re.sub(punctuation, '', name)
+        name = re.sub(punctuation_infix, '', name)
         lookup[name] = c
