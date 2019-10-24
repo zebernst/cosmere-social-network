@@ -11,7 +11,7 @@ from core.config import InteractionNetworkConfig
 from utils.constants import book_keys, titles
 from utils.disambiguation import check_position, verify_presence
 from utils.epub import tokenize_chapters
-from utils.exceptions import EmptyDisambiguationError, IncompleteDisambiguationError, InvalidDisambiguationError
+from utils.exceptions import NoDisambiguationFoundError, IncompleteDisambiguationError, InvalidDisambiguationError
 from utils.logs import get_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
 from utils.simpletypes import CharacterOccurrence
@@ -33,6 +33,20 @@ def save_disambiguation(book: str, disambiguation: dict):
         yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
 
 
+def load_disambiguation(key: str):
+    disambiguation_path = (disambiguation_dir / key).with_suffix('.yml')
+    if not disambiguation_path.exists():
+        msg = f"No disambiguation file found for {key}. Please run disambiguation  before analyzing text."
+        raise NoDisambiguationFoundError(msg)
+    with disambiguation_path.open(mode='r') as f:
+        disambiguation = yaml.load(f, yaml.Loader)
+        if not isinstance(disambiguation, dict):
+            msg = f"Invalid disambiguation found for {key}. Please run disambiguation again."
+            raise InvalidDisambiguationError(msg)
+
+    return disambiguation
+
+
 def combine_edges(G: nx.Graph, other: nx.Graph):
     for u, v, w in other.edges(data='weight'):
         if G.has_edge(u, v):
@@ -41,7 +55,7 @@ def combine_edges(G: nx.Graph, other: nx.Graph):
             G.add_edge(u, v, weight=w)
 
 
-def chapter_graph(key: str, tokens: list, disambiguation: dict):
+def _chapter_graph(key: str, tokens: list, disambiguation: dict):
     G = nx.Graph()
     G.add_nodes_from(nodes.items())
 
@@ -130,23 +144,14 @@ def book_graph(book: str, min_weight: int = InteractionNetworkConfig.default_min
     G = nx.Graph()
     G.add_nodes_from(nodes.items())
 
-    disambiguation_path = (disambiguation_dir / book).with_suffix('.yml')
-    if not disambiguation_path.exists():
-        msg = f"No disambiguation file found for {book}. Please run disambiguation  before analyzing text."
-        raise EmptyDisambiguationError(msg)
-    with disambiguation_path.open(mode='r') as f:
-        disambiguation = yaml.load(f, yaml.Loader)
-        if not isinstance(disambiguation, dict):
-            msg = f"Invalid disambiguation found for {book}. Please run disambiguation again."
-            raise InvalidDisambiguationError(msg)
-
+    disambiguation = load_disambiguation(book)
     with tqdm(list(tokenize_chapters(book)), desc=f'Analyzing {book}: ', unit=' chapters') as book_pbar:
         for chapter, tokens in book_pbar:
             if chapter not in disambiguation:
                 msg = f"{book}:{chapter} not found in disambiguation. Please run disambiguation again."
                 raise IncompleteDisambiguationError(msg)
             book_pbar.set_postfix(chapter=chapter)
-            sG = chapter_graph(book, tokens, disambiguation[chapter])
+            sG = _chapter_graph(book, tokens, disambiguation[chapter])
             combine_edges(G, sG)
 
     G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight')
@@ -187,7 +192,7 @@ def discrete_book_graph(book: str):
 
     chapters = []
     for chapter, tokens in tokenize_chapters(book):
-        chapters.append(chapter_graph(book, tokens, disambiguation))
+        chapters.append(_chapter_graph(book, tokens, disambiguation))
 
     return chapters
 

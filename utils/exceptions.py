@@ -7,7 +7,7 @@ class AmbiguousReferenceError(Error):
     pass
 
 
-class EmptyDisambiguationError(Error):
+class NoDisambiguationFoundError(Error):
     pass
 
 

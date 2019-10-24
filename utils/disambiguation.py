@@ -90,10 +90,6 @@ def verify_presence(key: str, ch: Character, word: str) -> bool:
     return in_book
 
 
-def filter_present(key: str, name: str) -> List[Character]:
-    return [c for c in lookup[name] if verify_presence(key, c, name)]
-
-
 def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, context: RunContext) -> Optional[Character]:
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
@@ -104,7 +100,7 @@ def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, conte
 
     else:
         save = False
-        local = filter_present(key, name)
+        local = [c for c in lookup[name] if verify_presence(key, c, name)]
         if len(local) == 1:
             char = local[0]
             logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
