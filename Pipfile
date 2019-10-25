@@ -15,6 +15,7 @@ mwparserfromhell = ">=0.5.2"
 colorama = "*"
 "beautifulsoup4" = "*"
 pyyaml = "*"
+netwulf = "*"
 
 [requires]
 python_version = "3.7"
