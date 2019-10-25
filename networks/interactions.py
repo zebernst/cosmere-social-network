@@ -77,19 +77,23 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
             three_tokens = two_tokens + ' ' + third_token
 
             if three_tokens in lookup:
-                matches = lookup[three_tokens]
+                matches = [c for c in lookup[three_tokens] if verify_presence(key, c, three_tokens)]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
+                elif len(matches) == 1:
+                    char = matches[0]
                 else:
-                    char = matches[0] if verify_presence(key, matches[0], three_tokens) else None
+                    char = None
                 i += 3
 
             elif two_tokens in lookup:
-                matches = lookup[two_tokens]
+                matches = [c for c in lookup[two_tokens] if verify_presence(key, c, two_tokens)]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
+                elif len(matches) == 1:
+                    char = matches[0]
                 else:
-                    char = matches[0] if verify_presence(key, matches[0], two_tokens) else None
+                    char = None
                 i += 2
 
             elif this_token in titles:
@@ -98,11 +102,13 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
                 i += 1
 
             elif this_token in lookup:
-                matches = lookup[this_token]
+                matches = [c for c in lookup[this_token] if verify_presence(key, c, this_token)]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
+                elif len(matches) == 1:
+                    char = matches[0]
                 else:
-                    char = matches[0] if verify_presence(key, matches[0], this_token) else None
+                    char = None
                 i += 1
 
             else:
