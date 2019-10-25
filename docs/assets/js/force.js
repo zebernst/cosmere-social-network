@@ -82,11 +82,10 @@ function forceDirectedGraph() {
         // make sure at least one filter is applied
         const nodes = _(filters).values().some(p => _.isSet(p) && p.size)
             ? data.nodes.filter(node => _(node).keys()
-                .some(k => {
-                    if (_(filters).has(k) && _.isSet(filters[k]))
-                        return filters[k].has(node[k]);
-                    else return false; // return false if filters[k] is not a Set
-                }))
+                .some(k => _(filters).has(k) && _.isSet(filters[k])
+                        ? filters[k].has(node[k])
+                        : false // return false if filters[k] is not a Set
+                ))
             : _.clone(data.nodes); // return all nodes if no filters applied
         const links = data.links.filter(l => nodes.includes(l.source) && nodes.includes(l.target));
 
@@ -128,7 +127,7 @@ function forceDirectedGraph() {
     }
     /** populates an array of adjacent neighbors and an array of direct links on each node in the provided data */
     function populateConnections(data) {
-        data.links.forEach(function (link) {
+        data.links.forEach(link => {
             const source = link.source,
                   target = link.target;
 
