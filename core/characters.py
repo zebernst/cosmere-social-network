@@ -566,12 +566,22 @@ def explicit_modify(ch: Character):
         ch._keep = False
     elif ch.name == "Herdazian general":
         ch._keep = False
-    elif ch.name == 'Talenel':
-        ch.aliases.append('Talenelat')
-    elif ch.name == 'Beautiful Song':
-        ch.common_name = ''
-    elif ch.name == 'Susebron':
-        ch.titles.append('God King')
+    elif ch.name == "Talenel":
+        ch.aliases.append("Talenelat")
+    elif ch.name == "Beautiful Song":
+        ch.common_name = ""
+    elif ch.name == "Susebron":
+        ch.titles.append("God King")
+    elif ch.name == "Evi Kholin":
+        ch.aliases.append("Shshshsh")
+    elif ch.name == "Shan Elariel":
+        ch.surname = ""
+    elif ch.name == "Valette Entrone":
+        ch._keep = False
+    elif ch.name == "Vin":
+        ch.aliases.append("Valette")
+    elif ch.name == "Kaladin Stormblessed":
+        ch.aliases.append("Kal")
 
 
 def generate_characters() -> Generator[Character, None, None]:
