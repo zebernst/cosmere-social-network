@@ -11,15 +11,13 @@ flake8 = "*"
 
 [packages]
 pip = "==18.0"
-ebooklib = "*"
 requests = "*"
-networkx = "==2.2"
+networkx = ">=2.2"
 tqdm = "*"
 mwparserfromhell = ">=0.5.2"
 colorama = "*"
 "beautifulsoup4" = "*"
 pyyaml = "*"
-netwulf = "*"
 
 [requires]
 python_version = "3.8"
