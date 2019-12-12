@@ -1,7 +1,7 @@
 from argparse import Namespace
 
 
-__all__ = ['relatives', 'interactions']
+__all__ = ["relatives", "interactions"]
 
 
 def relatives(args: Namespace):
@@ -12,15 +12,16 @@ def interactions(args: Namespace):
     import networks.interactions
     from utils.constants import all_keys, book_keys, series_keys
 
-    if args.key.lower() == 'list':
-        print('    cosmere')
+    if args.key.lower() == "list":
+        print("    cosmere")
         for key in all_keys:
-            print('    ' + key)
+            print("    " + key)
         print(args)
     else:
-        if args.key == 'cosmere':
+        if args.key == "cosmere":
             if args.discretize:
                 print("Chapter-by-chapter graphs cannot be produced across series!")
+                return
             else:
                 graph = networks.interactions.cosmere_graph()
         elif args.key in book_keys:
@@ -38,13 +39,13 @@ def interactions(args: Namespace):
             return
 
         if args.discretize:
-            if args.format.lower() == 'gml':
-                print('cannot save discrete graphs in single .gml file.')
+            if args.format.lower() == "gml":
+                print("cannot save discrete graphs in single .gml file.")
                 return
             else:
-                networks.interactions.save_network_json(args.key + '-discrete', graph)
+                networks.interactions.save_network_json(args.key + "-discrete", graph)
         else:
-            if args.format.lower() in ('gml', 'all'):
+            if args.format.lower() in ("gml", "all"):
                 networks.interactions.save_network_gml(args.key, graph)
-            elif args.format.lower() in ('json', 'all'):
+            elif args.format.lower() in ("json", "all"):
                 networks.interactions.save_network_json(args.key, graph)

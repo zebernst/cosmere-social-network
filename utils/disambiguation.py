@@ -15,14 +15,14 @@ from .logs import get_logger
 from .simpletypes import RunContext
 
 
-__all__ = ['verify_presence', 'check_position', 'disambiguate_book']
+__all__ = ["verify_presence", "check_position", "disambiguate_book"]
 
 RUN_SIZE = InteractionNetworkConfig.run_size
 PREV_LINES = InteractionNetworkConfig.prev_cxt_lines
 NEXT_LINES = InteractionNetworkConfig.next_cxt_lines
 
 colorama.init(autoreset=True)
-logger = get_logger('csn.core.disambiguation')
+logger = get_logger("csn.core.disambiguation")
 
 _char_ids = {c.id: c for c in characters}
 
@@ -36,9 +36,11 @@ def _recall(pos: int, disambiguation: dict) -> Optional[Character]:
 
 
 def char_search(prompt: Optional[str]) -> Optional[Character]:
-    response = ask(prompt=prompt,
-                   validator=lambda r: slice(r, None) in lookup,
-                   error="Character not found.")
+    response = ask(
+        prompt=prompt,
+        validator=lambda r: slice(r, None) in lookup,
+        error="Character not found.",
+    )
 
     if response is None:
         return None
@@ -59,158 +61,212 @@ def char_search(prompt: Optional[str]) -> Optional[Character]:
         return matches[0]
 
 
-def clarify_list(name: str, matches: list, context: RunContext, pos: int) -> Optional[Character]:
-    response = menu(prompt=f'Ambiguous reference found for "{name}"! Please choose the correct character.',
-                    options=[f"  {i + 1}: {c.details}" for i, c in enumerate(matches)]
-                            + [f"  o: The correct character is not listed.",
-                               f"  #: This is not a character."],
-                    validator=lambda r: (r.isdigit() and int(r) <= len(matches))
-                                        or r.lower().startswith('#')
-                                        or r.lower().startswith('o'))
+def clarify_list(
+    name: str, matches: list, context: RunContext, pos: int
+) -> Optional[Character]:
+    response = menu(
+        prompt=f'Ambiguous reference found for "{name}"! Please choose the correct character.',
+        options=[f"  {i + 1}: {c.details}" for i, c in enumerate(matches)]
+        + [
+            f"  o: The correct character is not listed.",
+            f"  #: This is not a character.",
+        ],
+        validator=lambda r: (r.isdigit() and int(r) <= len(matches))
+        or r.lower().startswith("#")
+        or r.lower().startswith("o"),
+    )
 
-    if response.startswith('#'):
+    if response.startswith("#"):
         return None
-    elif response.startswith('o'):
-        char = char_search("Type the name of the character the keyword is referring to: ")
-        logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
-                     f'identified manually as {repr(char)}.')
+    elif response.startswith("o"):
+        char = char_search(
+            "Type the name of the character the keyword is referring to: "
+        )
+        logger.debug(
+            f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+            f"identified manually as {repr(char)}."
+        )
         return char
     else:
         char = matches[int(response) - 1]
-        logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
-                     f'identified from list as {repr(char)}.')
+        logger.debug(
+            f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+            f"identified from list as {repr(char)}."
+        )
         return char
 
 
 def verify_presence(key: str, ch: Character, word: str) -> bool:
-    in_book = any(b == key.split('/')[0] for b in ch.books)
+    in_book = key.split("/")[0] in ch.books
     if not in_book:
-        logger.debug(f'Rejected ambiguous reference from "{word}", identified automatically as '
-                     f'{repr(ch)} who does not appear in {key}.')
+        logger.debug(
+            f'Rejected ambiguous reference from "{word}", identified automatically as '
+            f"{repr(ch)} who does not appear in {key}."
+        )
     return in_book
 
 
-def disambiguate_name(key: str, name: str, disambiguation: dict, pos: int, context: RunContext) -> Optional[Character]:
+def disambiguate_name(
+    key: str, name: str, disambiguation: dict, pos: int, context: RunContext
+) -> Optional[Character]:
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, '
-                         f'identified automatically as {repr(char)}.')
-        return char
+            logger.debug(
+                f"Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, "
+                f"identified automatically as {repr(char)}."
+            )
 
     else:
         save = False
         local = [c for c in lookup[name] if verify_presence(key, c, name)]
         if len(local) == 1:
             char = local[0]
-            logger.debug(f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
-                         f'identified automatically as {repr(char)} with presence in {key}.')
+            logger.debug(
+                f'Matched ambiguous reference from "{name}" at {context.chapter}:{pos}, '
+                f"identified automatically as {repr(char)} with presence in {key}."
+            )
         elif len(local) > 1:
             save = True
-            print(context.prev)
-            print(context.run)
-            print(context.next)
-            char = clarify_list(name, local, context, pos)
-            clear_screen()
+            if name == "Sadeas":
+                char = lookup["Torol Sadeas"][0]
+            elif name == "Roshone":
+                char = lookup["Roshone"][0]
+            else:
+                print(context.prev)
+                print(context.run)
+                print(context.next)
+                char = clarify_list(name, local, context, pos)
+                clear_screen()
         else:
             char = None
 
         if save:
             _save(pos, char, disambiguation)
-        return char
+
+    return char
 
 
-def disambiguate_title(title: str, disambiguation: dict, pos: int, context: RunContext) -> Optional[Character]:
+def disambiguate_title(
+    title: str, disambiguation: dict, pos: int, context: RunContext
+) -> Optional[Character]:
     if pos in disambiguation:
         char = _recall(pos, disambiguation)
         if char is not None:
-            logger.debug(f'Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, '
-                         f'identified automatically as {repr(char)}.')
-
-        return char
+            logger.debug(
+                f"Matched ambiguous reference at {context.chapter}:{pos} using disambiguation, "
+                f"identified automatically as {repr(char)}."
+            )
 
     else:
         print(context.prev)
         print(context.run)
         print(context.next)
 
-        char = char_search(f'Ambiguous reference found for "{title}". Who does this refer to?')
+        char = char_search(
+            f'Ambiguous reference found for "{title}". Who does this refer to?'
+        )
 
         clear_screen()
         if char is not None:
-            logger.debug(f'Matched ambiguous reference from "{title}" at {context.chapter}:{pos}, '
-                         f'identified manually as {repr(char)}.')
+            logger.debug(
+                f'Matched ambiguous reference from "{title}" at {context.chapter}:{pos}, '
+                f"identified manually as {repr(char)}."
+            )
 
         _save(pos, char, disambiguation)
-        return char
+
+    return char
 
 
 def disambiguate_book(key: str):
-    disambiguation_path = (disambiguation_dir / key).with_suffix('.yml')
+    disambiguation_path = (disambiguation_dir / key).with_suffix(".yml")
     if not disambiguation_path.exists():
         disambiguation_path.parent.mkdir(parents=True, exist_ok=True)
         disambiguation_path.touch()
 
-    with disambiguation_path.open(mode='r') as f:
+    with disambiguation_path.open(mode="r") as f:
         disambiguation = yaml.load(f, yaml.Loader)
         if disambiguation is None:
             disambiguation = {}
 
     tokenized_chapters = list(tokenize_chapters(key))
     for i, (chapter, tokens) in enumerate(tokenized_chapters):
-        print(f"=== {key}: {chapter} ({i+1}/{len(tokenized_chapters)})===")
+        print(f"=== {key}: {chapter} ({i + 1}/{len(tokenized_chapters)}) ===")
         if chapter not in disambiguation:
             disambiguation[chapter] = {}
 
         idx = 0
         while idx < len(tokens):
             found = []
-            context = RunContext(chapter=chapter,
-                                 prev=[s for s in (' '.join(tokens[max(0, idx - (i * RUN_SIZE)):
-                                                                   max(0, idx - ((i - 1) * RUN_SIZE))]).strip()
-                                                   for i in range(PREV_LINES, 0, -1)) if s],
-                                 run=tokens[idx:min(len(tokens), idx + RUN_SIZE)],
-                                 next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i * RUN_SIZE)):
-                                                                   min(len(tokens),
-                                                                       idx + ((i + 1) * RUN_SIZE))]).strip()
-                                                   for i in range(1, NEXT_LINES + 1)) if s]
-                                 )
-
+            context = RunContext(
+                chapter=chapter,
+                # fmt: off
+                prev=[s for s in (' '.join(tokens[max(0, idx - (i * RUN_SIZE)):
+                                                  max(0, idx - ((i - 1) * RUN_SIZE))]).strip()
+                                  for i in range(PREV_LINES, 0, -1)) if s],
+                run=tokens[idx:min(len(tokens), idx + RUN_SIZE)],
+                next=[s for s in (' '.join(tokens[min(len(tokens), idx + (i * RUN_SIZE)):
+                                                  min(len(tokens), idx + ((i + 1) * RUN_SIZE))]).strip()
+                                  for i in range(1, NEXT_LINES + 1)) if s]
+                # fmt: on
+            )
             i = 0
             tokens_remaining = len(tokens) - idx
             while i < min(RUN_SIZE, tokens_remaining):
                 pos = idx + i
 
                 this_token = tokens[pos]
-                next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ''
-                third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ''
-                two_tokens = this_token + ' ' + next_token
-                next_two_tokens = next_token + ' ' + third_token
-                three_tokens = two_tokens + ' ' + third_token
+                next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ""
+                third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ""
+                two_tokens = this_token + " " + next_token
+                next_two_tokens = next_token + " " + third_token
+                three_tokens = two_tokens + " " + third_token
 
                 if three_tokens in lookup:
                     ctx = context.highlight(i, 3)
                     i += 3
-                    if disambiguate_name(key, three_tokens, disambiguation[chapter], pos, ctx) is not None:
+                    if (
+                        disambiguate_name(
+                            key, three_tokens, disambiguation[chapter], pos, ctx
+                        )
+                        is not None
+                    ):
                         found.append(i)
 
                 elif two_tokens in lookup:
                     ctx = context.highlight(i, 2)
                     i += 2
-                    if disambiguate_name(key, two_tokens, disambiguation[chapter], pos, ctx) is not None:
+                    if (
+                        disambiguate_name(
+                            key, two_tokens, disambiguation[chapter], pos, ctx
+                        )
+                        is not None
+                    ):
                         found.append(i)
 
                 elif this_token in constants.titles:
                     ctx = context.highlight(i, 1)
                     i += 1
-                    if next_token not in lookup and next_two_tokens not in lookup:
-                        if disambiguate_title(this_token, disambiguation[chapter], pos, ctx) is not None:
-                            found.append(i)
+                    if (
+                        next_token not in lookup
+                        and next_two_tokens not in lookup
+                        and disambiguate_title(
+                            this_token, disambiguation[chapter], pos, ctx
+                        )
+                        is not None
+                    ):
+                        found.append(i)
 
                 elif this_token in lookup:
                     ctx = context.highlight(i, 1)
                     i += 1
-                    if disambiguate_name(key, this_token, disambiguation[chapter], pos, ctx) is not None:
+                    if (
+                        disambiguate_name(
+                            key, this_token, disambiguation[chapter], pos, ctx
+                        )
+                        is not None
+                    ):
                         found.append(i)
 
                 else:
@@ -231,13 +287,21 @@ def disambiguate_book(key: str):
 
             idx += delta
 
-        with disambiguation_path.open(mode='w') as f:
-            yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
+        with disambiguation_path.open(mode="w") as f:
+            yaml.dump(
+                disambiguation,
+                f,
+                yaml.Dumper,
+                default_flow_style=False,
+                sort_keys=False,
+            )
 
 
 def check_position(disambiguation, pos):
     if pos in disambiguation:
         return _recall(pos, disambiguation)
     else:
-        raise AmbiguousReferenceError(f"Reference at position {pos} not found in disambiguation. "
-                                      f"Please run disambiguation again.")
+        raise AmbiguousReferenceError(
+            f"Reference at position {pos} not found in disambiguation. "
+            f"Please run disambiguation again."
+        )

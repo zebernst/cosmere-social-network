@@ -2,11 +2,10 @@ from collections.abc import MutableMapping
 from typing import Any, Dict, Iterable, Iterator, List, Set, Tuple, Union
 
 
-__all__ = ['CharacterLookup']
+__all__ = ["CharacterLookup"]
 
 
 class CharacterLookup(MutableMapping):
-
     class _Node:
         def __init__(self, key: str):
             self.key: str = key
@@ -24,13 +23,13 @@ class CharacterLookup(MutableMapping):
             return self.key
 
     def __init__(self):
-        self.root = self._Node('')
+        self.root = self._Node("")
         self.map = {}
 
     @staticmethod
     def _process_key(key: Union[slice, str]) -> Tuple[str, bool]:
         if isinstance(key, slice):
-            if key.stop is not None or key.step is not None or not isinstance(key.start, str):
+            if not all((key.stop is None, key.step is None, isinstance(key.start, str))):
                 raise KeyError(key)
             return key.start, True
         else:
@@ -138,7 +137,7 @@ class CharacterLookup(MutableMapping):
         return len(self.map)
 
     def __iter__(self) -> Iterator:
-        stack = [('', self.root)]
+        stack = [("", self.root)]
         while stack:
             name, node = stack.pop()
             if node.has_data:

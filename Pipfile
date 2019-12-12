@@ -4,6 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+black = "*"
+isort = "*"
+mypy = "*"
+flake8 = "*"
 
 [packages]
 pip = "==18.0"
@@ -18,4 +22,4 @@ pyyaml = "*"
 netwulf = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"

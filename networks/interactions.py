@@ -11,34 +11,47 @@ from core.config import InteractionNetworkConfig
 from utils.constants import book_keys, titles
 from utils.disambiguation import check_position, verify_presence
 from utils.epub import tokenize_chapters
-from utils.exceptions import NoDisambiguationFoundError, IncompleteDisambiguationError, InvalidDisambiguationError
+from utils.exceptions import (
+    NoDisambiguationFoundError,
+    IncompleteDisambiguationError,
+    InvalidDisambiguationError,
+)
 from utils.logs import get_logger
 from utils.paths import disambiguation_dir, gml_dir, json_dir
 from utils.simpletypes import CharacterOccurrence
 
 
-__all__ = ['book_graph', 'series_graph', 'discrete_book_graph', 'discrete_series_graph', 'cosmere_graph',
-           'save_network_gml', 'save_network_json']
+__all__ = [
+    "book_graph",
+    "series_graph",
+    "discrete_book_graph",
+    "discrete_series_graph",
+    "cosmere_graph",
+    "save_network_gml",
+    "save_network_json",
+]
 
-logger = get_logger('csn.networks.interactions')
+logger = get_logger("csn.networks.interactions")
 
 RUN_SIZE = InteractionNetworkConfig.run_size
 
 nodes = {c.id: c.properties for c in characters}
-logger.debug('Created dictionary of nodes.')
+logger.debug("Created dictionary of nodes.")
 
 
 def save_disambiguation(book: str, disambiguation: dict):
-    with (disambiguation_dir / book).with_suffix('.yml').open(mode='w') as f:
-        yaml.dump(disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False)
+    with (disambiguation_dir / book).with_suffix(".yml").open(mode="w") as f:
+        yaml.dump(
+            disambiguation, f, yaml.Dumper, default_flow_style=False, sort_keys=False
+        )
 
 
 def load_disambiguation(key: str):
-    disambiguation_path = (disambiguation_dir / key).with_suffix('.yml')
+    disambiguation_path = (disambiguation_dir / key).with_suffix(".yml")
     if not disambiguation_path.exists():
         msg = f"No disambiguation file found for {key}. Please run disambiguation  before analyzing text."
         raise NoDisambiguationFoundError(msg)
-    with disambiguation_path.open(mode='r') as f:
+    with disambiguation_path.open(mode="r") as f:
         disambiguation = yaml.load(f, yaml.Loader)
         if not isinstance(disambiguation, dict):
             msg = f"Invalid disambiguation found for {key}. Please run disambiguation again."
@@ -48,9 +61,9 @@ def load_disambiguation(key: str):
 
 
 def combine_edges(G: nx.Graph, other: nx.Graph):
-    for u, v, w in other.edges(data='weight'):
+    for u, v, w in other.edges(data="weight"):
         if G.has_edge(u, v):
-            G[u][v]['weight'] += w
+            G[u][v]["weight"] += w
         else:
             G.add_edge(u, v, weight=w)
 
@@ -63,21 +76,25 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
     while idx < len(tokens):
         i = 0
         found = []
-        run = ' '.join(tokens[idx:min(len(tokens), idx + RUN_SIZE)])
+        run = " ".join(tokens[idx : min(len(tokens), idx + RUN_SIZE)])
         tokens_remaining = len(tokens) - idx
         while i < min(RUN_SIZE, tokens_remaining):
             char = None
             pos = idx + i
 
             this_token = tokens[pos]
-            next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ''
-            third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ''
-            two_tokens = this_token + ' ' + next_token
-            next_two_tokens = next_token + ' ' + third_token
-            three_tokens = two_tokens + ' ' + third_token
+            next_token = tokens[pos + 1] if pos + 1 < len(tokens) else ""
+            third_token = tokens[pos + 2] if pos + 2 < len(tokens) else ""
+            two_tokens = this_token + " " + next_token
+            next_two_tokens = next_token + " " + third_token
+            three_tokens = two_tokens + " " + third_token
 
             if three_tokens in lookup:
-                matches = [c for c in lookup[three_tokens] if verify_presence(key, c, three_tokens)]
+                matches = [
+                    c
+                    for c in lookup[three_tokens]
+                    if verify_presence(key, c, three_tokens)
+                ]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
                 elif len(matches) == 1:
@@ -87,7 +104,9 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
                 i += 3
 
             elif two_tokens in lookup:
-                matches = [c for c in lookup[two_tokens] if verify_presence(key, c, two_tokens)]
+                matches = [
+                    c for c in lookup[two_tokens] if verify_presence(key, c, two_tokens)
+                ]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
                 elif len(matches) == 1:
@@ -102,7 +121,9 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
                 i += 1
 
             elif this_token in lookup:
-                matches = [c for c in lookup[this_token] if verify_presence(key, c, this_token)]
+                matches = [
+                    c for c in lookup[this_token] if verify_presence(key, c, this_token)
+                ]
                 if len(matches) > 1:
                     char = check_position(disambiguation, pos)
                 elif len(matches) == 1:
@@ -134,11 +155,13 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
         if len(chars) > 1:
             for u, v in combinations(chars, r=2):
                 if G.has_edge(u.id, v.id):
-                    G[u.id][v.id]['weight'] += 1
+                    G[u.id][v.id]["weight"] += 1
                 else:
                     G.add_edge(u.id, v.id, weight=1)
 
-                logger.debug(f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{run}"')
+                logger.debug(
+                    f'Added edge ({u.name} #{u.id}, {v.name} #{v.id}) from run "{run}"'
+                )
 
         idx += delta
 
@@ -146,12 +169,16 @@ def _chapter_graph(key: str, tokens: list, disambiguation: dict):
     return G
 
 
-def book_graph(book: str, min_weight: int = InteractionNetworkConfig.default_min_weight):
+def book_graph(
+    book: str, min_weight: int = InteractionNetworkConfig.default_min_weight
+):
     G = nx.Graph()
     G.add_nodes_from(nodes.items())
 
     disambiguation = load_disambiguation(book)
-    with tqdm(list(tokenize_chapters(book)), desc=f'Analyzing {book}: ', unit=' chapters') as book_pbar:
+    with tqdm(
+        list(tokenize_chapters(book)), desc=f"Analyzing {book}: ", unit=" chapters"
+    ) as book_pbar:
         for chapter, tokens in book_pbar:
             if chapter not in disambiguation:
                 msg = f"{book}:{chapter} not found in disambiguation. Please run disambiguation again."
@@ -160,10 +187,13 @@ def book_graph(book: str, min_weight: int = InteractionNetworkConfig.default_min
             sG = _chapter_graph(book, tokens, disambiguation[chapter])
             combine_edges(G, sG)
 
-    G.remove_edges_from([(u, v) for (u, v, w) in G.edges(data='weight')
-                         if w < min_weight
-                         and u != 13  # Hoid
-                         and v != 13])
+    G.remove_edges_from(
+        [
+            (u, v)
+            for (u, v, w) in G.edges(data="weight")
+            if w < min_weight and u != 13 and v != 13  # Hoid
+        ]
+    )
     G.remove_nodes_from(list(nx.isolates(G)))
     return G
 
@@ -191,16 +221,15 @@ def cosmere_graph():
 
 
 def discrete_book_graph(book: str):
-    with (disambiguation_dir / book).with_suffix('.yml').open(mode='r') as f:
+    with (disambiguation_dir / book).with_suffix(".yml").open(mode="r") as f:
         disambiguation = yaml.load(f, yaml.Loader)
         if disambiguation is None:
             disambiguation = {}
 
-    chapters = []
-    for chapter, tokens in tokenize_chapters(book):
-        chapters.append(_chapter_graph(book, tokens, disambiguation))
-
-    return chapters
+    return [
+        _chapter_graph(book, tokens, disambiguation)
+        for chapter, tokens in tokenize_chapters(book)
+    ]
 
 
 def discrete_series_graph(series: str):
@@ -212,7 +241,7 @@ def discrete_series_graph(series: str):
 
 
 def save_network_gml(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
-    filename = gml_dir / 'interactions' / f'{key}.gml'
+    filename = gml_dir / "interactions" / f"{key}.gml"
     filename.parent.mkdir(parents=True, exist_ok=True)
 
     nx.write_gml(G, str(filename), stringizer=lambda p: str(p) if p else "null")
@@ -220,9 +249,9 @@ def save_network_gml(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
 
 
 def save_network_json(key: str, G: Union[nx.Graph, nx.OrderedGraph]):
-    filename = json_dir / 'interactions' / f'{key}.json'
+    filename = json_dir / "interactions" / f"{key}.json"
     filename.parent.mkdir(parents=True, exist_ok=True)
 
-    with filename.open(mode='w') as f:
+    with filename.open(mode="w") as f:
         json.dump(nx.node_link_data(G), f)
     logger.info(f"JSON graph data for {key} characters written to {filename}")
