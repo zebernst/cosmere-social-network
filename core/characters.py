@@ -114,16 +114,13 @@ class Character:
     @property
     def monikers(self) -> Set[str]:
         """return a set of monikers that the character is known by."""
-        return set(
-            n
-            for n in [self.name, self.common_name, self.surname]
-            + self.aliases
-            + self.titles
-            if n
+        monikers = (
+            [self.name, self.common_name, self.surname] + self.aliases + self.titles
         )
+        return set(n for n in monikers if n)
 
     @property
-    def coppermind_url(self) -> str:
+    def href(self) -> str:
         """return the url of the character's page on coppermind.net"""
         return f"https://coppermind.net/wiki?curid={self._pageid}"
 
@@ -134,8 +131,7 @@ class Character:
         if self.residence is not None:
             location.append(self.residence)
         if self.nationality is not None:
-            nation = nations.get(self.nationality)
-            if nation is not None:
+            if nation := nations.get(self.nationality) is not None:
                 location.append(nation)
         location.append(self.world if self.world is not None else "Unknown")
         location = ", ".join(location)
@@ -359,7 +355,9 @@ class Character:
             wikicode = parse_markup(wikicode)
 
             links = [
-                l for l in wikicode.filter_wikilinks() if "category" not in l.lower()
+                link
+                for link in wikicode.filter_wikilinks()
+                if "category" not in link.lower()
             ]
             if not links:
                 print("unable to find family", wikicode)
@@ -375,13 +373,10 @@ class Character:
             return family
 
         def parse_relatives(wikicode: mwp.wikicode.Wikicode):
-            relatives = []
-            for link in mwp.parse(wikicode).filter_wikilinks():
-                relation = link.title.strip_code()
-                if "_" in relation:
-                    relation = relation.replace("_", " ")
-                relatives.append(relation)
-            return relatives
+            return [
+                link.title.strip_code().replace("_", " ")
+                for link in mwp.parse(wikicode).filter_wikilinks()
+            ]
 
         # parse infobox
         if content:
@@ -479,9 +474,7 @@ class Character:
                         val = val.strip_code()
 
                     elif key == "unnamed":
-                        val = (
-                            True if val.strip_code().lower().startswith("y") else False
-                        )
+                        val = val.strip_code().lower().startswith("y")
 
                     elif key == "died":
                         val = True

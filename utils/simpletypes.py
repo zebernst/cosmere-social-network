@@ -15,14 +15,14 @@ class RunContext(namedtuple("RunContext", ["chapter", "prev", "run", "next"])):
 
         run = " ".join(
             tkn
-            for sl in [
+            for sublist in [
                 self.run[:i],
                 [colorama.Style.BRIGHT],
                 self.run[i : i + w],
                 [colorama.Style.NORMAL],
                 self.run[i + w :],
             ]
-            for tkn in sl
+            for tkn in sublist
         )
 
         return RunContext(chapter=self.chapter, prev=prev, run=run, next=next)

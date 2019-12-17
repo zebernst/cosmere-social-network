@@ -94,16 +94,22 @@ def extract_relevant_info(result: dict) -> dict:
 
     # possible null values
     page_id = result.get("pageid")
-    timestamp = result.get("revisions", [{}])[0].get("timestamp")
+    timestamp_str = result.get("revisions", [{}])[0].get("timestamp", "")
+    timestamp = (
+        datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+        if timestamp_str
+        else None
+    )
+    content = (
+        result.get("revisions", [{}])[0]
+        .get("slots", {})
+        .get("main", {})
+        .get("content", "")
+    )
 
     return {
         "pageid": int(page_id) if page_id else None,
         "title": result.get("title", ""),
-        "timestamp": datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
-        if timestamp
-        else None,
-        "content": result.get("revisions", [{}])[0]
-        .get("slots", {})
-        .get("main", {})
-        .get("content", ""),
+        "timestamp": timestamp,
+        "content": content,
     }
