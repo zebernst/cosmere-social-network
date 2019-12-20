@@ -25,7 +25,7 @@ Oathbringer
 
 ## Standalone Novels
 Elantris  
-Warbreaker  
+[Warbreaker]({{ '/graphs/interactions/warbreaker' | relative_url }})    
 
 
 ## Novellas
