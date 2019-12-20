@@ -47,5 +47,5 @@ def interactions(args: Namespace):
         else:
             if args.format.lower() in ("gml", "all"):
                 networks.interactions.save_network_gml(args.key, graph)
-            elif args.format.lower() in ("json", "all"):
+            if args.format.lower() in ("json", "all"):
                 networks.interactions.save_network_json(args.key, graph)

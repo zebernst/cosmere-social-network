@@ -1,8 +1,8 @@
 ---
-title: Graphs
+title: Interactive Graphs
 permalink: /graphs
 ---
 
-[Family Relationships]({{'/graphs/families' | relative_url}})
+[Family Relationships]({{'/graphs/families' | relative_url}})  
 
-*more coming soon*
+[Interaction Networks]({{'/graphs/interactions' | relative_url}})  

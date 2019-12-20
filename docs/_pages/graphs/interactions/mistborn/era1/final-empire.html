@@ -1,0 +1,25 @@
+---
+title: Bands of Mourning
+permalink: /graphs/interactions/mistborn/final-empire
+classes: wide
+d3: true
+custom_css:
+  - force.css
+custom_js:
+  - force.js
+  - families.js
+---
+
+<p class="notice small"><span>drag to pan</span> | <span>pinch or scroll to zoom</span></p>
+
+
+
+<label for="node-search">Search for a character:</label>
+<input id="node-search" />
+<svg id="force-graph"></svg>
+
+
+<script>
+    const dataUrl = "{{ '/api/data/networks/interactions/mistborn/era1/final-empire.json' | relative_url }}";
+</script>
+

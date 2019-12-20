@@ -106,7 +106,7 @@ class CommandLineInterface:
 
         self.parser_analyze_relatives = analysis_subparsers.add_parser(
             self.Command.RELATIVES,
-            help="generate network graphs of related " "characters",
+            help="generate network graphs of related characters",
         )
         self.parser_analyze_relatives.set_defaults(func=analysis.relatives)
         self.parser_analyze_relatives.add_argument(
@@ -141,7 +141,7 @@ class CommandLineInterface:
 
         self.parser_analyze_interactions = analysis_subparsers.add_parser(
             self.Command.INTERACTIONS,
-            help="generate network graphs of character " "interactions",
+            help="generate network graphs of character interactions",
         )
         self.parser_analyze_interactions.set_defaults(func=analysis.interactions)
         self.parser_analyze_interactions.add_argument(
