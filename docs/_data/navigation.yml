@@ -2,7 +2,7 @@
 main:
   - title: "Background"
     url: /background
-  - title: "Graphs"
+  - title: "Interactive Graphs"
     url: /graphs
   - title: "Code"
     url: https://github.com/zebernst/cosmere-social-network
